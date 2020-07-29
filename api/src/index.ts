@@ -37,7 +37,7 @@ const main = async () => {
         return res.send({ ok: false, accessToken: "" });
       }
 
-      // Check if the token is not invalidated.
+      // Checks if the token is invalidated.
       if (payload.tokenVersion !== user.tokenVersion) {
         return res.send({ ok: false, accessToken: "" });
       }
