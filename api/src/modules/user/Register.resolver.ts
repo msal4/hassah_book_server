@@ -2,10 +2,10 @@ import { Mutation, Arg } from "type-graphql";
 import { hash } from "bcryptjs";
 import { ValidationError } from "apollo-server-express";
 
-import { User } from "src/entity/User";
-import { RegisterInput } from "src/modules/user/register/RegisterInput";
-import { isPhoneAlreadyExist } from "src/modules/user/register/isPhoneAlreadyExist";
-import { normalizePhone } from "src/modules/utils/normalizePhone";
+import { User } from "@api/entity/User";
+import { RegisterInput } from "@api/modules/user/register/RegisterInput";
+import { isPhoneAlreadyExist } from "@api/modules/user/register/isPhoneAlreadyExist";
+import { normalizePhone } from "@api/modules/utils/normalizePhone";
 
 export class RegisterResolver {
   // TODO: implement phone number verification.

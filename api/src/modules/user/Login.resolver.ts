@@ -1,9 +1,9 @@
 import { Resolver, Mutation, Arg, ObjectType, Field, Ctx } from "type-graphql";
 import { compare } from "bcryptjs";
 
-import { LoginInput } from "src/modules/user/login/LoginInput";
-import { normalizePhone } from "src/modules/utils/normalizePhone";
-import { User } from "src/entity/User";
+import { LoginInput } from "@api/modules/user/login/LoginInput";
+import { normalizePhone } from "@api/modules/utils/normalizePhone";
+import { User } from "@api/entity/User";
 import {
   createAccessToken,
   createRefreshToken,

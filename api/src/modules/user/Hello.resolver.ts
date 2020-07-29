@@ -1,9 +1,9 @@
 import { Query, Resolver, UseMiddleware, Ctx, Mutation } from "type-graphql";
 import { getConnection } from "typeorm";
 
-import { isAuth } from "../middlewares/isAuth";
-import { ApiContext } from "../types/ApiContext";
-import { User } from "src/entity/User";
+import { isAuth } from "@api/modules/middlewares/isAuth";
+import { ApiContext } from "@api/modules/types/ApiContext";
+import { User } from "@api/entity/User";
 
 // This file is for testing purposes only
 // TODO: remove this file

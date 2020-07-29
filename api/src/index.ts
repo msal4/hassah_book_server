@@ -12,10 +12,10 @@ import {
   createAccessToken,
   sendRefreshTokenCookie,
   createRefreshToken,
-} from "src/modules/user/auth";
-import { User } from "src/entity/User";
-import { JwtRefreshPayload } from "src/modules/types/JwtPayload";
-import { createSchema } from "src/utils/createSchema";
+} from "@api/modules/user/auth";
+import { User } from "@api/entity/User";
+import { JwtRefreshPayload } from "@api/modules/types/JwtPayload";
+import { createSchema } from "@api/utils/createSchema";
 
 const main = async () => {
   await createConnection();

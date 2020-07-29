@@ -1,7 +1,7 @@
 import { sign } from "jsonwebtoken";
 import { Response } from "express";
 
-import { User } from "src/entity/User";
+import { User } from "@api/entity/User";
 
 export const getAccessSecret = () => process.env.JWT_ACCESS_SECRET!;
 export const getRefreshSecret = () => process.env.JWT_REFRESH_SECRET!;

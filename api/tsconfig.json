@@ -22,7 +22,7 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "src/*": ["./src/*"]
+      "@api/*": ["./src/*"]
     }
   },
   "exclude": ["node_modules"],
