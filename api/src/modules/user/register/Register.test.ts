@@ -1,7 +1,9 @@
 import { Connection } from "typeorm";
+import faker from "faker";
 
 import { testConn } from "@api/test-utils/testConn";
 import { gCall } from "@api/test-utils/gCall";
+import { User } from "@api/entity/User";
 
 let conn: Connection;
 beforeAll(async () => {
@@ -13,22 +15,49 @@ afterAll(async () => {
 });
 
 const registerMutation = `
-mutation {
+mutation Register($data: RegisterInput!){
   register(
-    data: { 
-      name: "Salori hi",
-      phone: "07705983833",
-      password: "soyaboyno" 
-    }
+    data: $data
   ) {
     id
+    name
+    phone
+    address
   }
 }
 `;
 
 describe("Register", () => {
   it("create user", async () => {
-    const user = await gCall({ source: registerMutation });
-    console.log(user);
+    const user = {
+      name: faker.name.findName(),
+      phone: faker.phone.phoneNumber("077########"),
+      password: faker.internet.password(),
+    };
+
+    const data = await gCall({
+      source: registerMutation,
+      variableValues: {
+        data: user,
+      },
+    });
+
+    const phone = user.phone.substr(1);
+
+    expect(data).toMatchObject({
+      data: {
+        register: {
+          name: user.name,
+          phone,
+          address: null,
+        },
+      },
+    });
+
+    const dbUser = await User.findOne({ where: { phone } });
+    expect(dbUser).toBeDefined();
+    expect(dbUser?.name).toBe(user.name);
+    expect(dbUser?.phone).toBe(phone);
+    expect(dbUser?.address).toBe(null);
   });
 });
