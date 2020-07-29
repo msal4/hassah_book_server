@@ -8,9 +8,6 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import { verify } from "jsonwebtoken";
 
-import { RegisterResolver } from "src/modules/user/Register";
-import { HelloResover } from "./modules/user/Hello";
-import { LoginReslover } from "./modules/user/Login";
 import {
   getRefreshSecret,
   createAccessToken,
@@ -19,11 +16,12 @@ import {
 } from "./modules/user/auth";
 import { User } from "./entity/User";
 import { JwtRefreshPayload } from "./modules/types/JwtPayload";
+import { join } from "path";
 
 const main = async () => {
   await createConnection();
   const schema = await buildSchema({
-    resolvers: [RegisterResolver, LoginReslover, HelloResover],
+    resolvers: [join(__dirname, "./modules/**/*.resolver.ts")],
   });
   const app = express();
 
