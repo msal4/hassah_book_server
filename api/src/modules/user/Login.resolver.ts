@@ -8,8 +8,8 @@ import {
   createAccessToken,
   createRefreshToken,
   sendRefreshTokenCookie,
-} from "./auth";
-import { ApiContext } from "../types/ApiContext";
+} from "@api/modules/user/auth";
+import { ApiContext } from "@api/modules/types/ApiContext";
 
 @ObjectType()
 class LoginResponse {
