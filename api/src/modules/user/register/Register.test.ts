@@ -1,7 +1,7 @@
 import { Connection } from "typeorm";
 
 import { testConn } from "@api/test-utils/testConn";
-import { gCall } from "@api/utils/gCall";
+import { gCall } from "@api/test-utils/gCall";
 
 let conn: Connection;
 beforeAll(async () => {
