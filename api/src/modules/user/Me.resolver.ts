@@ -6,7 +6,7 @@ import { User } from "@api/entity/User";
 
 @Resolver()
 export class MeResolver {
-  @Query(() => User)
+  @Query(() => User, { nullable: true })
   @UseMiddleware(isAuth)
   me(@Ctx() { payload }: ApiContext): Promise<User | undefined> {
     return User.findOne(payload?.userId);
