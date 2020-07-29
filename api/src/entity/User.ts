@@ -38,6 +38,10 @@ export class User extends BaseEntity {
   tokenVersion?: number;
 
   @Field()
+  @Column({ type: "boolean", default: false })
+  confirmed: boolean;
+
+  @Field()
   @Column({ type: "timestamp", default: "now()" })
   createdAt: Date;
 
