@@ -5,6 +5,8 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from "typeorm";
 
 import { User } from "./User";
@@ -43,8 +45,12 @@ export class UserRequest extends BaseEntity {
   status: UserRequestStatus;
 
   @Field()
-  @Column({ type: "timestamp", default: "now()" })
+  @CreateDateColumn()
   createdAt: Date;
+
+  @Field()
+  @UpdateDateColumn()
+  updatedAt: Date;
 
   @Field(() => User, { description: "The user who made the request" })
   @ManyToOne(() => User, user => user.requests)

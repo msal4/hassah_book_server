@@ -5,6 +5,8 @@ import {
   PrimaryGeneratedColumn,
   ManyToMany,
   Column,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from "typeorm";
 
 import { Author } from "./Author";
@@ -55,15 +57,11 @@ export class Product {
   publishedAt: Date;
 
   @Field()
-  @Column({ type: "timestamp", default: "now()" })
+  @CreateDateColumn()
   createdAt: Date;
 
   @Field()
-  @Column({
-    type: "timestamp",
-    default: "now()",
-    onUpdate: "now()",
-  })
+  @UpdateDateColumn()
   updatedAt: Date;
 
   @Field(() => Author)

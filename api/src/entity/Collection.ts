@@ -6,6 +6,8 @@ import {
   Column,
   ManyToMany,
   JoinTable,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from "typeorm";
 
 import { Product } from "./Product";
@@ -24,6 +26,14 @@ export class Collection extends BaseEntity {
   @Field()
   @Column()
   image: string;
+
+  @Field()
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @Field()
+  @UpdateDateColumn()
+  updatedAt: Date;
 
   @Field(() => [Product])
   @ManyToMany(() => Product, product => product.collections)

@@ -15,7 +15,7 @@ import { Order } from "./Order";
 export class Purchase extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
-  id: string;
+  readonly id: string;
 
   @Field(() => Int)
   @Column({ type: "integer", default: 1 })

@@ -5,6 +5,8 @@ import {
   PrimaryGeneratedColumn,
   Column,
   OneToMany,
+  UpdateDateColumn,
+  CreateDateColumn,
 } from "typeorm";
 
 import { Product } from "./Product";
@@ -19,6 +21,14 @@ export class ProductType extends BaseEntity {
   @Field()
   @Column()
   name: string;
+
+  @Field()
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @Field()
+  @UpdateDateColumn()
+  updatedAt: Date;
 
   @Field(() => [Product])
   @OneToMany(() => Product, product => product.type)

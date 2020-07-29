@@ -5,6 +5,7 @@ import {
   ManyToOne,
   Column,
   PrimaryGeneratedColumn,
+  CreateDateColumn,
 } from "typeorm";
 
 import { User } from "./User";
@@ -15,10 +16,10 @@ import { Product } from "./Product";
 export class Favorite extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
-  id: string;
+  readonly id: string;
 
   @Field()
-  @Column({ type: "timestamp", default: "now()" })
+  @CreateDateColumn()
   createdAt: Date;
 
   @Field(() => User)

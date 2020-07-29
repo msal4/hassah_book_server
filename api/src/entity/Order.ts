@@ -6,6 +6,8 @@ import {
   Column,
   PrimaryGeneratedColumn,
   OneToMany,
+  UpdateDateColumn,
+  CreateDateColumn,
 } from "typeorm";
 
 import { User } from "./User";
@@ -29,7 +31,7 @@ registerEnumType(OrderStatus, {
 export class Order extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
-  id: string;
+  readonly id: string;
 
   @Field()
   @Column()
@@ -40,15 +42,11 @@ export class Order extends BaseEntity {
   status: OrderStatus;
 
   @Field()
-  @Column({ type: "timestamp", default: "now()" })
+  @CreateDateColumn()
   createdAt: Date;
 
   @Field()
-  @Column({
-    type: "timestamp",
-    default: "now()",
-    onUpdate: "now()",
-  })
+  @UpdateDateColumn()
   updatedAt: Date;
 
   @Field(() => User)
