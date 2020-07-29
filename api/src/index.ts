@@ -2,7 +2,6 @@ import "reflect-metadata";
 import "dotenv/config";
 
 import { ApolloServer } from "apollo-server-express";
-import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
 import express from "express";
 import cookieParser from "cookie-parser";
@@ -13,20 +12,17 @@ import {
   createAccessToken,
   sendRefreshTokenCookie,
   createRefreshToken,
-} from "./modules/user/auth";
-import { User } from "./entity/User";
-import { JwtRefreshPayload } from "./modules/types/JwtPayload";
-import { join } from "path";
+} from "src/modules/user/auth";
+import { User } from "src/entity/User";
+import { JwtRefreshPayload } from "src/modules/types/JwtPayload";
+import { createSchema } from "src/utils/createSchema";
 
 const main = async () => {
   await createConnection();
-  const schema = await buildSchema({
-    resolvers: [join(__dirname, "./modules/**/*.resolver.ts")],
-  });
+  const schema = await createSchema();
+
   const app = express();
-
   app.use(cookieParser());
-
   app.get("/", (_req, res) => res.send("hi"));
   app.post("/refresh_token", async (req, res) => {
     const token = req.cookies.skal as string;
@@ -41,6 +37,7 @@ const main = async () => {
         return res.send({ ok: false, accessToken: "" });
       }
 
+      // Check if the token is not invalidated.
       if (payload.tokenVersion !== user.tokenVersion) {
         return res.send({ ok: false, accessToken: "" });
       }
