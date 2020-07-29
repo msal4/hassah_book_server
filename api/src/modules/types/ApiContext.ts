@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { JwtAccessPayload } from "./JwtPayload";
+
+import { JwtAccessPayload } from "src/modules/types/JwtPayload";
 
 export interface ApiContext {
   req: Request;
