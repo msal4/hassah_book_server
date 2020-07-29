@@ -33,6 +33,7 @@ describe("Register", () => {
       name: faker.name.findName(),
       phone: faker.phone.phoneNumber("077########"),
       password: faker.internet.password(),
+      address: faker.address.streetAddress(true),
     };
 
     const data = await gCall({
@@ -49,7 +50,7 @@ describe("Register", () => {
         register: {
           name: user.name,
           phone,
-          address: null,
+          address: user.address,
         },
       },
     });
@@ -58,6 +59,6 @@ describe("Register", () => {
     expect(dbUser).toBeDefined();
     expect(dbUser?.name).toBe(user.name);
     expect(dbUser?.phone).toBe(phone);
-    expect(dbUser?.address).toBe(null);
+    expect(dbUser?.address).toBe(user.address);
   });
 });
