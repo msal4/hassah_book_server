@@ -22,10 +22,6 @@ export class Publisher extends BaseEntity {
   @Column()
   name: string;
 
-  @Field(() => [Product])
-  @OneToMany(() => Product, product => product.publisher)
-  products: Product[];
-
   @Field()
   @CreateDateColumn()
   createdAt: Date;
@@ -33,4 +29,8 @@ export class Publisher extends BaseEntity {
   @Field()
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @Field(() => [Product])
+  @OneToMany(() => Product, product => product.publisher)
+  products: Product[];
 }
