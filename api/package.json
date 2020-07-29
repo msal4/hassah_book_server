@@ -28,6 +28,8 @@
     "typescript": "^3.9.7"
   },
   "scripts": {
-    "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts"
+    "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
+    "test:setup": "ts-node -r tsconfig-paths/register src/test-utils/setup.ts",
+    "test": "yarn test:setup && jest"
   }
 }
