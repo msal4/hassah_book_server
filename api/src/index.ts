@@ -53,7 +53,10 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema,
-    context: ({ req, res }) => ({ req, res }),
+    context: ({ req, res }) => ({
+      req,
+      res,
+    }),
   });
   apolloServer.applyMiddleware({ app });
   app.listen(4000, () => {

@@ -38,5 +38,5 @@ export class Collection extends BaseEntity {
   @Field(() => [Product])
   @ManyToMany(() => Product, product => product.collections)
   @JoinTable()
-  products: Product[];
+  products: Promise<Product[]>;
 }

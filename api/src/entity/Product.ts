@@ -78,13 +78,13 @@ export class Product {
 
   @Field(() => [Favorite])
   @ManyToOne(() => Favorite, favorite => favorite.product)
-  favorites: Favorite[];
+  favorites: Promise<Favorite[]>;
 
   @Field(() => [Category])
   @ManyToMany(() => Category, category => category.products)
-  categories: Category[];
+  categories: Promise<Category[]>;
 
   @Field(() => [Collection])
   @ManyToMany(() => Collection, collection => collection.products)
-  collections: Collection[];
+  collections: Promise<Collection[]>;
 }

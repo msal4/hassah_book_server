@@ -55,5 +55,5 @@ export class Order extends BaseEntity {
 
   @Field(() => Purchase)
   @OneToMany(() => Purchase, purchase => purchase.order)
-  purchases: Purchase[];
+  purchases: Promise<Purchase[]>;
 }

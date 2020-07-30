@@ -32,5 +32,5 @@ export class Category extends BaseEntity {
 
   @Field(() => [Product])
   @ManyToMany(() => Product, product => product.categories)
-  products: Product[];
+  products: Promise<Product[]>;
 }

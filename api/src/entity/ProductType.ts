@@ -32,5 +32,5 @@ export class ProductType extends BaseEntity {
 
   @Field(() => [Product])
   @OneToMany(() => Product, product => product.type)
-  products: Product[];
+  products: Promise<Product[]>;
 }

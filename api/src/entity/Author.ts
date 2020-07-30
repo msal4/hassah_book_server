@@ -40,5 +40,5 @@ export class Author extends BaseEntity {
 
   @Field(() => [Product])
   @OneToMany(() => Product, product => product.author)
-  products: Product[];
+  products: Promise<Product[]>;
 }

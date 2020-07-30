@@ -53,13 +53,13 @@ export class User extends BaseEntity {
 
   @Field(() => [UserRequest])
   @OneToMany(() => UserRequest, request => request.user)
-  requests: UserRequest[];
+  requests: Promise<UserRequest[]>;
 
   @Field(() => [Favorite])
   @OneToMany(() => Favorite, favorite => favorite.user)
-  favorites: Favorite[];
+  favorites: Promise<Favorite[]>;
 
   @Field(() => [Order])
   @OneToMany(() => Order, order => order.user)
-  orders: Order[];
+  orders: Promise<Order[]>;
 }
