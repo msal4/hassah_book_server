@@ -14,6 +14,7 @@ import { genSalt, hash, compare } from "bcryptjs";
 import { UserRequest } from "@api/entity/UserRequest";
 import { Favorite } from "@api/entity/Favorite";
 import { Order } from "@api/entity/Order";
+import { normalizePhone } from "@api/modules/utils/normalizePhone";
 
 @ObjectType()
 @Entity()
@@ -66,9 +67,14 @@ export class User extends BaseEntity {
   orders: Promise<Order[]>;
 
   @BeforeInsert()
-  async setPassword(password: string) {
+  async hashPassword() {
     const salt = await genSalt();
-    this.password = await hash(password, salt);
+    this.password = await hash(this.password, salt);
+  }
+
+  @BeforeInsert()
+  async normalizePhone() {
+    this.phone = normalizePhone(this.phone);
   }
 
   // Compares the user password with the provided passowrd.
