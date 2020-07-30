@@ -13,7 +13,8 @@
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.0.0-rc.3",
     "typedi": "^0.8.0",
-    "typeorm": "^0.2.25"
+    "typeorm": "^0.2.25",
+    "typeorm-seeding": "^1.6.1"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
