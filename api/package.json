@@ -42,6 +42,7 @@
     "seed:config": "yarn api:run ./node_modules/typeorm-seeding/dist/cli.js config",
     "seed:run": "yarn api:run ./node_modules/typeorm-seeding/dist/cli.js seed",
     "schema:drop": "yarn api:run ./node_modules/typeorm/cli.js schema:drop",
-    "schema:sync": "yarn api:run ./node_modules/typeorm/cli.js schema:sync"
+    "schema:sync": "yarn api:run ./node_modules/typeorm/cli.js schema:sync",
+    "drop-and-seed": "yarn schema:drop && yarn schema:sync && yarn seed:run"
   }
 }

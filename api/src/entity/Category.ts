@@ -7,6 +7,7 @@ import {
   ManyToMany,
   CreateDateColumn,
   UpdateDateColumn,
+  JoinTable,
 } from "typeorm";
 
 import { Product } from "@api/entity/Product";
@@ -32,5 +33,6 @@ export class Category extends BaseEntity {
 
   @Field(() => [Product])
   @ManyToMany(() => Product, product => product.categories)
+  @JoinTable()
   products: Promise<Product[]>;
 }
