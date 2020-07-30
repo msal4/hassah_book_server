@@ -1,5 +1,5 @@
 import { Mutation, Arg } from "type-graphql";
-import { hash } from "bcryptjs";
+
 import { ValidationError } from "apollo-server-express";
 
 import { User } from "@api/entity/User";
@@ -17,9 +17,6 @@ export class RegisterResolver {
       throw new ValidationError(`phone number already in use`);
     }
 
-    const SALT = Number(process.env.PASSWORD_SALT!);
-    const password = await hash(data.password, SALT);
-
-    return await User.create({ ...data, phone, password }).save();
+    return await User.create({ ...data, phone }).save();
   }
 }

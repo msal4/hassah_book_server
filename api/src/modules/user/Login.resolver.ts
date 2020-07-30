@@ -1,5 +1,4 @@
 import { Resolver, Mutation, Arg, ObjectType, Field, Ctx } from "type-graphql";
-import { compare } from "bcryptjs";
 
 import { LoginInput } from "@api/modules/user/login/LoginInput";
 import { normalizePhone } from "@api/modules/utils/normalizePhone";
@@ -31,8 +30,8 @@ export class LoginReslover {
       throw new Error("no user found");
     }
 
-    // Validate password
-    const valid = await compare(data.password, user.password);
+    // Verify password
+    const valid = await user.verifyPassword(data.password);
     if (!valid) {
       throw new Error("password is incorrect");
     }

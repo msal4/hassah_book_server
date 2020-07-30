@@ -9,7 +9,7 @@ import {
   CreateDateColumn,
 } from "typeorm";
 
-import { Product } from "./Product";
+import { Product } from "@api/entity/Product";
 
 @ObjectType()
 @Entity()

@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-import { User } from "./User";
+import { User } from "@api/entity/User";
 
 export enum UserRequestStatus {
   PENDING = "pending",
@@ -54,5 +54,5 @@ export class UserRequest extends BaseEntity {
 
   @Field(() => User, { description: "The user who made the request" })
   @ManyToOne(() => User, user => user.requests)
-  user: User;
+  user: Promise<User>;
 }

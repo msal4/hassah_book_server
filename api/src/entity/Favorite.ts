@@ -7,8 +7,8 @@ import {
   CreateDateColumn,
 } from "typeorm";
 
-import { User } from "./User";
-import { Product } from "./Product";
+import { User } from "@api/entity/User";
+import { Product } from "@api/entity/Product";
 
 @ObjectType()
 @Entity()
@@ -23,9 +23,9 @@ export class Favorite extends BaseEntity {
 
   @Field(() => User)
   @ManyToOne(() => User, user => user.favorites)
-  user: User;
+  user: Promise<User>;
 
   @Field(() => Product)
   @ManyToOne(() => Product, product => product.favorites)
-  product: Product;
+  product: Promise<Product>;
 }

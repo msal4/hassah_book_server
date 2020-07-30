@@ -7,11 +7,13 @@ import {
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
+  BeforeInsert,
 } from "typeorm";
+import { genSalt, hash, compare } from "bcryptjs";
 
-import { UserRequest } from "./UserRequest";
-import { Favorite } from "./Favorite";
-import { Order } from "./Order";
+import { UserRequest } from "@api/entity/UserRequest";
+import { Favorite } from "@api/entity/Favorite";
+import { Order } from "@api/entity/Order";
 
 @ObjectType()
 @Entity()
@@ -62,4 +64,15 @@ export class User extends BaseEntity {
   @Field(() => [Order])
   @OneToMany(() => Order, order => order.user)
   orders: Promise<Order[]>;
+
+  @BeforeInsert()
+  async setPassword(password: string) {
+    const salt = await genSalt();
+    this.password = await hash(password, salt);
+  }
+
+  // Compares the user password with the provided passowrd.
+  verifyPassword(password: string) {
+    return compare(this.password, password);
+  }
 }

@@ -9,8 +9,8 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-import { Product } from "./Product";
-import { Order } from "./Order";
+import { Product } from "@api/entity/Product";
+import { Order } from "@api/entity/Order";
 
 @ObjectType()
 @Entity()
@@ -33,9 +33,9 @@ export class Purchase extends BaseEntity {
 
   @Field(() => Product)
   @ManyToOne(() => Product, product => product.favorites)
-  product: Product;
+  product: Promise<Product>;
 
   @Field(() => Order)
   @ManyToOne(() => Order, order => order.purchases)
-  order: Order;
+  order: Promise<Order>;
 }

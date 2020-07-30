@@ -10,8 +10,8 @@ import {
   CreateDateColumn,
 } from "typeorm";
 
-import { User } from "./User";
-import { Purchase } from "./Purchase";
+import { User } from "@api/entity/User";
+import { Purchase } from "@api/entity/Purchase";
 
 export enum OrderStatus {
   PENDING = "pending",
@@ -51,7 +51,7 @@ export class Order extends BaseEntity {
 
   @Field(() => User)
   @ManyToOne(() => User, user => user.orders)
-  user: User;
+  user: Promise<User>;
 
   @Field(() => Purchase)
   @OneToMany(() => Purchase, purchase => purchase.order)

@@ -7,14 +7,15 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from "typeorm";
 
-import { Author } from "./Author";
-import { Publisher } from "./Publisher";
-import { ProductType } from "./ProductType";
-import { Category } from "./Category";
-import { Collection } from "./Collection";
-import { Favorite } from "./Favorite";
+import { Author } from "@api/entity/Author";
+import { Publisher } from "@api/entity/Publisher";
+import { ProductType } from "@api/entity/ProductType";
+import { Category } from "@api/entity/Category";
+import { Collection } from "@api/entity/Collection";
+import { Favorite } from "@api/entity/Favorite";
 
 export enum ProductStatus {
   AVAILABLE = "available",
@@ -66,18 +67,18 @@ export class Product {
 
   @Field(() => Author)
   @ManyToOne(() => Author, author => author.products)
-  author: Author;
+  author: Promise<Author>;
 
   @Field(() => Publisher)
   @ManyToOne(() => Publisher, publisher => publisher.products)
-  publisher: Publisher;
+  publisher: Promise<Publisher>;
 
   @Field(() => ProductType)
   @ManyToOne(() => ProductType, type => type.products)
-  type: ProductType;
+  type: Promise<ProductType>;
 
   @Field(() => [Favorite])
-  @ManyToOne(() => Favorite, favorite => favorite.product)
+  @OneToMany(() => Favorite, favorite => favorite.product)
   favorites: Promise<Favorite[]>;
 
   @Field(() => [Category])
