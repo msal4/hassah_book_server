@@ -8,6 +8,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  BaseEntity,
 } from "typeorm";
 
 import { Author } from "@api/entity/Author";
@@ -28,7 +29,7 @@ registerEnumType(ProductStatus, { name: "ProductStatus" });
 
 @ObjectType()
 @Entity()
-export class Product {
+export class Product extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
   readonly id: string;
