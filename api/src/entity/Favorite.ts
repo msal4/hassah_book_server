@@ -9,6 +9,7 @@ import {
 
 import { User } from "@api/entity/User";
 import { Product } from "@api/entity/Product";
+import { Lazy } from "@api/modules/types/Lazy";
 
 @ObjectType()
 @Entity()
@@ -23,9 +24,9 @@ export class Favorite extends BaseEntity {
 
   @Field(() => User)
   @ManyToOne(() => User, user => user.favorites)
-  user: Promise<User>;
+  user: Lazy<User>;
 
   @Field(() => Product)
   @ManyToOne(() => Product, product => product.favorites)
-  product: Promise<Product>;
+  product: Lazy<Product>;
 }

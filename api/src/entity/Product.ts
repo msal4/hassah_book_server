@@ -17,6 +17,7 @@ import { ProductType } from "@api/entity/ProductType";
 import { Category } from "@api/entity/Category";
 import { Collection } from "@api/entity/Collection";
 import { Favorite } from "@api/entity/Favorite";
+import { Lazy } from "@api/modules/types/Lazy";
 
 export enum ProductStatus {
   AVAILABLE = "available",
@@ -68,25 +69,25 @@ export class Product extends BaseEntity {
 
   @Field(() => Author)
   @ManyToOne(() => Author, author => author.products)
-  author: Promise<Author>;
+  author: Lazy<Author>;
 
   @Field(() => Publisher)
   @ManyToOne(() => Publisher, publisher => publisher.products)
-  publisher: Promise<Publisher>;
+  publisher: Lazy<Publisher>;
 
   @Field(() => ProductType)
   @ManyToOne(() => ProductType, type => type.products)
-  type: Promise<ProductType>;
+  type: Lazy<ProductType>;
 
   @Field(() => [Favorite])
   @OneToMany(() => Favorite, favorite => favorite.product)
-  favorites: Promise<Favorite[]>;
+  favorites: Lazy<Favorite[]>;
 
   @Field(() => [Category])
   @ManyToMany(() => Category, category => category.products)
-  categories: Promise<Category[]>;
+  categories: Lazy<Category[]>;
 
   @Field(() => [Collection])
   @ManyToMany(() => Collection, collection => collection.products)
-  collections: Promise<Collection[]>;
+  collections: Lazy<Collection[]>;
 }

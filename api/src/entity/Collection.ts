@@ -11,6 +11,7 @@ import {
 } from "typeorm";
 
 import { Product } from "@api/entity/Product";
+import { Lazy } from "@api/modules/types/Lazy";
 
 @ObjectType()
 @Entity()
@@ -38,5 +39,5 @@ export class Collection extends BaseEntity {
   @Field(() => [Product])
   @ManyToMany(() => Product, product => product.collections)
   @JoinTable()
-  products: Promise<Product[]>;
+  products: Lazy<Product[]>;
 }

@@ -10,6 +10,7 @@ import {
 } from "typeorm";
 
 import { Product } from "@api/entity/Product";
+import { Lazy } from "@api/modules/types/Lazy";
 
 @ObjectType()
 @Entity()
@@ -32,5 +33,5 @@ export class Publisher extends BaseEntity {
 
   @Field(() => [Product])
   @OneToMany(() => Product, product => product.publisher)
-  products: Promise<Product[]>;
+  products: Lazy<Product[]>;
 }

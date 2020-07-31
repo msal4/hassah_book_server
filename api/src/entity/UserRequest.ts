@@ -10,6 +10,7 @@ import {
 } from "typeorm";
 
 import { User } from "@api/entity/User";
+import { Lazy } from "@api/modules/types/Lazy";
 
 export enum UserRequestStatus {
   PENDING = "pending",
@@ -54,5 +55,5 @@ export class UserRequest extends BaseEntity {
 
   @Field(() => User, { description: "The user who made the request" })
   @ManyToOne(() => User, user => user.requests)
-  user: Promise<User>;
+  user: Lazy<User>;
 }

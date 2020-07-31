@@ -15,6 +15,7 @@ import { UserRequest } from "@api/entity/UserRequest";
 import { Favorite } from "@api/entity/Favorite";
 import { Order } from "@api/entity/Order";
 import { normalizePhone } from "@api/modules/utils/normalizePhone";
+import { Lazy } from "@api/modules/types/Lazy";
 
 @ObjectType()
 @Entity()
@@ -56,15 +57,15 @@ export class User extends BaseEntity {
 
   @Field(() => [UserRequest])
   @OneToMany(() => UserRequest, request => request.user)
-  requests: Promise<UserRequest[]>;
+  requests: Lazy<UserRequest[]>;
 
   @Field(() => [Favorite])
   @OneToMany(() => Favorite, favorite => favorite.user)
-  favorites: Promise<Favorite[]>;
+  favorites: Lazy<Favorite[]>;
 
   @Field(() => [Order])
   @OneToMany(() => Order, order => order.user)
-  orders: Promise<Order[]>;
+  orders: Lazy<Order[]>;
 
   @BeforeInsert()
   async hashPassword() {

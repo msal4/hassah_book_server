@@ -12,6 +12,7 @@ import {
 
 import { User } from "@api/entity/User";
 import { Purchase } from "@api/entity/Purchase";
+import { Lazy } from "@api/modules/types/Lazy";
 
 export enum OrderStatus {
   PENDING = "pending",
@@ -51,9 +52,9 @@ export class Order extends BaseEntity {
 
   @Field(() => User)
   @ManyToOne(() => User, user => user.orders)
-  user: Promise<User>;
+  user: Lazy<User>;
 
   @Field(() => Purchase)
   @OneToMany(() => Purchase, purchase => purchase.order)
-  purchases: Promise<Purchase[]>;
+  purchases: Lazy<Purchase[]>;
 }
