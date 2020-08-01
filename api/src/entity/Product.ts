@@ -80,11 +80,9 @@ export class Product extends BaseEntity {
   @ManyToOne(() => ProductType, type => type.products)
   type: Lazy<ProductType>;
 
-  @Field(() => [Favorite])
   @OneToMany(() => Favorite, favorite => favorite.product)
   favorites: Lazy<Favorite[]>;
 
-  @Field(() => [Purchase])
   @OneToMany(() => Purchase, purchase => purchase.product)
   purchases: Lazy<Purchase[]>;
 
