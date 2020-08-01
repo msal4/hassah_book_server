@@ -13,10 +13,10 @@ import { User } from "@api/entity/User";
 import { Lazy } from "@api/modules/types/Lazy";
 
 export enum UserRequestStatus {
-  PENDING = "pending",
-  PROCESSING = "processing",
-  FAILED = "failed",
-  SUCCESS = "success",
+  Pending = "Pending",
+  Processing = "Processing",
+  Failed = "Failed",
+  Success = "Success",
 }
 
 registerEnumType(UserRequestStatus, { name: "UserRequestStatus" });
@@ -41,7 +41,7 @@ export class UserRequest extends BaseEntity {
   @Column({
     type: "enum",
     enum: UserRequestStatus,
-    default: UserRequestStatus.PENDING,
+    default: UserRequestStatus.Pending,
   })
   status: UserRequestStatus;
 

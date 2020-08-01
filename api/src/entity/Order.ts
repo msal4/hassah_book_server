@@ -15,11 +15,11 @@ import { Purchase } from "@api/entity/Purchase";
 import { Lazy } from "@api/modules/types/Lazy";
 
 export enum OrderStatus {
-  PENDING = "pending",
-  PROCESSED = "processed",
-  DELIVERING = "delivering",
-  DELIVERED = "delivered",
-  FAILED = "failed",
+  Pending = "Pending",
+  Processed = "Processed",
+  Delivering = "Delivering",
+  Delivered = "Delivered",
+  Failed = "Failed",
 }
 
 registerEnumType(OrderStatus, {
@@ -39,7 +39,7 @@ export class Order extends BaseEntity {
   address: string;
 
   @Field(() => OrderStatus)
-  @Column({ type: "enum", enum: OrderStatus, default: OrderStatus.PENDING })
+  @Column({ type: "enum", enum: OrderStatus, default: OrderStatus.Pending })
   status: OrderStatus;
 
   @Field()

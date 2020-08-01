@@ -21,10 +21,10 @@ import { Purchase } from "@api/entity/Purchase";
 import { Lazy } from "@api/modules/types/Lazy";
 
 export enum ProductStatus {
-  AVAILABLE = "available",
-  ON_SALE = "on_sale",
-  COMING_SOON = "coming_soon",
-  SOLD_OUT = "sold_out",
+  Available = "Available",
+  OnSale = "OnSale",
+  ComingSoon = "ComingSoon",
+  SoldOut = "SoldOut",
 }
 
 registerEnumType(ProductStatus, { name: "ProductStatus" });
@@ -52,7 +52,7 @@ export class Product extends BaseEntity {
   @Column({
     type: "enum",
     enum: ProductStatus,
-    default: ProductStatus.AVAILABLE,
+    default: ProductStatus.Available,
   })
   status: ProductStatus;
 
