@@ -1,6 +1,5 @@
 import { User } from "@api/entity/User";
 
-export async function isPhoneAlreadyExist(phone: string) {
-  const user = await User.findOne({ where: { phone } });
-  return !!user;
+export function isPhoneAlreadyExist(phone: string): Promise<boolean> {
+  return User.findOne({ where: { phone } }).then(user => !!user);
 }
