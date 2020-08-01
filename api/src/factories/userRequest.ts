@@ -7,7 +7,7 @@ import { enumToList } from "@api/factories/utils/enumToList";
 define(UserRequest, (faker, context?: UserRequestFactoryContext) => {
   const userRequest = new UserRequest();
   userRequest.content = faker.lorem.paragraphs();
-  userRequest.user = Promise.resolve(context!.user);
+  userRequest.user = context!.user;
   userRequest.status = faker.random.arrayElement(enumToList(UserRequestStatus));
   return userRequest;
 });

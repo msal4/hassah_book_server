@@ -5,8 +5,8 @@ import { FavoriteFactoryContext } from "@api/factories/types/FactoryContext";
 
 define(Favorite, (faker, context?: FavoriteFactoryContext) => {
   const favorite = new Favorite();
-  favorite.user = Promise.resolve(context!.user);
-  favorite.product = Promise.resolve(context!.product);
+  favorite.user = context!.user;
+  favorite.product = context!.product;
   favorite.createdAt = faker.date.past();
   return favorite;
 });

@@ -44,6 +44,10 @@ export class Product extends BaseEntity {
   @Column("text")
   overview: string;
 
+  @Field()
+  @Column("text")
+  image: string;
+
   @Field(() => Int, { nullable: true })
   @Column({ type: "integer", nullable: true })
   pages?: number;
