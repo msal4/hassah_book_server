@@ -18,6 +18,7 @@ import { Category } from "@api/entity/Category";
 import { Collection } from "@api/entity/Collection";
 import { Favorite } from "@api/entity/Favorite";
 import { Lazy } from "@api/modules/types/Lazy";
+import { Purchase } from "./Purchase";
 
 export enum ProductStatus {
   AVAILABLE = "available",
@@ -82,6 +83,10 @@ export class Product extends BaseEntity {
   @Field(() => [Favorite])
   @OneToMany(() => Favorite, favorite => favorite.product)
   favorites: Lazy<Favorite[]>;
+
+  @Field(() => [Purchase])
+  @OneToMany(() => Purchase, purchase => purchase.product)
+  purchases: Lazy<Purchase[]>;
 
   @Field(() => [Category])
   @ManyToMany(() => Category, category => category.products)
