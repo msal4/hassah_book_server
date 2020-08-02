@@ -1,11 +1,11 @@
 import { MiddlewareFn } from "type-graphql";
 import { verify } from "jsonwebtoken";
 
-import { ApiContext } from "@api/modules/types/ApiContext";
+import { RequestContext } from "@api/modules/types/RequestContext";
 import { getAccessSecret } from "@api/modules/user/auth";
 import { JwtAccessPayload } from "@api/modules/types/JwtPayload";
 
-export const isAuth: MiddlewareFn<ApiContext> = ({ context }, next) => {
+export const isAuth: MiddlewareFn<RequestContext> = ({ context }, next) => {
   const authorization = context.req.headers.authorization;
   if (!authorization) {
     throw new Error("not authenticated");

@@ -7,7 +7,8 @@ import express from "express";
 import cookieParser from "cookie-parser";
 
 import { createSchema } from "@api/utils/createSchema";
-import { refreshToken } from "./utils/refreshToken";
+import { refreshToken } from "@api/utils/refreshToken";
+import { RequestContext } from "@api/modules/types/RequestContext";
 
 const PORT = 4000;
 
@@ -17,17 +18,16 @@ const main = async () => {
 
   const app = express();
   app.use(cookieParser());
-  app.get("/", (_req, res) =>
-    res.send('<a href="/graphql">Graphql PlayGround</a>')
-  );
+  app.get("/", (_req, res) => res.send('<a href="/graphql">Graphql PlayGround</a>'));
   app.post("/refresh_token", refreshToken);
 
   const apolloServer = new ApolloServer({
     schema,
-    context: ({ req, res }) => ({
-      req,
-      res,
-    }),
+    context: ({ req, res }) =>
+      ({
+        req,
+        res,
+      } as RequestContext),
   });
   apolloServer.applyMiddleware({ app });
 

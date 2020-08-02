@@ -80,9 +80,7 @@ export class CreateSeeds implements Seeder {
   }
 
   createOrders(factory: Factory, user: User) {
-    return factory(Order)({ user } as OrderFactoryContext).createMany(
-      faker.random.number(5)
-    );
+    return factory(Order)({ user } as OrderFactoryContext).createMany(faker.random.number(5));
   }
 
   async createPurchases(factory: Factory, products: Product[], order: Order) {

@@ -20,11 +20,7 @@ export function PaginatedResponse<T>(TClass: ClassType<T>) {
 }
 
 export const PaginatedProductResponse = PaginatedResponse(Product);
-export type PaginatedProductResponse = InstanceType<
-  typeof PaginatedProductResponse
->;
+export type PaginatedProductResponse = InstanceType<typeof PaginatedProductResponse>;
 
 export const PaginatedFavoriteResponse = PaginatedResponse(Favorite);
-export type PaginatedFavoriteResponse = InstanceType<
-  typeof PaginatedFavoriteResponse
->;
+export type PaginatedFavoriteResponse = InstanceType<typeof PaginatedFavoriteResponse>;

@@ -32,6 +32,6 @@ export class Publisher extends BaseEntity {
   updatedAt: Date;
 
   @Field(() => [Product])
-  @OneToMany(() => Product, product => product.publisher)
+  @OneToMany(() => Product, (product) => product.publisher)
   products: Lazy<Product[]>;
 }

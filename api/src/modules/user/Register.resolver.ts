@@ -9,7 +9,7 @@ import { normalizePhone } from "@api/modules/utils/normalizePhone";
 
 export class RegisterResolver {
   // TODO: implement phone number verification.
-  @Mutation(_returns => User)
+  @Mutation((_returns) => User)
   async register(@Arg("data") data: RegisterInput): Promise<User> {
     const phone = normalizePhone(data.phone);
 

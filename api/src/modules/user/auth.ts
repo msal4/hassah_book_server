@@ -10,11 +10,9 @@ export const createAccessToken = (user: User) =>
   sign({ userId: user.id }, getAccessSecret(), { expiresIn: "15m" });
 
 export const createRefreshToken = (user: User) =>
-  sign(
-    { userId: user.id, tokenVersion: user.tokenVersion },
-    getRefreshSecret(),
-    { expiresIn: "1w" }
-  );
+  sign({ userId: user.id, tokenVersion: user.tokenVersion }, getRefreshSecret(), {
+    expiresIn: "1w",
+  });
 
 export const sendRefreshTokenCookie = (res: Response, token: string) => {
   res.cookie("skal", token, { httpOnly: true });

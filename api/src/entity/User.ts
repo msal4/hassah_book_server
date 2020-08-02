@@ -56,15 +56,15 @@ export class User extends BaseEntity {
   updatedAt: Date;
 
   @Field(() => [UserRequest])
-  @OneToMany(() => UserRequest, request => request.user)
+  @OneToMany(() => UserRequest, (request) => request.user)
   requests: Lazy<UserRequest[]>;
 
   @Field(() => [Favorite])
-  @OneToMany(() => Favorite, favorite => favorite.user)
+  @OneToMany(() => Favorite, (favorite) => favorite.user)
   favorites: Lazy<Favorite[]>;
 
   @Field(() => [Order])
-  @OneToMany(() => Order, order => order.user)
+  @OneToMany(() => Order, (order) => order.user)
   orders: Lazy<Order[]>;
 
   @BeforeInsert()

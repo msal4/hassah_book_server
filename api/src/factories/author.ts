@@ -2,7 +2,7 @@ import { define } from "typeorm-seeding";
 
 import { Author } from "@api/entity/Author";
 
-define(Author, faker => {
+define(Author, (faker) => {
   const author = new Author();
   author.name = faker.name.findName();
   author.image = faker.image.avatar();

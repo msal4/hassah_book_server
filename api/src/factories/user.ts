@@ -2,7 +2,7 @@ import { define } from "typeorm-seeding";
 
 import { User } from "@api/entity/User";
 
-define(User, faker => {
+define(User, (faker) => {
   const user = new User();
   user.name = faker.name.findName();
   user.phone = faker.phone.phoneNumber("077########");

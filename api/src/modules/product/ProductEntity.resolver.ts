@@ -3,20 +3,17 @@ import { Resolver, FieldResolver, Root, Args } from "type-graphql";
 import { Product } from "@api/entity/Product";
 import { PagniationArgs } from "@api/modules/shared/PaginationArgs";
 import { PaginatedFavoriteResponse } from "@api/shared/PaginatedResponse";
-import { FavoriteRepository } from "@api/modules/repositories/FavoriteRepository";
+import { FavoriteService } from "@api/modules/services/Favorite.service";
 
 @Resolver(() => Product)
 export class ProductEntityResolver {
-  constructor(private readonly favoriteRepository: FavoriteRepository) {}
+  constructor(private readonly favoriteService: FavoriteService) {}
 
   @FieldResolver(() => PaginatedFavoriteResponse)
-  async favorites(
+  favorites(
     @Root() product: Product,
-    @Args() args: PagniationArgs
+    @Args() { skip, take }: PagniationArgs
   ): Promise<PaginatedFavoriteResponse> {
-    return await this.favoriteRepository.findAll({
-      ...args,
-      where: { product },
-    });
+    return this.favoriteService.findAll({ skip, take, where: { product } });
   }
 }

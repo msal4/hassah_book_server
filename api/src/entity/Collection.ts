@@ -37,7 +37,7 @@ export class Collection extends BaseEntity {
   updatedAt: Date;
 
   @Field(() => [Product])
-  @ManyToMany(() => Product, product => product.collections)
+  @ManyToMany(() => Product, (product) => product.collections)
   @JoinTable()
   products: Lazy<Product[]>;
 }

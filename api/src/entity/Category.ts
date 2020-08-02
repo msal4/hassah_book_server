@@ -33,7 +33,7 @@ export class Category extends BaseEntity {
   updatedAt: Date;
 
   @Field(() => [Product])
-  @ManyToMany(() => Product, product => product.categories)
+  @ManyToMany(() => Product, (product) => product.categories)
   @JoinTable()
   products: Lazy<Product[]>;
 }

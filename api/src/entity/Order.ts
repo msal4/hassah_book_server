@@ -51,10 +51,10 @@ export class Order extends BaseEntity {
   updatedAt: Date;
 
   @Field(() => User)
-  @ManyToOne(() => User, user => user.orders)
+  @ManyToOne(() => User, (user) => user.orders)
   user: Lazy<User>;
 
   @Field(() => Purchase)
-  @OneToMany(() => Purchase, purchase => purchase.order)
+  @OneToMany(() => Purchase, (purchase) => purchase.order)
   purchases: Lazy<Purchase[]>;
 }

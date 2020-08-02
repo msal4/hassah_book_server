@@ -8,7 +8,7 @@ import {
   createRefreshToken,
   sendRefreshTokenCookie,
 } from "@api/modules/user/auth";
-import { ApiContext } from "@api/modules/types/ApiContext";
+import { RequestContext } from "@api/modules/types/RequestContext";
 
 @ObjectType()
 class LoginResponse {
@@ -18,10 +18,10 @@ class LoginResponse {
 
 @Resolver()
 export class LoginReslover {
-  @Mutation(_returns => LoginResponse)
+  @Mutation((_returns) => LoginResponse)
   async login(
     @Arg("data") data: LoginInput,
-    @Ctx() { res }: ApiContext
+    @Ctx() { res }: RequestContext
   ): Promise<LoginResponse> {
     // Find a user
     const phone = normalizePhone(data.phone);

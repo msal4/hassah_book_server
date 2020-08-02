@@ -33,10 +33,10 @@ export class Purchase extends BaseEntity {
   updatedAt: Date;
 
   @Field(() => Product)
-  @ManyToOne(() => Product, product => product.favorites)
+  @ManyToOne(() => Product, (product) => product.favorites)
   product: Lazy<Product>;
 
   @Field(() => Order)
-  @ManyToOne(() => Order, order => order.purchases)
+  @ManyToOne(() => Order, (order) => order.purchases)
   order: Lazy<Order>;
 }

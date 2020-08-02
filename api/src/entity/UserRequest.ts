@@ -22,8 +22,7 @@ export enum UserRequestStatus {
 registerEnumType(UserRequestStatus, { name: "UserRequestStatus" });
 
 @ObjectType({
-  description:
-    "A request by the user for a certain product. It can also be used for feedback.",
+  description: "A request by the user for a certain product. It can also be used for feedback.",
 })
 @Entity()
 export class UserRequest extends BaseEntity {
@@ -54,6 +53,6 @@ export class UserRequest extends BaseEntity {
   updatedAt: Date;
 
   @Field(() => User, { description: "The user who made the request" })
-  @ManyToOne(() => User, user => user.requests)
+  @ManyToOne(() => User, (user) => user.requests)
   user: Lazy<User>;
 }
