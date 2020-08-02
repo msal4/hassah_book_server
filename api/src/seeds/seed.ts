@@ -3,7 +3,6 @@ import { Connection } from "typeorm";
 import faker from "faker";
 
 import { Product } from "@api/entity/Product";
-import { ProductType } from "@api/entity/ProductType";
 import {
   ProductFactoryContext,
   FavoriteFactoryContext,
@@ -48,13 +47,11 @@ export class CreateSeeds implements Seeder {
   }
 
   async createProducts(factory: Factory) {
-    const type = await factory(ProductType)().create();
     const publishers = await factory(Publisher)().createMany(10);
     const authors = await factory(Author)().createMany(10);
     const categories = await this.createCategories(factory);
     const collections = await this.createCollections(factory);
     const context: ProductFactoryContext = {
-      type,
       publishers,
       authors,
       categories,

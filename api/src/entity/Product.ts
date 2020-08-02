@@ -13,7 +13,6 @@ import {
 
 import { Author } from "@api/entity/Author";
 import { Publisher } from "@api/entity/Publisher";
-import { ProductType } from "@api/entity/ProductType";
 import { Category } from "@api/entity/Category";
 import { Collection } from "@api/entity/Collection";
 import { Favorite } from "@api/entity/Favorite";
@@ -79,10 +78,6 @@ export class Product extends BaseEntity {
   @Field(() => Publisher)
   @ManyToOne(() => Publisher, publisher => publisher.products)
   publisher: Lazy<Publisher>;
-
-  @Field(() => ProductType)
-  @ManyToOne(() => ProductType, type => type.products)
-  type: Lazy<ProductType>;
 
   @OneToMany(() => Favorite, favorite => favorite.product)
   favorites: Lazy<Favorite[]>;

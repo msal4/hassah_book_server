@@ -14,7 +14,6 @@ define(Product, (faker, context?: ProductFactoryContext) => {
   product.status = faker.random.arrayElement(enumToList(ProductStatus));
   product.pages = faker.random.number(1000);
   product.publishedAt = faker.date.past();
-  product.type = context!.type;
 
   const publisher = faker.random.arrayElement(context!.publishers);
   product.publisher = publisher;

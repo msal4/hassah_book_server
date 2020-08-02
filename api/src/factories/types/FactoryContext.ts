@@ -1,4 +1,3 @@
-import { ProductType } from "@api/entity/ProductType";
 import { Publisher } from "@api/entity/Publisher";
 import { Author } from "@api/entity/Author";
 import { User } from "@api/entity/User";
@@ -8,7 +7,6 @@ import { Category } from "@api/entity/Category";
 import { Collection } from "@api/entity/Collection";
 
 export interface ProductFactoryContext {
-  type: ProductType;
   publishers: Publisher[];
   authors: Author[];
   categories: Category[];
