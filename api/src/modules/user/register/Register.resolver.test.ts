@@ -27,7 +27,7 @@ mutation Register($data: RegisterInput!){
 }
 `;
 
-describe("Register", () => {
+describe("Register Resolver", () => {
   it("create user", async () => {
     const user = {
       name: faker.name.findName(),
