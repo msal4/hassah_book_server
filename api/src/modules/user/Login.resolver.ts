@@ -3,11 +3,7 @@ import { Resolver, Mutation, Arg, ObjectType, Field, Ctx } from "type-graphql";
 import { LoginInput } from "@api/modules/user/login/LoginInput";
 import { normalizePhone } from "@api/modules/utils/normalizePhone";
 import { User } from "@api/entity/User";
-import {
-  createAccessToken,
-  createRefreshToken,
-  sendRefreshTokenCookie,
-} from "@api/modules/user/auth";
+import { createAccessToken, createRefreshToken, sendRefreshTokenCookie } from "@api/modules/user/auth";
 import { RequestContext } from "@api/modules/types/RequestContext";
 
 @ObjectType()
@@ -19,10 +15,7 @@ class LoginResponse {
 @Resolver()
 export class LoginReslover {
   @Mutation((_returns) => LoginResponse)
-  async login(
-    @Arg("data") data: LoginInput,
-    @Ctx() { res }: RequestContext
-  ): Promise<LoginResponse> {
+  async login(@Arg("data") data: LoginInput, @Ctx() { res }: RequestContext): Promise<LoginResponse> {
     // Find a user
     const phone = normalizePhone(data.phone);
     const user = await User.findOne({ where: { phone } });
