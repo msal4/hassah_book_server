@@ -86,9 +86,7 @@ export class Product extends BaseEntity {
   purchases: Lazy<Purchase[]>;
 
   @Field(() => [Category])
-  @ManyToMany(() => Category, (category) => category.products, {
-    cascade: true,
-  })
+  @ManyToMany(() => Category, (category) => category.products)
   categories: Lazy<Category[]>;
 
   @Field(() => [Collection])

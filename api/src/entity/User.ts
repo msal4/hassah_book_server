@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
   BeforeInsert,
 } from "typeorm";
-import { genSalt, hash, compare } from "bcryptjs";
+import { hash, compare } from "bcryptjs";
 
 import { UserRequest } from "@api/entity/UserRequest";
 import { Favorite } from "@api/entity/Favorite";
@@ -69,8 +69,7 @@ export class User extends BaseEntity {
 
   @BeforeInsert()
   async hashPassword() {
-    const salt = await genSalt();
-    this.password = await hash(this.password, salt);
+    this.password = await hash(this.password, 12);
   }
 
   @BeforeInsert()
@@ -79,7 +78,7 @@ export class User extends BaseEntity {
   }
 
   // Compares the user password with the provided passowrd.
-  verifyPassword(password: string) {
-    return compare(this.password, password);
+  validatePassword(password: string) {
+    return compare(password, this.password);
   }
 }

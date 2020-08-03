@@ -1,17 +1,8 @@
-import { Connection } from "typeorm";
 import faker from "faker";
 
-import { testConn } from "@api/test-utils/testConn";
 import { gCall } from "@api/test-utils/gCall";
 import { User } from "@api/entity/User";
-
-let conn: Connection;
-beforeAll(async () => {
-  conn = await testConn();
-});
-afterAll(async () => {
-  await conn.close();
-});
+import { mockRequestContext } from "@api/utils/mockRequestContext";
 
 const registerMutation = `
 mutation Register($data: RegisterInput!){
@@ -40,8 +31,8 @@ describe("Register Resolver", () => {
       variableValues: {
         data: user,
       },
+      contextValue: mockRequestContext(),
     });
-
     const phone = user.phone.substr(1);
 
     expect(data).toMatchObject({

@@ -24,7 +24,7 @@ export class LoginReslover {
     }
 
     // Verify password
-    const valid = await user.verifyPassword(data.password);
+    const valid = await user.validatePassword(data.password);
     if (!valid) {
       throw new Error("password is incorrect");
     }

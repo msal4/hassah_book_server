@@ -3,8 +3,8 @@ import { Response } from "express";
 
 import { User } from "@api/entity/User";
 
-export const getAccessSecret = () => process.env.JWT_ACCESS_SECRET!;
-export const getRefreshSecret = () => process.env.JWT_REFRESH_SECRET!;
+export const getAccessSecret = () => process.env.JWT_ACCESS_SECRET ?? "testsecretkey";
+export const getRefreshSecret = () => process.env.JWT_REFRESH_SECRET ?? "anothertestsecretkey";
 
 export const createAccessToken = (user: User) =>
   sign({ userId: user.id }, getAccessSecret(), { expiresIn: "15m" });

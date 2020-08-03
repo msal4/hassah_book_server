@@ -1,5 +1,4 @@
 import faker from "faker";
-import { Connection } from "typeorm";
 import { useSeeding, runSeeder } from "typeorm-seeding";
 
 import { gCall } from "@api/test-utils/gCall";
@@ -9,19 +8,11 @@ import { Author } from "@api/entity/Author";
 import { Publisher } from "@api/entity/Publisher";
 import { ProductStatus } from "@api/entity/Product";
 import { ApiSeeder } from "@api/seeds/ApiSeeder";
-import { testConn } from "@api/test-utils/testConn";
-
-let conn: Connection;
+import { mockRequestContext } from "@api/utils/mockRequestContext";
 
 beforeAll(async () => {
-  conn = await testConn();
   await useSeeding();
   await runSeeder(ApiSeeder);
-});
-
-afterAll(async () => {
-  await conn.dropDatabase();
-  await conn.close();
 });
 
 const createProductMutation = `
@@ -70,7 +61,7 @@ const transform = (obj: Category | Collection | Author | Publisher) => {
 };
 
 describe("Product", () => {
-  it("create a product", async () => {
+  it("create product", async () => {
     const category = await Category.findOne();
     const collection = await Collection.findOne();
     const author = await Author.findOne();
@@ -89,7 +80,12 @@ describe("Product", () => {
       collections: [{ id: collection!.id }],
     };
 
-    const response = await gCall({ source: createProductMutation, variableValues: { data } });
+    const response = await gCall({
+      source: createProductMutation,
+      variableValues: { data },
+      contextValue: mockRequestContext(),
+    });
+
     expect(response).toMatchObject({
       data: {
         createProduct: {

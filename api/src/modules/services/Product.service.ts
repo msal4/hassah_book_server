@@ -26,7 +26,9 @@ export class ProductService {
 
   async update(data: UpdateProductInput): Promise<boolean> {
     try {
-      await Product.update({ id: data.id }, data);
+      const product = await Product.findOne({ where: { id: data.id } });
+      Product.merge(product!, data);
+      product!.save();
       return true;
     } catch (err) {
       console.error(err);

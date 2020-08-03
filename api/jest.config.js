@@ -4,4 +4,6 @@ module.exports = {
   moduleNameMapper: {
     "@api/(.*)$": ["<rootDir>/src/$1"],
   },
+  globalSetup: "./src/test-utils/setup.ts",
+  setupFilesAfterEnv: ["./src/test-utils/dbEnv.ts"],
 };
