@@ -7,7 +7,10 @@ import { ormconfig } from "@api/test-utils/ormconfig";
 
 export default async () => {
   const startTime = Date.now();
-  await createConnection(ormconfig);
+  // to avoid establishing a connection if it already exist.
+  try {
+    await createConnection(ormconfig);
+  } catch {}
   // TODO: run migrations here once I start using them.
   // await connection.runMigrations()
   const finishTime = Date.now();

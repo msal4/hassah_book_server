@@ -47,6 +47,7 @@ describe("Register Resolver", () => {
 
     const dbUser = await User.findOne({ where: { phone } });
     expect(dbUser).toBeDefined();
+    expect(dbUser?.id).toBeDefined();
     expect(dbUser?.name).toBe(user.name);
     expect(dbUser?.phone).toBe(phone);
     expect(dbUser?.address).toBe(user.address);
