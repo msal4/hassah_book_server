@@ -21,7 +21,7 @@ import { Order } from "@api/entity/Order";
 import { Purchase } from "@api/entity/Purchase";
 import { randomSlice } from "@api/factories/utils/randomSlice";
 
-export class CreateSeeds implements Seeder {
+export class ApiSeeder implements Seeder {
   public async run(factory: Factory, _connection: Connection): Promise<void> {
     const products = await this.createProducts(factory);
     const users = await this.createUsers(factory);
@@ -57,11 +57,11 @@ export class CreateSeeds implements Seeder {
       categories,
       collections,
     };
-    return await factory(Product)(context).createMany(100);
+    return await factory(Product)(context).createMany(10);
   }
 
   createUsers(factory: Factory) {
-    return factory(User)().createMany(10);
+    return factory(User)().createMany(5);
   }
 
   createUserRequests(factory: Factory, user: User) {
