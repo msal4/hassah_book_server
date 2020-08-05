@@ -32,8 +32,11 @@ export class Category extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Field(() => [Product])
   @ManyToMany(() => Product, (product) => product.categories)
   @JoinTable()
   products: Lazy<Product[]>;
+
+  // the count is used in the CategoryEntity resolver to return a paginated response,
+  // it might not be the perfect place for it but for now I'll leave it here.
+  totalProducts?: number;
 }
