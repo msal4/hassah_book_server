@@ -11,7 +11,7 @@ import {
 
 import { Product } from "@api/entity/Product";
 import { Order } from "@api/entity/Order";
-import { Lazy } from "@api/modules/types/Lazy";
+import { Lazy } from "@api/modules/shared/types/Lazy";
 
 @ObjectType()
 @Entity()

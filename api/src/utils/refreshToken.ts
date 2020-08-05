@@ -7,7 +7,7 @@ import {
   createRefreshToken,
   getRefreshSecret,
 } from "@api/modules/user/auth";
-import { JwtRefreshPayload } from "@api/modules/types/JwtPayload";
+import { JwtRefreshPayload } from "@api/modules/shared/types/JwtPayload";
 import { User } from "@api/entity/User";
 
 export async function refreshToken(req: Request, res: Response) {

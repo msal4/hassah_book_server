@@ -15,7 +15,7 @@ import { UserRequest } from "@api/entity/UserRequest";
 import { Favorite } from "@api/entity/Favorite";
 import { Order } from "@api/entity/Order";
 import { normalizePhone } from "@api/modules/utils/normalizePhone";
-import { Lazy } from "@api/modules/types/Lazy";
+import { Lazy } from "@api/modules/shared/types/Lazy";
 
 @ObjectType()
 @Entity()

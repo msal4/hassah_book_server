@@ -2,9 +2,9 @@ import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity
 import { getRepository, DeepPartial } from "typeorm";
 
 import { PaginatedProductResponse } from "@api/shared/PaginatedResponse";
-import { FindAllOptions } from "@api/modules/types/FindAllOptions";
-import { PagniationArgs } from "@api/modules/shared/PaginationArgs";
-import { BaseGroup } from "@api/modules/types/BaseGroup";
+import { FindAllOptions } from "@api/modules/shared/types/FindAllOptions";
+import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
+import { BaseGroup } from "@api/modules/shared/types/BaseGroup";
 
 interface FindProductsOptions {
   groupId: string;

@@ -1,7 +1,7 @@
 import { Resolver, Query, UseMiddleware, Ctx } from "type-graphql";
 
 import { isAuth } from "@api/modules/middleware/isAuth";
-import { RequestContext } from "@api/modules/types/RequestContext";
+import { RequestContext } from "@api/modules/shared/types/RequestContext";
 import { User } from "@api/entity/User";
 
 @Resolver()

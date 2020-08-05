@@ -3,7 +3,7 @@ import { Service } from "typedi";
 
 import { CollectionService } from "@api/modules/services/Collection.service";
 import { PaginatedCollectionResponse } from "@api/shared/PaginatedResponse";
-import { PagniationArgs } from "@api/modules/shared/PaginationArgs";
+import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
 import { Collection } from "@api/entity/Collection";
 import { CreateCollectionInput } from "@api/modules/collection/collection/CreateCollectionInput";
 import { UpdateCollectionInput } from "@api/modules/collection/collection/UpdateCollectionInput";

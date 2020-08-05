@@ -11,8 +11,8 @@ import {
 } from "typeorm";
 
 import { Product } from "@api/entity/Product";
-import { Lazy } from "@api/modules/types/Lazy";
-import { BaseGroup } from "@api/modules/types/BaseGroup";
+import { Lazy } from "@api/modules/shared/types/Lazy";
+import { BaseGroup } from "@api/modules/shared/types/BaseGroup";
 
 @ObjectType()
 @Entity()

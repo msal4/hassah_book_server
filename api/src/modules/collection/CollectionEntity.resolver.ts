@@ -1,7 +1,7 @@
 import { Resolver, FieldResolver, Root, Args } from "type-graphql";
 import { Service } from "typedi";
 
-import { PagniationArgs } from "@api/modules/shared/PaginationArgs";
+import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
 import { PaginatedProductResponse } from "@api/shared/PaginatedResponse";
 import { Collection } from "@api/entity/Collection";
 import { CollectionService } from "@api/modules/services/Collection.service";

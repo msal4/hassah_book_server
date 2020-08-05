@@ -1,7 +1,7 @@
 import { Resolver, Args, Query, Mutation, Arg } from "type-graphql";
 import { Service } from "typedi";
 
-import { PagniationArgs } from "@api/modules/shared/PaginationArgs";
+import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
 import { Product } from "@api/entity/Product";
 import { PaginatedProductResponse } from "@api/shared/PaginatedResponse";
 import { ProductService } from "@api/modules/services/Product.service";

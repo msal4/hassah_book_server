@@ -2,7 +2,7 @@ import { Resolver, Root, FieldResolver, Args } from "type-graphql";
 
 import { User } from "@api/entity/User";
 import { UserRequest } from "@api/entity/UserRequest";
-import { PagniationArgs } from "@api/modules/shared/PaginationArgs";
+import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
 import { Favorite } from "@api/entity/Favorite";
 
 @Resolver(() => User)

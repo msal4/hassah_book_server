@@ -2,7 +2,7 @@ import { Service } from "typedi";
 import { Resolver, FieldResolver, Root, Args } from "type-graphql";
 
 import { Product } from "@api/entity/Product";
-import { PagniationArgs } from "@api/modules/shared/PaginationArgs";
+import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
 import { PaginatedFavoriteResponse } from "@api/shared/PaginatedResponse";
 import { FavoriteService } from "@api/modules/services/Favorite.service";
 

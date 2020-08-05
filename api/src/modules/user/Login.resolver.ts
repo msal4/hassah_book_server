@@ -4,7 +4,7 @@ import { LoginInput } from "@api/modules/user/login/LoginInput";
 import { normalizePhone } from "@api/modules/utils/normalizePhone";
 import { User } from "@api/entity/User";
 import { createAccessToken, createRefreshToken, sendRefreshTokenCookie } from "@api/modules/user/auth";
-import { RequestContext } from "@api/modules/types/RequestContext";
+import { RequestContext } from "@api/modules/shared/types/RequestContext";
 
 @ObjectType()
 class LoginResponse {

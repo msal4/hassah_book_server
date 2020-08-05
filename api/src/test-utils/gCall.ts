@@ -2,7 +2,7 @@ import { graphql, GraphQLSchema } from "graphql";
 import { Maybe } from "graphql/jsutils/Maybe";
 
 import { createSchema } from "@api/utils/createSchema";
-import { RequestContext } from "@api/modules/types/RequestContext";
+import { RequestContext } from "@api/modules/shared/types/RequestContext";
 
 interface Options {
   source: string;
