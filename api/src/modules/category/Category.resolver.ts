@@ -1,7 +1,7 @@
 import { Resolver, Query, Args, Mutation, Arg } from "type-graphql";
 import { Service } from "typedi";
 
-import { CategoryService } from "@api/modules/services/Category.service";
+import { CategoryService } from "@api/modules/category/category/Category.service";
 import { PaginatedCategoryResponse } from "@api/modules/shared/types/PaginatedResponse";
 import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
 import { Category } from "@api/entity/Category";
@@ -25,6 +25,6 @@ export class CategoryResolver {
 
   @Mutation(() => Boolean)
   updateCategory(@Arg("data") data: UpdateCategoryInput): Promise<boolean> {
-    return this.categoryService.update(data.id, data);
+    return this.categoryService.update(data);
   }
 }

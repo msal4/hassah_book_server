@@ -7,9 +7,15 @@ import { Collection } from "@api/entity/Collection";
 import { Author } from "@api/entity/Author";
 import { Publisher } from "@api/entity/Publisher";
 
+export interface PaginatedResponse<T> {
+  items: T[];
+  total: number;
+  hasMore: boolean;
+}
+
 export function PaginatedResponse<T>(TClass: ClassType<T>) {
   @ObjectType(`Paginated${TClass.name}Response`)
-  class PaginatedResponseClass {
+  class PaginatedResponseClass implements PaginatedResponse<T> {
     @Field(() => [TClass])
     items: T[];
 

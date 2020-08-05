@@ -39,7 +39,6 @@ export class Author extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Field(() => [Product])
   @OneToMany(() => Product, (product) => product.author)
   products: Lazy<Product[]>;
 }

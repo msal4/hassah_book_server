@@ -1,7 +1,7 @@
 import { Resolver, Query, Args, Mutation, Arg } from "type-graphql";
 import { Service } from "typedi";
 
-import { CollectionService } from "@api/modules/services/Collection.service";
+import { CollectionService } from "@api/modules/collection/collection/Collection.service";
 import { PaginatedCollectionResponse } from "@api/modules/shared/types/PaginatedResponse";
 import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
 import { Collection } from "@api/entity/Collection";
@@ -24,6 +24,6 @@ export class CollectionResolver {
 
   @Mutation(() => Boolean)
   updateCollection(@Arg("data") data: UpdateCollectionInput): Promise<boolean> {
-    return this.collectionService.update(data.id, data);
+    return this.collectionService.update(data);
   }
 }
