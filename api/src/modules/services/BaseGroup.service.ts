@@ -80,6 +80,7 @@ export default class BaseGroupService<T extends BaseGroup> {
   async delete(id: string): Promise<boolean> {
     try {
       await this.repository.delete(id);
+      // this returns true even if there are no rows affected.
       return true;
     } catch (err) {
       console.error(err);
