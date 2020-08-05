@@ -1,5 +1,5 @@
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
-import { getRepository } from "typeorm";
+import { getRepository, DeepPartial } from "typeorm";
 
 import { PaginatedProductResponse } from "@api/shared/PaginatedResponse";
 import { FindAllOptions } from "@api/modules/types/FindAllOptions";
@@ -55,12 +55,24 @@ export default class BaseGroupService<T extends BaseGroup> {
     return { items, total, hasMore: options!.skip + options!.take < total };
   }
 
+  create(data: DeepPartial<T>): Promise<T> {
+    try {
+      return this.repository.create(data).save();
+    } catch (err) {
+      console.log(err);
+      throw new Error(`Something went wrong while attempting to create ${this.groupEntityName}`);
+    }
+  }
+
   async update(groupId: string, data: QueryDeepPartialEntity<T>): Promise<boolean> {
     try {
       await this.repository.update(groupId, data);
+      // this may return true even so there is no group with the provided id.
+      // I could handle this and throw an error but I don't think it matters
+      // for my use cases.
       return true;
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return false;
     }
   }
