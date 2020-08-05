@@ -1,3 +1,4 @@
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 import { getRepository } from "typeorm";
 
 import { PaginatedProductResponse } from "@api/shared/PaginatedResponse";
@@ -52,6 +53,16 @@ export default class BaseGroupService<T extends BaseGroup> {
   async findAll(options?: FindAllOptions<T>) {
     const [items, total] = await this.repository.findAndCount(options);
     return { items, total, hasMore: options!.skip + options!.take < total };
+  }
+
+  async update(groupId: string, data: QueryDeepPartialEntity<T>): Promise<boolean> {
+    try {
+      await this.repository.update(groupId, data);
+      return true;
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
   }
 
   async delete(id: string): Promise<boolean> {
