@@ -16,6 +16,6 @@ export class PublisherEntityResolver {
     @Root() publisher: Publisher,
     @Args() { skip, take }: PagniationArgs
   ): Promise<PaginatedProductResponse> {
-    return this.productService.findAll({ where: { publisher: publisher }, skip, take });
+    return this.productService.findAll({ where: { publisher }, skip, take });
   }
 }

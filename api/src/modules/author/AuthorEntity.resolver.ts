@@ -16,6 +16,6 @@ export class AuthorEntityResolver {
     @Root() author: Author,
     @Args() { skip, take }: PagniationArgs
   ): Promise<PaginatedProductResponse> {
-    return this.productService.findAll({ where: { author: author }, skip, take });
+    return this.productService.findAll({ where: { author }, skip, take });
   }
 }
