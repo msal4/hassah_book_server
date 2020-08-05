@@ -8,7 +8,7 @@ import { Author } from "@api/entity/Author";
 import { Publisher } from "@api/entity/Publisher";
 import { ProductStatus } from "@api/entity/Product";
 import { ApiSeeder } from "@api/seeds/ApiSeeder";
-import { mockRequestContext } from "@api/utils/mockRequestContext";
+import { mockRequestContext } from "@api/test-utils/mockRequestContext";
 
 beforeAll(async () => {
   await useSeeding();

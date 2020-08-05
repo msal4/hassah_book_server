@@ -2,7 +2,7 @@ import faker from "faker";
 
 import { gCall } from "@api/test-utils/gCall";
 import { User } from "@api/entity/User";
-import { mockRequestContext } from "@api/utils/mockRequestContext";
+import { mockRequestContext } from "@api/test-utils/mockRequestContext";
 
 const registerMutation = `
 mutation Register($data: RegisterInput!){
