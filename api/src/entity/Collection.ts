@@ -12,10 +12,11 @@ import {
 
 import { Product } from "@api/entity/Product";
 import { Lazy } from "@api/modules/types/Lazy";
+import { BaseGroup } from "@api/modules/types/BaseGroup";
 
 @ObjectType()
 @Entity()
-export class Collection extends BaseEntity {
+export class Collection extends BaseEntity implements BaseGroup {
   @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
   readonly id: string;
@@ -36,8 +37,9 @@ export class Collection extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Field(() => [Product])
   @ManyToMany(() => Product, (product) => product.collections)
   @JoinTable()
   products: Lazy<Product[]>;
+
+  totalProducts?: number;
 }
