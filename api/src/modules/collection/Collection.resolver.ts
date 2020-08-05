@@ -2,7 +2,7 @@ import { Resolver, Query, Args, Mutation, Arg } from "type-graphql";
 import { Service } from "typedi";
 
 import { CollectionService } from "@api/modules/services/Collection.service";
-import { PaginatedCollectionResponse } from "@api/shared/PaginatedResponse";
+import { PaginatedCollectionResponse } from "@api/modules/shared/types/PaginatedResponse";
 import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
 import { Collection } from "@api/entity/Collection";
 import { CreateCollectionInput } from "@api/modules/collection/collection/CreateCollectionInput";

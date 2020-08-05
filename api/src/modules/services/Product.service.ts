@@ -2,7 +2,7 @@ import { FindManyOptions } from "typeorm";
 import { Service } from "typedi";
 
 import { Product } from "@api/entity/Product";
-import { PaginatedProductResponse } from "@api/shared/PaginatedResponse";
+import { PaginatedProductResponse } from "@api/modules/shared/types/PaginatedResponse";
 import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
 import { CreateProductInput } from "@api/modules/product/product/CreateProductInput";
 import { UpdateProductInput } from "@api/modules/product/product/UpdateProductInput";

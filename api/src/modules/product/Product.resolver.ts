@@ -3,7 +3,7 @@ import { Service } from "typedi";
 
 import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
 import { Product } from "@api/entity/Product";
-import { PaginatedProductResponse } from "@api/shared/PaginatedResponse";
+import { PaginatedProductResponse } from "@api/modules/shared/types/PaginatedResponse";
 import { ProductService } from "@api/modules/services/Product.service";
 import { CreateProductInput } from "@api/modules/product/product/CreateProductInput";
 import { UpdateProductInput } from "@api/modules/product/product/UpdateProductInput";

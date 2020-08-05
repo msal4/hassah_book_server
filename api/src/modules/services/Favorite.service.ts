@@ -1,7 +1,7 @@
 import { FindManyOptions } from "typeorm";
 import { Service } from "typedi";
 
-import { PaginatedFavoriteResponse } from "@api/shared/PaginatedResponse";
+import { PaginatedFavoriteResponse } from "@api/modules/shared/types/PaginatedResponse";
 import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
 import { Favorite } from "@api/entity/Favorite";
 

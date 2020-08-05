@@ -3,7 +3,7 @@ import { Service } from "typedi";
 
 import { Category } from "@api/entity/Category";
 import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
-import { PaginatedProductResponse } from "@api/shared/PaginatedResponse";
+import { PaginatedProductResponse } from "@api/modules/shared/types/PaginatedResponse";
 import { CategoryService } from "@api/modules/services/Category.service";
 
 @Service()
