@@ -4,7 +4,7 @@ import { Service } from "typedi";
 import { PagniationArgs } from "@api/modules/shared/PaginationArgs";
 import { PaginatedProductResponse } from "@api/shared/PaginatedResponse";
 import { Collection } from "@api/entity/Collection";
-import { CollectionService } from "../services/Collection.service";
+import { CollectionService } from "@api/modules/services/Collection.service";
 
 @Service()
 @Resolver(() => Collection)
