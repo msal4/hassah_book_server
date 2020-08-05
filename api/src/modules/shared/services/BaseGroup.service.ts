@@ -11,7 +11,7 @@ interface FindProductsOptions {
   paginationArgs: PagniationArgs;
 }
 
-export default class BaseGroupService<T extends BaseGroup> extends BaseService<T> {
+export class BaseGroupService<T extends BaseGroup> extends BaseService<T> {
   constructor(private readonly groupEntityName: string) {
     super(getRepository<T>(groupEntityName));
   }

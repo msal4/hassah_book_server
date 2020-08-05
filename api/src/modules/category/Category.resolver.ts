@@ -4,9 +4,9 @@ import { Service } from "typedi";
 import { CategoryService } from "@api/modules/category/category/Category.service";
 import { PaginatedCategoryResponse } from "@api/modules/shared/types/PaginatedResponse";
 import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
-import { Category } from "@api/entity/Category";
 import { CreateCategoryInput } from "@api/modules/category/category/CreateCategoryInput";
 import { UpdateCategoryInput } from "@api/modules/category/category/UpdateCategoryInput";
+import { Category } from "@api/entity/Category";
 
 @Service()
 @Resolver()
