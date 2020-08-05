@@ -2,7 +2,7 @@ import { FindManyOptions, Repository, BaseEntity, DeepPartial } from "typeorm";
 
 import { PaginatedResponse } from "@api/modules/shared/types/PaginatedResponse";
 import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
-import { hasMore } from "../../utils/hasMore";
+import { hasMore } from "@api/modules/utils/hasMore";
 
 // the default base service on which other services can extend.
 export class BaseService<T extends BaseEntity> {
