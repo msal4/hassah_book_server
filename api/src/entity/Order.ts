@@ -38,6 +38,10 @@ export class Order extends BaseEntity {
   @Column()
   address: string;
 
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  phone?: string;
+
   @Field(() => OrderStatus)
   @Column({ type: "enum", enum: OrderStatus, default: OrderStatus.Pending })
   status: OrderStatus;
@@ -50,7 +54,6 @@ export class Order extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Field(() => User)
   @ManyToOne(() => User, (user) => user.orders)
   user: Lazy<User>;
 
