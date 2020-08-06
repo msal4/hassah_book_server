@@ -32,11 +32,9 @@ export class Purchase extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Field(() => Product)
   @ManyToOne(() => Product, (product) => product.favorites)
   product: Lazy<Product>;
 
-  @Field(() => Order)
   @ManyToOne(() => Order, (order) => order.purchases)
   order: Lazy<Order>;
 }
