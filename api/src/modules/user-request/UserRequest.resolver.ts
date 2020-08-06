@@ -7,10 +7,12 @@ import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
 import { isAuth } from "@api/modules/middleware/isAuth";
 import { UserRequest } from "@api/entity/UserRequest";
 import { CreateUserRequestInput } from "@api/modules/user-request/user-request/CreateUserRequestInput";
+import { UpdateUserRequestInput } from "@api/modules/user-request/user-request/UpdateUserRequestInput";
 
 @Resolver()
 export class UserRequestResolver {
   constructor(private readonly userRequestService: UserRequestService) {}
+
   // TODO: add authorization. Only an admin can query all requests.
   @Query(() => PaginatedUserRequestResponse)
   requests(@Args() { skip, take }: PagniationArgs): Promise<PaginatedUserRequestResponse> {
@@ -26,6 +28,7 @@ export class UserRequestResolver {
     return this.userRequestService.findAll({ where: { user: { id: payload!.userId } }, skip, take });
   }
 
+  // TODO: only an authorized admin can update the user request status.
   @Mutation(() => UserRequest)
   @UseMiddleware(isAuth)
   createRequest(
@@ -33,6 +36,11 @@ export class UserRequestResolver {
     @Arg("data") data: CreateUserRequestInput
   ): Promise<UserRequest> {
     return this.userRequestService.create({ ...data, user: { id: payload!.userId } });
+  }
+
+  @Mutation(() => Boolean)
+  updateRequest(@Arg("data") data: UpdateUserRequestInput): Promise<boolean> {
+    return this.userRequestService.update(data);
   }
 
   @Mutation(() => Boolean)
