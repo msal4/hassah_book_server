@@ -1,7 +1,7 @@
 import { InputType, Field, Int } from "type-graphql";
 
 import { ProductStatus } from "@api/entity/Product";
-import { ObjectId } from "@api/modules/shared/types/ObjectId";
+import { ObjectIdInput } from "@api/modules/shared/types/ObjectIdInput";
 
 @InputType({ description: "The input data for creating new products." })
 export class CreateProductInput {
@@ -23,24 +23,24 @@ export class CreateProductInput {
   })
   pages?: number;
 
-  @Field(() => ObjectId, { description: "The author/owner of the product." })
-  author: ObjectId;
+  @Field(() => ObjectIdInput, { description: "The author/owner of the product." })
+  author: ObjectIdInput;
 
-  @Field(() => ObjectId, {
+  @Field(() => ObjectIdInput, {
     description: "The publisher/manufacturer of the product.",
     nullable: true,
   })
-  publisher?: ObjectId;
+  publisher?: ObjectIdInput;
 
-  @Field(() => [ObjectId], {
+  @Field(() => [ObjectIdInput], {
     description: "The categories that this product fit's in.",
   })
-  categories: ObjectId[];
+  categories: ObjectIdInput[];
 
-  @Field(() => [ObjectId], {
+  @Field(() => [ObjectIdInput], {
     description: "The featured collections, if any.",
   })
-  collections: ObjectId[];
+  collections: ObjectIdInput[];
 
   @Field({ description: "The publication/release date.", nullable: true })
   publishedAt?: Date;
