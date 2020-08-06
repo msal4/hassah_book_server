@@ -6,7 +6,7 @@ import { hasMore } from "@api/modules/utils/hasMore";
 
 // the default base service on which other services can extend.
 export class BaseService<T extends BaseEntity> {
-  constructor(protected readonly repository: Repository<T>) {}
+  constructor(public readonly repository: Repository<T>) {}
 
   // used to set the default relations to be retrieved with the entity
   // by the service actions.
