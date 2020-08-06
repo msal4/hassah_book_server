@@ -1,5 +1,4 @@
 import { Resolver, Args, Query, Mutation, Arg } from "type-graphql";
-import { Service } from "typedi";
 
 import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
 import { Product } from "@api/entity/Product";
@@ -8,7 +7,6 @@ import { ProductService } from "@api/modules/product/product/Product.service";
 import { CreateProductInput } from "@api/modules/product/product/CreateProductInput";
 import { UpdateProductInput } from "@api/modules/product/product/UpdateProductInput";
 
-@Service()
 @Resolver()
 export class ProductResolver {
   constructor(private readonly productService: ProductService) {}

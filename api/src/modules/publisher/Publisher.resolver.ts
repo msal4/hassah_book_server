@@ -1,4 +1,3 @@
-import { Service } from "typedi";
 import { Resolver, Query, Args, Mutation, Arg } from "type-graphql";
 
 import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
@@ -8,7 +7,6 @@ import { UpdatePublisherInput } from "@api/modules/publisher/publisher/UpdatePub
 import { PublisherService } from "@api/modules/publisher/publisher/Publisher.service";
 import { Publisher } from "@api/entity/Publisher";
 
-@Service()
 @Resolver()
 export class PublisherResolver {
   constructor(private readonly service: PublisherService) {}

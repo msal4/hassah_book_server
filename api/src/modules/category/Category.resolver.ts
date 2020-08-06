@@ -1,5 +1,4 @@
 import { Resolver, Query, Args, Mutation, Arg } from "type-graphql";
-import { Service } from "typedi";
 
 import { CategoryService } from "@api/modules/category/category/Category.service";
 import { PaginatedCategoryResponse } from "@api/modules/shared/types/PaginatedResponse";
@@ -8,7 +7,6 @@ import { CreateCategoryInput } from "@api/modules/category/category/CreateCatego
 import { UpdateCategoryInput } from "@api/modules/category/category/UpdateCategoryInput";
 import { Category } from "@api/entity/Category";
 
-@Service()
 @Resolver()
 export class CategoryResolver {
   constructor(private readonly categoryService: CategoryService) {}

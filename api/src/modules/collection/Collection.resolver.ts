@@ -1,5 +1,4 @@
 import { Resolver, Query, Args, Mutation, Arg } from "type-graphql";
-import { Service } from "typedi";
 
 import { CollectionService } from "@api/modules/collection/collection/Collection.service";
 import { PaginatedCollectionResponse } from "@api/modules/shared/types/PaginatedResponse";
@@ -8,7 +7,6 @@ import { Collection } from "@api/entity/Collection";
 import { CreateCollectionInput } from "@api/modules/collection/collection/CreateCollectionInput";
 import { UpdateCollectionInput } from "@api/modules/collection/collection/UpdateCollectionInput";
 
-@Service()
 @Resolver()
 export class CollectionResolver {
   constructor(private readonly collectionService: CollectionService) {}

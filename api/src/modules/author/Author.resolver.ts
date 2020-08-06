@@ -1,4 +1,3 @@
-import { Service } from "typedi";
 import { Resolver, Query, Args, Mutation, Arg } from "type-graphql";
 
 import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
@@ -8,7 +7,6 @@ import { UpdateAuthorInput } from "@api/modules/author/author/UpdateAuthorInput"
 import { AuthorService } from "@api/modules/author/author/Author.service";
 import { Author } from "@api/entity/Author";
 
-@Service()
 @Resolver()
 export class AuthorResolver {
   constructor(private readonly service: AuthorService) {}

@@ -1,4 +1,3 @@
-import { Service } from "typedi";
 import { Resolver, FieldResolver, Root, Args } from "type-graphql";
 
 import { Product } from "@api/entity/Product";
@@ -6,7 +5,6 @@ import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
 import { PaginatedFavoriteResponse } from "@api/modules/shared/types/PaginatedResponse";
 import { FavoriteService } from "@api/modules/favorite/favorite/Favorite.service";
 
-@Service()
 @Resolver(() => Product)
 export class ProductEntityResolver {
   constructor(private readonly favoriteService: FavoriteService) {}
