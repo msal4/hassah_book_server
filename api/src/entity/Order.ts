@@ -20,6 +20,7 @@ export enum OrderStatus {
   Delivering = "Delivering",
   Delivered = "Delivered",
   Failed = "Failed",
+  Canceled = "Canceled",
 }
 
 registerEnumType(OrderStatus, {
