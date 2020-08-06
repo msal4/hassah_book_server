@@ -55,15 +55,12 @@ export class User extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Field(() => [UserRequest])
   @OneToMany(() => UserRequest, (request) => request.user)
   requests: Lazy<UserRequest[]>;
 
-  @Field(() => [Favorite])
   @OneToMany(() => Favorite, (favorite) => favorite.user)
   favorites: Lazy<Favorite[]>;
 
-  @Field(() => [Order])
   @OneToMany(() => Order, (order) => order.user)
   orders: Lazy<Order[]>;
 
