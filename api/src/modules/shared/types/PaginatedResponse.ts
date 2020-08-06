@@ -7,6 +7,7 @@ import { Collection } from "@api/entity/Collection";
 import { Author } from "@api/entity/Author";
 import { Publisher } from "@api/entity/Publisher";
 import { UserRequest } from "@api/entity/UserRequest";
+import { Order } from "@api/entity/Order";
 
 export interface PaginatedResponse<T> {
   items: T[];
@@ -50,3 +51,6 @@ export type PaginatedFavoriteResponse = InstanceType<typeof PaginatedFavoriteRes
 
 export const PaginatedUserRequestResponse = PaginatedResponse(UserRequest);
 export type PaginatedUserRequestResponse = InstanceType<typeof PaginatedUserRequestResponse>;
+
+export const PaginatedOrderResponse = PaginatedResponse(Order);
+export type PaginatedOrderResponse = InstanceType<typeof PaginatedOrderResponse>;
