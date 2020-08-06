@@ -28,7 +28,6 @@ export class UserRequestResolver {
     return this.userRequestService.findAll({ where: { user: { id: payload!.userId } }, skip, take });
   }
 
-  // TODO: only an authorized admin can update the user request status.
   @Mutation(() => UserRequest)
   @UseMiddleware(isAuth)
   createRequest(
@@ -38,6 +37,7 @@ export class UserRequestResolver {
     return this.userRequestService.create({ ...data, user: { id: payload!.userId } });
   }
 
+  // TODO: only an authorized admin can update the user request status.
   @Mutation(() => Boolean)
   updateRequest(@Arg("data") data: UpdateUserRequestInput): Promise<boolean> {
     return this.userRequestService.update(data);
