@@ -43,15 +43,10 @@ export class UserRequestResolver {
     return this.userRequestService.update(data);
   }
 
+  // TODO: admins should also be able to delete requests.
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
-  async removeRequest(
-    @Ctx() { payload }: RequestContext,
-    @Arg("requestId") requestId: string
-  ): Promise<boolean> {
-    if (!payload?.userId) {
-      return false;
-    }
+  async removeRequest(@Arg("requestId") requestId: string): Promise<boolean> {
     return await this.userRequestService.delete(requestId);
   }
 }
