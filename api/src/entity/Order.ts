@@ -54,7 +54,6 @@ export class Order extends BaseEntity {
   @ManyToOne(() => User, (user) => user.orders)
   user: Lazy<User>;
 
-  @Field(() => Purchase)
   @OneToMany(() => Purchase, (purchase) => purchase.order)
   purchases: Lazy<Purchase[]>;
 }
