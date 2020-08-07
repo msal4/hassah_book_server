@@ -46,8 +46,8 @@ export const authChecker: AuthChecker<RequestContext, Permission> = async ({ con
 
   try {
     const token = authorization.split(" ")[1];
-    const payload = verify(token, getAccessSecret()) as JwtAccessPayload;
-    return await checkRoles(payload.userId, roles);
+    context.payload = verify(token, getAccessSecret()) as JwtAccessPayload;
+    return await checkRoles(context.payload.userId, roles);
   } catch (err) {
     console.error(err);
     return false;
