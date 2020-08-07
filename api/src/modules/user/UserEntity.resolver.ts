@@ -20,7 +20,7 @@ export class UserResolver {
     private readonly orderService: OrderService
   ) {}
 
-  @Authorized(Roles.Admin)
+  @Authorized(Roles.Owner, Roles.Admin)
   @FieldResolver(() => PaginatedUserRequestResponse)
   requests(
     @Root() user: User,
@@ -29,13 +29,13 @@ export class UserResolver {
     return this.userRequestService.findAll({ where: { user }, skip, take });
   }
 
-  @Authorized(Roles.Admin)
+  @Authorized(Roles.Owner, Roles.Admin)
   @FieldResolver(() => PaginatedFavoriteResponse)
   favorites(@Root() user: User, @Args() { skip, take }: PagniationArgs): Promise<PaginatedFavoriteResponse> {
     return this.favoriteService.findAll({ where: { user }, skip, take });
   }
 
-  @Authorized(Roles.Admin)
+  @Authorized(Roles.Owner, Roles.Admin)
   @FieldResolver(() => PaginatedOrderResponse)
   orders(@Root() user: User, @Args() { skip, take }: PagniationArgs): Promise<PaginatedOrderResponse> {
     return this.orderService.findAll({ where: { user }, skip, take });
