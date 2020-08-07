@@ -1,13 +1,13 @@
-import { Resolver, Query, UseMiddleware, Ctx } from "type-graphql";
+import { Resolver, Query, Ctx, Authorized } from "type-graphql";
 
-import { isAuth } from "@api/modules/middleware/isAuth";
 import { RequestContext } from "@api/modules/shared/types/RequestContext";
 import { User } from "@api/entity/User";
+import { Roles } from "@api/modules/utils/auth";
 
 @Resolver()
 export class MeResolver {
+  @Authorized(Roles.User)
   @Query(() => User, { nullable: true })
-  @UseMiddleware(isAuth)
   me(@Ctx() { payload }: RequestContext): Promise<User | undefined> {
     return User.findOne(payload?.userId);
   }

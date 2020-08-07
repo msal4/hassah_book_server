@@ -1,4 +1,4 @@
-import { Resolver, Root, FieldResolver, Args } from "type-graphql";
+import { Resolver, Root, FieldResolver, Args, Authorized } from "type-graphql";
 
 import { User } from "@api/entity/User";
 import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
@@ -10,6 +10,7 @@ import {
   PaginatedOrderResponse,
 } from "@api/modules/shared/types/PaginatedResponse";
 import { OrderService } from "@api/modules/order/order/Order.service";
+import { Roles } from "@api/modules/utils/auth";
 
 @Resolver(() => User)
 export class UserResolver {
@@ -19,7 +20,7 @@ export class UserResolver {
     private readonly orderService: OrderService
   ) {}
 
-  // TODO: needs admin authorization.
+  @Authorized(Roles.Admin)
   @FieldResolver(() => PaginatedUserRequestResponse)
   requests(
     @Root() user: User,
@@ -28,13 +29,13 @@ export class UserResolver {
     return this.userRequestService.findAll({ where: { user }, skip, take });
   }
 
-  // TODO: needs authorization.
+  @Authorized(Roles.Admin)
   @FieldResolver(() => PaginatedFavoriteResponse)
   favorites(@Root() user: User, @Args() { skip, take }: PagniationArgs): Promise<PaginatedFavoriteResponse> {
     return this.favoriteService.findAll({ where: { user }, skip, take });
   }
 
-  // TODO: needs authorization.
+  @Authorized(Roles.Admin)
   @FieldResolver(() => PaginatedOrderResponse)
   orders(@Root() user: User, @Args() { skip, take }: PagniationArgs): Promise<PaginatedOrderResponse> {
     return this.orderService.findAll({ where: { user }, skip, take });

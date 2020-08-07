@@ -5,5 +5,5 @@ import { JwtAccessPayload } from "@api/modules/shared/types/JwtPayload";
 export interface RequestContext {
   req: Request;
   res: Response;
-  payload?: JwtAccessPayload;
+  payload?: JwtAccessPayload; // available only when the user is authenticated.
 }

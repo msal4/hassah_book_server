@@ -1,4 +1,4 @@
-import { Resolver, Query, Args, Mutation, Arg } from "type-graphql";
+import { Resolver, Query, Args, Mutation, Arg, Authorized } from "type-graphql";
 
 import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
 import { PaginatedPublisherResponse } from "@api/modules/shared/types/PaginatedResponse";
@@ -6,6 +6,7 @@ import { CreatePublisherInput } from "@api/modules/publisher/publisher/CreatePub
 import { UpdatePublisherInput } from "@api/modules/publisher/publisher/UpdatePublisherInput";
 import { PublisherService } from "@api/modules/publisher/publisher/Publisher.service";
 import { Publisher } from "@api/entity/Publisher";
+import { Roles } from "@api/modules/utils/auth";
 
 @Resolver()
 export class PublisherResolver {
@@ -16,11 +17,13 @@ export class PublisherResolver {
     return this.service.findAll(args);
   }
 
+  @Authorized(Roles.Admin)
   @Mutation(() => Publisher)
   async createPublisher(@Arg("data") data: CreatePublisherInput): Promise<Publisher> {
     return this.service.create(data);
   }
 
+  @Authorized(Roles.Admin)
   @Mutation(() => Boolean)
   async updatePublisher(@Arg("data") data: UpdatePublisherInput): Promise<boolean> {
     return this.service.update(data);
