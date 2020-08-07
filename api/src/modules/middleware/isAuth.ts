@@ -2,7 +2,7 @@ import { MiddlewareFn } from "type-graphql";
 import { verify } from "jsonwebtoken";
 
 import { RequestContext } from "@api/modules/shared/types/RequestContext";
-import { getAccessSecret } from "@api/modules/user/auth";
+import { getAccessSecret } from "@api/modules/utils/auth";
 import { JwtAccessPayload } from "@api/modules/shared/types/JwtPayload";
 
 export const isAuth: MiddlewareFn<RequestContext> = ({ context }, next) => {

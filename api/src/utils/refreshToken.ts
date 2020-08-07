@@ -6,7 +6,7 @@ import {
   createAccessToken,
   createRefreshToken,
   getRefreshSecret,
-} from "@api/modules/user/auth";
+} from "@api/modules/utils/auth";
 import { JwtRefreshPayload } from "@api/modules/shared/types/JwtPayload";
 import { User } from "@api/entity/User";
 
