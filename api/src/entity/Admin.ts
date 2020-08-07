@@ -6,7 +6,9 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  BeforeInsert,
 } from "typeorm";
+import { hash, compare } from "bcryptjs";
 
 @ObjectType()
 @Entity()
@@ -34,4 +36,13 @@ export class Admin extends BaseEntity {
   @Field()
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @BeforeInsert()
+  async hashPassword() {
+    this.password = await hash(this.password, 12);
+  }
+
+  validatePassword(password: string) {
+    return compare(password, this.password);
+  }
 }
