@@ -1,33 +1,16 @@
-import { ObjectType, Field, ID, Int } from "type-graphql";
-import {
-  Entity,
-  BaseEntity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToMany,
-  CreateDateColumn,
-  UpdateDateColumn,
-  BeforeInsert,
-} from "typeorm";
-import { hash, compare } from "bcryptjs";
+import { ObjectType, Field } from "type-graphql";
+import { Entity, Column, OneToMany, BeforeInsert } from "typeorm";
 
 import { UserRequest } from "@api/entity/UserRequest";
 import { Favorite } from "@api/entity/Favorite";
 import { Order } from "@api/entity/Order";
 import { normalizePhone } from "@api/modules/utils/normalizePhone";
 import { Lazy } from "@api/modules/shared/types/Lazy";
+import { BaseUser } from "@api/entity/shared/BaseUser";
 
 @ObjectType()
 @Entity()
-export class User extends BaseEntity {
-  @Field(() => ID)
-  @PrimaryGeneratedColumn("uuid")
-  readonly id: string;
-
-  @Field()
-  @Column()
-  name: string;
-
+export class User extends BaseUser {
   @Field()
   @Column({ unique: true })
   phone: string;
@@ -36,24 +19,9 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   address?: string;
 
-  @Column()
-  password: string;
-
-  @Field(() => Int)
-  @Column({ type: "integer", default: 0 })
-  tokenVersion?: number;
-
   @Field()
   @Column({ type: "boolean", default: false })
   confirmed: boolean;
-
-  @Field()
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @Field()
-  @UpdateDateColumn()
-  updatedAt: Date;
 
   @OneToMany(() => UserRequest, (request) => request.user)
   requests: Lazy<UserRequest[]>;
@@ -65,17 +33,7 @@ export class User extends BaseEntity {
   orders: Lazy<Order[]>;
 
   @BeforeInsert()
-  async hashPassword() {
-    this.password = await hash(this.password, 12);
-  }
-
-  @BeforeInsert()
   async normalizePhone() {
     this.phone = normalizePhone(this.phone);
-  }
-
-  // Compares the user password with the provided passowrd.
-  validatePassword(password: string) {
-    return compare(password, this.password);
   }
 }
