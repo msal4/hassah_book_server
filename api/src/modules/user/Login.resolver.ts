@@ -1,16 +1,11 @@
-import { Resolver, Mutation, Arg, ObjectType, Field, Ctx } from "type-graphql";
+import { Resolver, Mutation, Arg, Ctx } from "type-graphql";
 
 import { LoginInput } from "@api/modules/user/login/LoginInput";
 import { normalizePhone } from "@api/modules/utils/normalizePhone";
 import { User } from "@api/entity/User";
-import { createAccessToken, createRefreshToken, sendRefreshTokenCookie } from "@api/modules/user/auth";
+import { createAccessToken, createRefreshToken, sendRefreshTokenCookie } from "@api/modules/utils/auth";
 import { RequestContext } from "@api/modules/shared/types/RequestContext";
-
-@ObjectType()
-class LoginResponse {
-  @Field()
-  accessToken: string;
-}
+import { LoginResponse } from "@api/modules/shared/types/LoginResponse";
 
 @Resolver()
 export class LoginReslover {
