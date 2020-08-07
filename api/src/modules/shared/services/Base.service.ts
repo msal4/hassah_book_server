@@ -13,7 +13,11 @@ export class BaseService<T extends BaseEntity> {
   protected relations = [];
 
   async findAll(options: PagniationArgs & FindManyOptions<T>): Promise<PaginatedResponse<T>> {
-    const [items, total] = await this.repository.findAndCount({ relations: this.relations, ...options });
+    const [items, total] = await this.repository.findAndCount({
+      relations: this.relations,
+      ...options,
+      loadRelationIds: true,
+    });
     return { items, total, hasMore: hasMore(options, total) };
   }
 
