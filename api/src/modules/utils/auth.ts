@@ -8,25 +8,25 @@ import { JwtAccessPayload } from "@api/modules/shared/types/JwtPayload";
 import { Admin } from "@api/entity/Admin";
 import { User } from "@api/entity/User";
 
-export enum Permission {
+export enum Roles {
   Admin = "Admin",
   Owner = "Owner",
   User = "User",
 }
 
-const checkRoles = async (id: string, roles: Permission[]): Promise<boolean> => {
+const checkRoles = async (id: string, roles: Roles[]): Promise<boolean> => {
   for (const role of roles) {
-    if (role === Permission.Admin) {
+    if (role === Roles.Admin) {
       const admin = await Admin.findOne({ where: { id } });
       if (admin) {
         return true;
       }
-    } else if (role === Permission.User) {
+    } else if (role === Roles.User) {
       const user = await User.findOne({ where: { id } });
       if (user) {
         return true;
       }
-    } else if (role === Permission.Owner) {
+    } else if (role === Roles.Owner) {
       const user = await User.findOne({ where: { id } });
       // TODO: check if the user is the owner.
       if (user) {
@@ -38,7 +38,7 @@ const checkRoles = async (id: string, roles: Permission[]): Promise<boolean> => 
   return false;
 };
 
-export const authChecker: AuthChecker<RequestContext, Permission> = async ({ context }, roles) => {
+export const authChecker: AuthChecker<RequestContext, Roles> = async ({ context }, roles) => {
   const authorization = context.req.headers.authorization;
   if (!authorization) {
     return false;
