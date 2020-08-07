@@ -1,7 +1,58 @@
-import { sign } from "jsonwebtoken";
+import { sign, verify } from "jsonwebtoken";
 import { Response } from "express";
+import { AuthChecker } from "type-graphql";
 
 import { BaseUser } from "@api/entity/shared/BaseUser";
+import { RequestContext } from "@api/modules/shared/types/RequestContext";
+import { JwtAccessPayload } from "@api/modules/shared/types/JwtPayload";
+import { Admin } from "@api/entity/Admin";
+import { User } from "@api/entity/User";
+
+export enum Permission {
+  Admin = "Admin",
+  Owner = "Owner",
+  User = "User",
+}
+
+const checkRoles = async (id: string, roles: Permission[]): Promise<boolean> => {
+  for (const role of roles) {
+    if (role === Permission.Admin) {
+      const admin = await Admin.findOne({ where: { id } });
+      if (admin) {
+        return true;
+      }
+    } else if (role === Permission.User) {
+      const user = await User.findOne({ where: { id } });
+      if (user) {
+        return true;
+      }
+    } else if (role === Permission.Owner) {
+      const user = await User.findOne({ where: { id } });
+      // TODO: check if the user is the owner.
+      if (user) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+};
+
+export const authChecker: AuthChecker<RequestContext, Permission> = async ({ context }, roles) => {
+  const authorization = context.req.headers.authorization;
+  if (!authorization) {
+    return false;
+  }
+
+  try {
+    const token = authorization.split(" ")[1];
+    const payload = verify(token, getAccessSecret()) as JwtAccessPayload;
+    return await checkRoles(payload.userId, roles);
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};
 
 // TODO: check whether the environment is development or production and set the secret
 // based on that instead of just hardcoding it.
