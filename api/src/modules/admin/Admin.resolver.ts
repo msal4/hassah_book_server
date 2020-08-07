@@ -12,13 +12,13 @@ export class AdminResolver {
   constructor(private readonly adminService: AdminService) {}
 
   @Mutation(() => LoginResponse)
-  login(@Ctx() { res }: RequestContext, @Arg("data") data: AdminLoginInput): Promise<LoginResponse> {
+  adminLogin(@Ctx() { res }: RequestContext, @Arg("data") data: AdminLoginInput): Promise<LoginResponse> {
     return this.adminService.login(res, data);
   }
 
-  // TODO: only an authorized aministrator can create another admin/moderator.
+  // TODO: only an authorized aministrator can create another admin/moderator account.
   @Mutation(() => Admin)
-  register(@Arg("data") data: AdminRegisterInput): Promise<Admin> {
+  adminRegister(@Arg("data") data: AdminRegisterInput): Promise<Admin> {
     return this.adminService.register(data);
   }
 }
