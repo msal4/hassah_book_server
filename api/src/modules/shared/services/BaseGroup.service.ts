@@ -1,5 +1,3 @@
-import { getRepository } from "typeorm";
-
 import { PaginatedProductResponse } from "@api/modules/shared/types/PaginatedResponse";
 import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
 import { BaseGroup } from "@api/modules/shared/types/BaseGroup";
@@ -12,15 +10,11 @@ interface FindProductsOptions {
 }
 
 export class BaseGroupService<T extends BaseGroup> extends BaseService<T> {
-  constructor(private readonly groupEntityName: string) {
-    super(getRepository<T>(groupEntityName));
-  }
-
   async findProducts({
     groupId,
     paginationArgs: { skip, take },
   }: FindProductsOptions): Promise<PaginatedProductResponse> {
-    const groupName = this.groupEntityName.toLowerCase();
+    const groupName = this.entityName.toLowerCase();
 
     // Since typeorm does not handle pagination for relations I have to write the query myself.
     // It should be resolved soon but for now this will do the trick.

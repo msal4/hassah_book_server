@@ -1,4 +1,4 @@
-import { FindManyOptions, Repository, BaseEntity, DeepPartial } from "typeorm";
+import { FindManyOptions, Repository, BaseEntity, DeepPartial, getRepository } from "typeorm";
 
 import { PaginatedResponse } from "@api/modules/shared/types/PaginatedResponse";
 import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
@@ -6,8 +6,19 @@ import { hasMore } from "@api/modules/utils/hasMore";
 
 // The default service on which other services are based on.
 export class BaseService<T extends BaseEntity> {
-  constructor(public readonly repository: Repository<T>) {}
+  constructor() {
+    const className = this.constructor.name;
+    if (className.endsWith("Service")) {
+      this.entityName = className.substr(0, className.indexOf("Service"));
+      this.repository = getRepository(this.entityName);
+    } else {
+      throw new Error("Service name should be the name of the entity prefixed with 'Service'");
+    }
+  }
 
+  public readonly repository: Repository<T>;
+  // The entity name that is retrieved from the class name.
+  protected readonly entityName: string;
   // The default relations to be retrieved with the entities.
   protected relations = [];
 
