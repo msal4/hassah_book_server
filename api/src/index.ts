@@ -9,6 +9,7 @@ import cookieParser from "cookie-parser";
 import { createSchema } from "@api/utils/createSchema";
 import { refreshToken } from "@api/utils/refreshToken";
 import { RequestContext } from "@api/modules/shared/types/RequestContext";
+import { createLoaders } from "@api/utils/loaders";
 
 const PORT = 4000;
 
@@ -23,7 +24,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema,
-    context: ({ req, res }) => ({ req, res } as RequestContext),
+    context: ({ req, res }) => ({ req, res, loaders: createLoaders() } as RequestContext),
   });
   apolloServer.applyMiddleware({ app });
 

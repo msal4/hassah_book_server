@@ -1,13 +1,13 @@
-import { Resolver, FieldResolver, Root } from "type-graphql";
+import { Resolver, FieldResolver, Root, Ctx } from "type-graphql";
 
 import { UserRequest } from "@api/entity/UserRequest";
 import { User } from "@api/entity/User";
+import { RequestContext } from "@api/modules/shared/types/RequestContext";
 
 @Resolver(() => UserRequest)
 export class UserRequestResolver {
   @FieldResolver(() => User)
-  async user(@Root() { id }: UserRequest): Promise<User> {
-    const request = await UserRequest.findOne({ where: { id }, relations: ["user"] });
-    return await request!.user;
+  async user(@Ctx() { loaders }: RequestContext, @Root() { user }: UserRequest): Promise<User> {
+    return loaders.userLoader.load(user as any);
   }
 }
