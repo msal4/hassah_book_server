@@ -18,19 +18,14 @@ const checkRoles = async (id: string, roles: Roles[], root: any): Promise<boolea
   for (const role of roles) {
     if (role === Roles.Admin) {
       const admin = await Admin.findOne({ where: { id } });
-      if (admin) {
-        return true;
-      }
+      if (admin) return true;
     } else if (role === Roles.User) {
       const user = await User.findOne({ where: { id } });
-      if (user) {
-        return true;
-      }
+      if (user) return true;
     } else if (role === Roles.Owner) {
       const user = await User.findOne({ where: { id } });
-      if ("id" in root) {
-        return user!.id === root.id;
-      }
+      const authorized = "id" in root && user!.id === root.id;
+      if (authorized) return true;
     }
   }
 
