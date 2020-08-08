@@ -14,7 +14,7 @@ export enum Roles {
   User = "User",
 }
 
-const checkRoles = async (id: string, roles: Roles[]): Promise<boolean> => {
+const checkRoles = async (id: string, roles: Roles[], root: any): Promise<boolean> => {
   for (const role of roles) {
     if (role === Roles.Admin) {
       const admin = await Admin.findOne({ where: { id } });
@@ -28,9 +28,8 @@ const checkRoles = async (id: string, roles: Roles[]): Promise<boolean> => {
       }
     } else if (role === Roles.Owner) {
       const user = await User.findOne({ where: { id } });
-      // TODO: check if the user is the owner.
-      if (user) {
-        return true;
+      if ("id" in root) {
+        return user!.id === root.id;
       }
     }
   }
@@ -38,7 +37,7 @@ const checkRoles = async (id: string, roles: Roles[]): Promise<boolean> => {
   return false;
 };
 
-export const authChecker: AuthChecker<RequestContext, Roles> = async ({ context }, roles) => {
+export const authChecker: AuthChecker<RequestContext, Roles> = async ({ root, context }, roles) => {
   const authorization = context.req.headers.authorization;
   if (!authorization) {
     return false;
@@ -47,7 +46,7 @@ export const authChecker: AuthChecker<RequestContext, Roles> = async ({ context 
   try {
     const token = authorization.split(" ")[1];
     context.payload = verify(token, getAccessSecret()) as JwtAccessPayload;
-    return await checkRoles(context.payload.userId, roles);
+    return await checkRoles(context.payload.userId, roles, root);
   } catch (err) {
     console.error(err);
     return false;
