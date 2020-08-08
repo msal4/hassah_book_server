@@ -22,7 +22,7 @@ export class BaseGroupService<T extends BaseGroup> extends BaseService<T> {
   }: FindProductsOptions): Promise<PaginatedProductResponse> {
     const groupName = this.groupEntityName.toLowerCase();
 
-    // since typeorm does not handle pagination for relations I have to write the query myself.
+    // Since typeorm does not handle pagination for relations I have to write the query myself.
     // It should be resolved soon but for now this will do the trick.
     // issue: https://github.com/typeorm/typeorm/issues/5392
     const group = await this.repository

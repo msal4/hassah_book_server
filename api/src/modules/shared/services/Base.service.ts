@@ -4,12 +4,11 @@ import { PaginatedResponse } from "@api/modules/shared/types/PaginatedResponse";
 import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
 import { hasMore } from "@api/modules/utils/hasMore";
 
-// the default base service on which other services can extend.
+// The default service on which other services are based on.
 export class BaseService<T extends BaseEntity> {
   constructor(public readonly repository: Repository<T>) {}
 
-  // used to set the default relations to be retrieved with the entity
-  // by the service actions.
+  // The default relations to be retrieved with the entities.
   protected relations = [];
 
   async findAll(options: PagniationArgs & FindManyOptions<T>): Promise<PaginatedResponse<T>> {
@@ -40,7 +39,7 @@ export class BaseService<T extends BaseEntity> {
   async delete(id: string): Promise<boolean> {
     try {
       await this.repository.delete(id);
-      // it'll return true even if there are no rows affected.
+      // It'll return true even if there are no rows affected.
       return true;
     } catch (err) {
       console.error(err);
