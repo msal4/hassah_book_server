@@ -6,4 +6,5 @@ module.exports = {
   },
   globalSetup: "./src/test-utils/setup.ts",
   setupFilesAfterEnv: ["./src/test-utils/dbEnv.ts"],
+  testTimeout: 20000,
 };
