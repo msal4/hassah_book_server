@@ -11,9 +11,9 @@ export class CategoryEntityResolver {
 
   @FieldResolver(() => PaginatedProductResponse)
   products(
-    @Root() category: Category,
+    @Root() { id }: Category,
     @Args() paginationArgs: PagniationArgs
   ): Promise<PaginatedProductResponse> {
-    return this.categoryService.findProducts({ groupId: category.id, paginationArgs });
+    return this.categoryService.findManyToMany({ parentId: id, relationName: "products", paginationArgs });
   }
 }

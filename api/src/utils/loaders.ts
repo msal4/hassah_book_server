@@ -4,6 +4,10 @@ import { getRepository } from "typeorm";
 
 import { User } from "@api/entity/User";
 import { Product } from "@api/entity/Product";
+import { Publisher } from "@api/entity/Publisher";
+import { Author } from "@api/entity/Author";
+import { Category } from "@api/entity/Category";
+import { Collection } from "@api/entity/Collection";
 
 const loader = <T extends { id: string }>(Entity: ClassType<T>) => {
   const batchLoadFn = async (ids: readonly string[]): Promise<T[]> => {
@@ -20,6 +24,10 @@ const loader = <T extends { id: string }>(Entity: ClassType<T>) => {
 export const createLoaders = () => ({
   userLoader: loader(User),
   productLoader: loader(Product),
+  authorLoader: loader(Author),
+  publisherLoader: loader(Publisher),
+  categoriesLoader: loader(Category),
+  collectionsLoader: loader(Collection),
 });
 
 export type Loaders = ReturnType<typeof createLoaders>;

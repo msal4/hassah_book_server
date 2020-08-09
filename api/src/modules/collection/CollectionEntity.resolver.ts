@@ -11,9 +11,13 @@ export class CollectionEntityResolver {
 
   @FieldResolver(() => PaginatedProductResponse)
   products(
-    @Root() collection: Collection,
+    @Root() { id }: Collection,
     @Args() paginationArgs: PagniationArgs
   ): Promise<PaginatedProductResponse> {
-    return this.collectionService.findProducts({ groupId: collection.id, paginationArgs });
+    return this.collectionService.findManyToMany({
+      parentId: id,
+      relationName: "products",
+      paginationArgs,
+    });
   }
 }

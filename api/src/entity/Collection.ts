@@ -12,11 +12,10 @@ import {
 
 import { Product } from "@api/entity/Product";
 import { Lazy } from "@api/modules/shared/types/Lazy";
-import { BaseGroup } from "@api/modules/shared/types/BaseGroup";
 
 @ObjectType()
 @Entity()
-export class Collection extends BaseEntity implements BaseGroup {
+export class Collection extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
   readonly id: string;

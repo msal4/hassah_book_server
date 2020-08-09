@@ -13,8 +13,10 @@ export class ProductResolver {
   constructor(private readonly productService: ProductService) {}
 
   @Query(() => PaginatedProductResponse)
-  products(@Args() args: PagniationArgs): Promise<PaginatedProductResponse> {
-    return this.productService.findAll(args);
+  async products(@Args() args: PagniationArgs): Promise<PaginatedProductResponse> {
+    const products = await this.productService.findAll(args);
+    console.log(products.items[0].categories);
+    return products;
   }
 
   @Authorized(Roles.Admin)

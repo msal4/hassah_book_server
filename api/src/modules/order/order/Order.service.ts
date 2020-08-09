@@ -5,5 +5,5 @@ import { Order } from "@api/entity/Order";
 
 @Service()
 export class OrderService extends BaseService<Order> {
-  Entity = Order;
+  relations = ["user"];
 }

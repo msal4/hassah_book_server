@@ -16,6 +16,8 @@ interface RemoveFavoriteData {
 
 @Service()
 export class FavoriteService extends BaseService<Favorite> {
+  relations = ["user", "product"];
+
   async add({ userId, productId }: FavoriteData): Promise<boolean> {
     try {
       await this.create({ user: { id: userId }, product: { id: productId } });
