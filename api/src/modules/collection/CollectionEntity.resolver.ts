@@ -18,7 +18,6 @@ export class CollectionEntityResolver {
   ): Promise<PaginatedProductResponse> {
     return BaseService.findManyToMany(Product, {
       parentId: id,
-      tableName: "product",
       relationName: "collections",
       relations: this.productService.relations,
       paginationArgs,

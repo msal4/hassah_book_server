@@ -26,17 +26,18 @@ export class BaseService<T extends BaseEntity> {
 
   static async findManyToMany<R>(
     Entity: ClassType<R>,
-    { parentId, tableName, relationName, relations = [], paginationArgs }: FindManyToManyOptions
+    { childId, relationName, relations = [], paginationArgs }: FindManyToManyOptions
   ) {
     const repository = getRepository(Entity);
+    const tableName = Entity.name.toLowerCase();
 
     // Since typeorm does not handle pagination for relations I have to write the query myself.
     // It should be resolved soon but for now this will do the trick.
     // issue: https://github.com/typeorm/typeorm/issues/5392
     const [items, total] = await repository
       .createQueryBuilder(tableName)
-      .innerJoin(`${tableName}.${relationName}`, `${tableName}Item`, `${tableName}Item.id = :parentId`, {
-        parentId,
+      .innerJoin(`${tableName}.${relationName}`, `${tableName}Item`, `${tableName}Item.id = :childId`, {
+        childId,
       })
       .loadAllRelationIds({ relations })
       .skip(paginationArgs?.skip)
