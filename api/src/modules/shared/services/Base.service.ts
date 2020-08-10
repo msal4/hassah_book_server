@@ -1,4 +1,5 @@
 import { FindManyOptions, Repository, BaseEntity, DeepPartial, getRepository } from "typeorm";
+import { ClassType } from "type-graphql";
 
 import { PaginatedResponse } from "@api/modules/shared/types/PaginatedResponse";
 import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
@@ -18,10 +19,32 @@ export class BaseService<T extends BaseEntity> {
   }
 
   public readonly repository: Repository<T>;
+  // The default relation ids to be retrieved with the entities.
+  public relations: string[] = [];
   // The entity name that is retrieved from the class name.
   protected readonly entityName: string;
-  // The default relation ids to be retrieved with the entities.
-  protected relations: string[] = [];
+
+  static async findManyToMany<R>(
+    Entity: ClassType<R>,
+    { parentId, tableName, relationName, relations = [], paginationArgs }: FindManyToManyOptions
+  ) {
+    const repository = getRepository(Entity);
+
+    // Since typeorm does not handle pagination for relations I have to write the query myself.
+    // It should be resolved soon but for now this will do the trick.
+    // issue: https://github.com/typeorm/typeorm/issues/5392
+    const [items, total] = await repository
+      .createQueryBuilder(tableName)
+      .innerJoin(`${tableName}.${relationName}`, `${tableName}Item`, `${tableName}Item.id = :parentId`, {
+        parentId,
+      })
+      .loadAllRelationIds({ relations })
+      .skip(paginationArgs?.skip)
+      .take(paginationArgs?.take)
+      .getManyAndCount();
+
+    return { items, total, hasMore: paginationArgs ? hasMore(paginationArgs, total) : false };
+  }
 
   async findAll(options: PagniationArgs & FindManyOptions<T>): Promise<PaginatedResponse<T>> {
     const [items, total] = await this.repository.findAndCount({
@@ -29,36 +52,6 @@ export class BaseService<T extends BaseEntity> {
       loadRelationIds: { relations: this.relations },
     });
     return { items, total, hasMore: hasMore(options, total) };
-  }
-
-  async findManyToMany<R>({ parentId, relationName, paginationArgs }: FindManyToManyOptions) {
-    // Lower case the first character to get the table name.
-    const tableName = this.entityName[0].toLocaleLowerCase() + this.entityName.substr(1);
-
-    // Since typeorm does not handle pagination for relations I have to write the query myself.
-    // It should be resolved soon but for now this will do the trick.
-    // issue: https://github.com/typeorm/typeorm/issues/5392
-    const parent = await this.repository
-      .createQueryBuilder(tableName)
-      .loadRelationCountAndMap(`${tableName}.totalItems`, `${tableName}.${relationName}`)
-      .innerJoinAndSelect(`${tableName}.${relationName}`, `${tableName}Item`, `${tableName}.id = :parentId`, {
-        parentId,
-      })
-      .offset(paginationArgs?.skip)
-      .limit(paginationArgs?.take)
-      .getOne();
-
-    if (!parent) {
-      return { items: [], total: 0, hasMore: false };
-    }
-
-    const total = (parent as any).totalItems as number;
-
-    return {
-      items: (parent as any)[relationName] as R[],
-      total,
-      hasMore: paginationArgs ? hasMore(paginationArgs, total) : false,
-    };
   }
 
   create(data: DeepPartial<T>): Promise<T> {
