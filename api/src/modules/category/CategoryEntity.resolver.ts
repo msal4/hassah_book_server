@@ -17,7 +17,7 @@ export class CategoryEntityResolver {
     @Args() paginationArgs: PagniationArgs
   ): Promise<PaginatedProductResponse> {
     return BaseService.findManyToMany(Product, {
-      parentId: id,
+      childId: id,
       relationName: "categories",
       relations: this.productService.relations,
       paginationArgs,
