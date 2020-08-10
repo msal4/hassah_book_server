@@ -10,11 +10,14 @@ import { createSchema } from "@api/utils/createSchema";
 import { refreshToken } from "@api/utils/refreshToken";
 import { RequestContext } from "@api/modules/shared/types/RequestContext";
 import { createLoaders } from "@api/utils/loaders";
+import { queryComplexityPlugin } from "@api/utils/queryComplexity.plugin";
 
 const PORT = 4000;
 
-const main = async () => {
+async function bootstrap() {
+  // Create typeorm connection using the default configuration in .env .
   await createConnection();
+
   const schema = await createSchema();
 
   const app = express();
@@ -25,12 +28,13 @@ const main = async () => {
   const apolloServer = new ApolloServer({
     schema,
     context: ({ req, res }) => ({ req, res, loaders: createLoaders() } as RequestContext),
+    plugins: [queryComplexityPlugin(schema)],
   });
   apolloServer.applyMiddleware({ app });
 
   app.listen(PORT, () => {
     console.log(`listening on port ${PORT}`);
   });
-};
+}
 
-main();
+bootstrap();
