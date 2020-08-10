@@ -39,6 +39,4 @@ export class Collection extends BaseEntity {
   @ManyToMany(() => Product, (product) => product.collections)
   @JoinTable()
   products: Lazy<Product[]>;
-
-  totalProducts?: number;
 }
