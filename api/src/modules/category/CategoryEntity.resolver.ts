@@ -6,12 +6,13 @@ import { PaginatedProductResponse } from "@api/modules/shared/types/PaginatedRes
 import { BaseService } from "@api/modules/shared/services/Base.service";
 import { Product } from "@api/entity/Product";
 import { ProductService } from "@api/modules/product/product/Product.service";
+import { PAGINATED_RESPONSE_COMPLEXITY } from "@api/modules/constants/query";
 
 @Resolver(() => Category)
 export class CategoryEntityResolver {
   constructor(private readonly productService: ProductService) {}
 
-  @FieldResolver(() => PaginatedProductResponse)
+  @FieldResolver(() => PaginatedProductResponse, { complexity: PAGINATED_RESPONSE_COMPLEXITY })
   products(
     @Root() { id }: Category,
     @Args() paginationArgs: PagniationArgs

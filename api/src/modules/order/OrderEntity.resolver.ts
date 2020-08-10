@@ -6,6 +6,7 @@ import { PaginatedPurchaseResponse } from "@api/modules/shared/types/PaginatedRe
 import { PurchaseService } from "@api/modules/purchase/purchase/Purchase.service";
 import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
 import { RequestContext } from "@api/modules/shared/types/RequestContext";
+import { PAGINATED_RESPONSE_COMPLEXITY } from "@api/modules/constants/query";
 
 @Resolver(() => Order)
 export class OrderResolver {
@@ -16,7 +17,7 @@ export class OrderResolver {
     return loaders.userLoader.load(user as any);
   }
 
-  @FieldResolver(() => PaginatedPurchaseResponse)
+  @FieldResolver(() => PaginatedPurchaseResponse, { complexity: PAGINATED_RESPONSE_COMPLEXITY })
   purchases(@Root() { id }: Order, args: PagniationArgs): Promise<PaginatedPurchaseResponse> {
     return this.purchaseService.findAll({ where: { order: { id } }, ...args });
   }

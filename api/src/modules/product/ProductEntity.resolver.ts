@@ -14,6 +14,7 @@ import { RequestContext } from "@api/modules/shared/types/RequestContext";
 import { Publisher } from "@api/entity/Publisher";
 import { Category } from "@api/entity/Category";
 import { Collection } from "@api/entity/Collection";
+import { PAGINATED_RESPONSE_COMPLEXITY } from "@api/modules/constants/query";
 
 @Resolver(() => Product)
 export class ProductEntityResolver {
@@ -48,7 +49,7 @@ export class ProductEntityResolver {
   }
 
   @Authorized(Roles.Admin)
-  @FieldResolver(() => PaginatedFavoriteResponse)
+  @FieldResolver(() => PaginatedFavoriteResponse, { complexity: PAGINATED_RESPONSE_COMPLEXITY })
   favorites(
     @Root() product: Product,
     @Args() { skip, take }: PagniationArgs
@@ -57,7 +58,7 @@ export class ProductEntityResolver {
   }
 
   @Authorized(Roles.Admin)
-  @FieldResolver(() => PaginatedPurchaseResponse)
+  @FieldResolver(() => PaginatedPurchaseResponse, { complexity: PAGINATED_RESPONSE_COMPLEXITY })
   purchases(
     @Root() product: Product,
     @Args() { skip, take }: PagniationArgs

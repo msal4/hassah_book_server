@@ -11,6 +11,7 @@ import {
 } from "@api/modules/shared/types/PaginatedResponse";
 import { OrderService } from "@api/modules/order/order/Order.service";
 import { Roles } from "@api/modules/utils/auth";
+import { PAGINATED_RESPONSE_COMPLEXITY } from "@api/modules/constants/query";
 
 @Resolver(() => User)
 export class UserResolver {
@@ -21,7 +22,7 @@ export class UserResolver {
   ) {}
 
   @Authorized(Roles.Owner, Roles.Admin)
-  @FieldResolver(() => PaginatedUserRequestResponse)
+  @FieldResolver(() => PaginatedUserRequestResponse, { complexity: PAGINATED_RESPONSE_COMPLEXITY })
   requests(
     @Root() user: User,
     @Args() { skip, take }: PagniationArgs
@@ -30,13 +31,13 @@ export class UserResolver {
   }
 
   @Authorized(Roles.Owner, Roles.Admin)
-  @FieldResolver(() => PaginatedFavoriteResponse)
+  @FieldResolver(() => PaginatedFavoriteResponse, { complexity: PAGINATED_RESPONSE_COMPLEXITY })
   favorites(@Root() user: User, @Args() { skip, take }: PagniationArgs): Promise<PaginatedFavoriteResponse> {
     return this.favoriteService.findAll({ where: { user }, skip, take });
   }
 
   @Authorized(Roles.Owner, Roles.Admin)
-  @FieldResolver(() => PaginatedOrderResponse)
+  @FieldResolver(() => PaginatedOrderResponse, { complexity: PAGINATED_RESPONSE_COMPLEXITY })
   orders(@Root() user: User, @Args() { skip, take }: PagniationArgs): Promise<PaginatedOrderResponse> {
     return this.orderService.findAll({ where: { user }, skip, take });
   }
