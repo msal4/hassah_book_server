@@ -14,9 +14,7 @@ export class ProductResolver {
 
   @Query(() => PaginatedProductResponse)
   async products(@Args() args: FilterArgs): Promise<PaginatedProductResponse> {
-    const products = await this.productService.findAll(args);
-    console.log(products.items[0].categories);
-    return products;
+    return this.productService.findAll(args);
   }
 
   @Authorized(Roles.Admin)
