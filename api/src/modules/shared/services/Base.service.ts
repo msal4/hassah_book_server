@@ -2,7 +2,7 @@ import { FindManyOptions, Repository, BaseEntity, DeepPartial, getRepository } f
 import { ClassType } from "type-graphql";
 
 import { PaginatedResponse } from "@api/modules/shared/types/PaginatedResponse";
-import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
+import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
 import { hasMore } from "@api/modules/utils/hasMore";
 import { FindManyToManyOptions } from "@api/modules/shared/services/base/FindManyToManyOptions";
 
@@ -26,7 +26,7 @@ export class BaseService<T extends BaseEntity> {
 
   static async findManyToMany<R>(
     Entity: ClassType<R>,
-    { childId, relationName, relations = [], paginationArgs }: FindManyToManyOptions
+    { childId, relationName, relations = [], filterArgs: paginationArgs }: FindManyToManyOptions
   ) {
     const repository = getRepository(Entity);
     const tableName = Entity.name.toLowerCase();
@@ -47,7 +47,7 @@ export class BaseService<T extends BaseEntity> {
     return { items, total, hasMore: paginationArgs ? hasMore(paginationArgs, total) : false };
   }
 
-  async findAll(options: PagniationArgs & FindManyOptions<T>): Promise<PaginatedResponse<T>> {
+  async findAll(options: FilterArgs & FindManyOptions<T>): Promise<PaginatedResponse<T>> {
     const [items, total] = await this.repository.findAndCount({
       ...options,
       loadRelationIds: { relations: this.relations },

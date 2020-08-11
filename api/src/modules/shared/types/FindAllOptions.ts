@@ -1,5 +1,5 @@
 import { FindManyOptions } from "typeorm";
 
-import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
+import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
 
-export type FindAllOptions<T> = PagniationArgs & FindManyOptions<T>;
+export type FindAllOptions<T> = FilterArgs & FindManyOptions<T>;

@@ -1,6 +1,6 @@
 import { Resolver, Args, Query, Mutation, Arg, Authorized } from "type-graphql";
 
-import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
+import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
 import { Product } from "@api/entity/Product";
 import { PaginatedProductResponse } from "@api/modules/shared/types/PaginatedResponse";
 import { ProductService } from "@api/modules/product/product/Product.service";
@@ -13,7 +13,7 @@ export class ProductResolver {
   constructor(private readonly productService: ProductService) {}
 
   @Query(() => PaginatedProductResponse)
-  async products(@Args() args: PagniationArgs): Promise<PaginatedProductResponse> {
+  async products(@Args() args: FilterArgs): Promise<PaginatedProductResponse> {
     const products = await this.productService.findAll(args);
     console.log(products.items[0].categories);
     return products;

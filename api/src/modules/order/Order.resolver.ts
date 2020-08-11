@@ -2,7 +2,7 @@ import { Resolver, Query, Args, Ctx, Mutation, Arg, Authorized } from "type-grap
 
 import { OrderService } from "@api/modules/order/order/Order.service";
 import { PaginatedOrderResponse } from "@api/modules/shared/types/PaginatedResponse";
-import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
+import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
 import { RequestContext } from "@api/modules/shared/types/RequestContext";
 import { Order, OrderStatus } from "@api/entity/Order";
 import { PlaceOrderInput } from "@api/modules/order/order/PlaceOrderInput";
@@ -15,16 +15,13 @@ export class OrderResolver {
 
   // TODO: authorization needed. Admin only.
   @Query(() => PaginatedOrderResponse)
-  orders(@Args() args: PagniationArgs): Promise<PaginatedOrderResponse> {
+  orders(@Args() args: FilterArgs): Promise<PaginatedOrderResponse> {
     return this.orderService.findAll(args);
   }
 
   @Authorized(Roles.User)
   @Query(() => PaginatedOrderResponse)
-  myOrders(
-    @Ctx() { payload }: RequestContext,
-    @Args() args: PagniationArgs
-  ): Promise<PaginatedOrderResponse> {
+  myOrders(@Ctx() { payload }: RequestContext, @Args() args: FilterArgs): Promise<PaginatedOrderResponse> {
     return this.orderService.findAll({ where: { user: { id: payload!.userId } }, ...args });
   }
 

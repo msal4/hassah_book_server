@@ -1,7 +1,7 @@
 import { Resolver, FieldResolver, Root, Args } from "type-graphql";
 
 import { Publisher } from "@api/entity/Publisher";
-import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
+import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
 import { PaginatedProductResponse } from "@api/modules/shared/types/PaginatedResponse";
 import { ProductService } from "@api/modules/product/product/Product.service";
 
@@ -12,7 +12,7 @@ export class PublisherEntityResolver {
   @FieldResolver(() => PaginatedProductResponse)
   products(
     @Root() publisher: Publisher,
-    @Args() { skip, take }: PagniationArgs
+    @Args() { skip, take }: FilterArgs
   ): Promise<PaginatedProductResponse> {
     return this.productService.findAll({ where: { publisher }, skip, take });
   }

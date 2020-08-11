@@ -2,7 +2,7 @@ import { Resolver, Query, Args, Mutation, Arg, Authorized } from "type-graphql";
 
 import { CategoryService } from "@api/modules/category/category/Category.service";
 import { PaginatedCategoryResponse } from "@api/modules/shared/types/PaginatedResponse";
-import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
+import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
 import { CreateCategoryInput } from "@api/modules/category/category/CreateCategoryInput";
 import { UpdateCategoryInput } from "@api/modules/category/category/UpdateCategoryInput";
 import { Category } from "@api/entity/Category";
@@ -13,7 +13,7 @@ export class CategoryResolver {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Query(() => PaginatedCategoryResponse)
-  categories(@Args() args: PagniationArgs): Promise<PaginatedCategoryResponse> {
+  categories(@Args() args: FilterArgs): Promise<PaginatedCategoryResponse> {
     return this.categoryService.findAll(args);
   }
 
