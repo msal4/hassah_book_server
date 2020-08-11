@@ -40,6 +40,7 @@ export class BaseService<T extends BaseEntity> {
       .innerJoin(`${tableName}.${relationName}`, `${tableName}Item`, `${tableName}Item.id = :childId`, {
         childId,
       })
+      .orderBy(orderByToMap(filterArgs?.order, tableName, ".") ?? {})
       .loadAllRelationIds({ relations })
       .skip(filterArgs?.skip)
       .take(filterArgs?.take)
