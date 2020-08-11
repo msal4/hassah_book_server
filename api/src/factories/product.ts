@@ -11,6 +11,7 @@ define(Product, (faker, context?: ProductFactoryContext) => {
   product.name = faker.name.title();
   product.overview = faker.lorem.paragraph();
   product.image = faker.image.fashion(300, 550);
+  product.price = faker.random.number(100);
   product.status = faker.random.arrayElement(enumToList(ProductStatus));
   product.pages = faker.random.number(1000);
   product.publishedAt = faker.date.past();

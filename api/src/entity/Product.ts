@@ -1,4 +1,4 @@
-import { ObjectType, Field, ID, registerEnumType, Int } from "type-graphql";
+import { ObjectType, Field, ID, registerEnumType, Int, Float } from "type-graphql";
 import {
   Entity,
   ManyToOne,
@@ -42,6 +42,10 @@ export class Product extends BaseEntity {
   @Field()
   @Column("text")
   overview: string;
+
+  @Field(() => Float)
+  @Column("float")
+  price: number;
 
   @Field()
   @Column("text")
