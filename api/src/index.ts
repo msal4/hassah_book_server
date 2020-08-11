@@ -22,7 +22,7 @@ async function bootstrap() {
 
   const app = express();
   app.use(cookieParser());
-  app.get("/", (_req, res) => res.send('<a href="/graphql">Graphql PlayGround</a>'));
+  app.get("/", (_req, res) => res.send('<a href="/graphql">Graphql Playground</a>'));
   app.post("/refresh_token", refreshToken);
 
   const apolloServer = new ApolloServer({
@@ -33,7 +33,7 @@ async function bootstrap() {
   apolloServer.applyMiddleware({ app });
 
   app.listen(PORT, () => {
-    console.log(`listening on port ${PORT}`);
+    console.log(`Listening on port ${PORT}`);
   });
 }
 
