@@ -1,5 +1,22 @@
-import { ArgsType, Field, Int } from "type-graphql";
-import { Max, Min } from "class-validator";
+import { ArgsType, Field, Int, registerEnumType, InputType } from "type-graphql";
+import { Max, Min, IsNotEmpty } from "class-validator";
+
+export enum OrderType {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
+registerEnumType(OrderType, { name: "OrderBy" });
+
+@InputType()
+export class OrderByMap {
+  @Field()
+  @IsNotEmpty()
+  field: string;
+
+  @Field(() => OrderType)
+  order: OrderType;
+}
 
 @ArgsType()
 export class FilterArgs {
@@ -11,4 +28,7 @@ export class FilterArgs {
   @Min(1)
   @Max(100)
   take: number;
+
+  @Field(() => [OrderByMap], { nullable: true })
+  order?: OrderByMap[];
 }

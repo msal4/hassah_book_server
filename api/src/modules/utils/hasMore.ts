@@ -1,5 +1,3 @@
-import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
-
-export function hasMore(args: FilterArgs, total: number): boolean {
+export function hasMore(args: { skip: number; take: number }, total: number): boolean {
   return args.skip + args.take < total;
 }

@@ -2,9 +2,10 @@ import { FindManyOptions, Repository, BaseEntity, DeepPartial, getRepository } f
 import { ClassType } from "type-graphql";
 
 import { PaginatedResponse } from "@api/modules/shared/types/PaginatedResponse";
-import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
 import { hasMore } from "@api/modules/utils/hasMore";
 import { FindManyToManyOptions } from "@api/modules/shared/services/base/FindManyToManyOptions";
+import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
+import { orderByToMap } from "@api/modules/utils/orderByToMap";
 
 // The default service on which other services are based on.
 export class BaseService<T extends BaseEntity> {
@@ -26,7 +27,7 @@ export class BaseService<T extends BaseEntity> {
 
   static async findManyToMany<R>(
     Entity: ClassType<R>,
-    { childId, relationName, relations = [], filterArgs: paginationArgs }: FindManyToManyOptions
+    { childId, relationName, relations = [], filterArgs }: FindManyToManyOptions
   ) {
     const repository = getRepository(Entity);
     const tableName = Entity.name.toLowerCase();
@@ -40,16 +41,17 @@ export class BaseService<T extends BaseEntity> {
         childId,
       })
       .loadAllRelationIds({ relations })
-      .skip(paginationArgs?.skip)
-      .take(paginationArgs?.take)
+      .skip(filterArgs?.skip)
+      .take(filterArgs?.take)
       .getManyAndCount();
 
-    return { items, total, hasMore: paginationArgs ? hasMore(paginationArgs, total) : false };
+    return { items, total, hasMore: filterArgs ? hasMore(filterArgs, total) : false };
   }
 
   async findAll(options: FilterArgs & FindManyOptions<T>): Promise<PaginatedResponse<T>> {
     const [items, total] = await this.repository.findAndCount({
       ...options,
+      order: orderByToMap<T>(options.order),
       loadRelationIds: { relations: this.relations },
     });
     return { items, total, hasMore: hasMore(options, total) };
