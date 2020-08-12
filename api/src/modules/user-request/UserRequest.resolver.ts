@@ -3,7 +3,7 @@ import { Resolver, Query, Ctx, Args, Mutation, Arg, Authorized } from "type-grap
 import { PaginatedUserRequestResponse } from "@api/modules/shared/types/PaginatedResponse";
 import { UserRequestService } from "@api/modules/user-request/user-request/UserRequest.service";
 import { RequestContext } from "@api/modules/shared/types/RequestContext";
-import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
+import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
 import { UserRequest } from "@api/entity/UserRequest";
 import { CreateUserRequestInput } from "@api/modules/user-request/user-request/CreateUserRequestInput";
 import { UpdateUserRequestInput } from "@api/modules/user-request/user-request/UpdateUserRequestInput";
@@ -15,7 +15,7 @@ export class UserRequestResolver {
 
   @Authorized(Roles.Admin)
   @Query(() => PaginatedUserRequestResponse)
-  requests(@Args() { skip, take }: PagniationArgs): Promise<PaginatedUserRequestResponse> {
+  requests(@Args() { skip, take }: FilterArgs): Promise<PaginatedUserRequestResponse> {
     return this.userRequestService.findAll({ skip, take });
   }
 
@@ -23,7 +23,7 @@ export class UserRequestResolver {
   @Query(() => PaginatedUserRequestResponse)
   myRequests(
     @Ctx() { payload }: RequestContext,
-    @Args() { skip, take }: PagniationArgs
+    @Args() { skip, take }: FilterArgs
   ): Promise<PaginatedUserRequestResponse> {
     return this.userRequestService.findAll({ where: { user: { id: payload!.userId } }, skip, take });
   }

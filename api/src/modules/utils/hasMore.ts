@@ -1,5 +1,3 @@
-import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
-
-export function hasMore(args: PagniationArgs, total: number): boolean {
+export function hasMore(args: { skip: number; take: number }, total: number): boolean {
   return args.skip + args.take < total;
 }

@@ -1,6 +1,6 @@
 import { Resolver, Query, Args, Mutation, Arg, Authorized } from "type-graphql";
 
-import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
+import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
 import { PaginatedPublisherResponse } from "@api/modules/shared/types/PaginatedResponse";
 import { CreatePublisherInput } from "@api/modules/publisher/publisher/CreatePublisherInput";
 import { UpdatePublisherInput } from "@api/modules/publisher/publisher/UpdatePublisherInput";
@@ -13,7 +13,7 @@ export class PublisherResolver {
   constructor(private readonly service: PublisherService) {}
 
   @Query(() => PaginatedPublisherResponse)
-  async publishers(@Args() args: PagniationArgs): Promise<PaginatedPublisherResponse> {
+  async publishers(@Args() args: FilterArgs): Promise<PaginatedPublisherResponse> {
     return this.service.findAll(args);
   }
 

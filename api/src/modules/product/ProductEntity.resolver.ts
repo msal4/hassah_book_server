@@ -1,7 +1,7 @@
 import { Resolver, FieldResolver, Root, Args, Authorized, Ctx } from "type-graphql";
 
 import { Product } from "@api/entity/Product";
-import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
+import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
 import {
   PaginatedFavoriteResponse,
   PaginatedPurchaseResponse,
@@ -52,7 +52,7 @@ export class ProductEntityResolver {
   @FieldResolver(() => PaginatedFavoriteResponse, { complexity: PAGINATED_RESPONSE_COMPLEXITY })
   favorites(
     @Root() product: Product,
-    @Args() { skip, take }: PagniationArgs
+    @Args() { skip, take }: FilterArgs
   ): Promise<PaginatedFavoriteResponse> {
     return this.favoriteService.findAll({ skip, take, where: { product } });
   }
@@ -61,7 +61,7 @@ export class ProductEntityResolver {
   @FieldResolver(() => PaginatedPurchaseResponse, { complexity: PAGINATED_RESPONSE_COMPLEXITY })
   purchases(
     @Root() product: Product,
-    @Args() { skip, take }: PagniationArgs
+    @Args() { skip, take }: FilterArgs
   ): Promise<PaginatedPurchaseResponse> {
     return this.purchaseService.findAll({ skip, take, where: { product } });
   }

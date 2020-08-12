@@ -1,8 +1,8 @@
-import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
+import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
 
 export interface FindManyToManyOptions {
   relationName: string;
   childId: string;
   relations?: string[];
-  paginationArgs?: PagniationArgs;
+  filterArgs?: FilterArgs;
 }

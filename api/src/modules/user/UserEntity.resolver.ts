@@ -1,7 +1,7 @@
 import { Resolver, Root, FieldResolver, Args, Authorized } from "type-graphql";
 
 import { User } from "@api/entity/User";
-import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
+import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
 import { UserRequestService } from "@api/modules/user-request/user-request/UserRequest.service";
 import { FavoriteService } from "@api/modules/favorite/favorite/Favorite.service";
 import {
@@ -23,22 +23,19 @@ export class UserResolver {
 
   @Authorized(Roles.Owner, Roles.Admin)
   @FieldResolver(() => PaginatedUserRequestResponse, { complexity: PAGINATED_RESPONSE_COMPLEXITY })
-  requests(
-    @Root() user: User,
-    @Args() { skip, take }: PagniationArgs
-  ): Promise<PaginatedUserRequestResponse> {
+  requests(@Root() user: User, @Args() { skip, take }: FilterArgs): Promise<PaginatedUserRequestResponse> {
     return this.userRequestService.findAll({ where: { user }, skip, take });
   }
 
   @Authorized(Roles.Owner, Roles.Admin)
   @FieldResolver(() => PaginatedFavoriteResponse, { complexity: PAGINATED_RESPONSE_COMPLEXITY })
-  favorites(@Root() user: User, @Args() { skip, take }: PagniationArgs): Promise<PaginatedFavoriteResponse> {
+  favorites(@Root() user: User, @Args() { skip, take }: FilterArgs): Promise<PaginatedFavoriteResponse> {
     return this.favoriteService.findAll({ where: { user }, skip, take });
   }
 
   @Authorized(Roles.Owner, Roles.Admin)
   @FieldResolver(() => PaginatedOrderResponse, { complexity: PAGINATED_RESPONSE_COMPLEXITY })
-  orders(@Root() user: User, @Args() { skip, take }: PagniationArgs): Promise<PaginatedOrderResponse> {
+  orders(@Root() user: User, @Args() { skip, take }: FilterArgs): Promise<PaginatedOrderResponse> {
     return this.orderService.findAll({ where: { user }, skip, take });
   }
 }

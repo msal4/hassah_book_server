@@ -1,6 +1,6 @@
 import { Resolver, FieldResolver, Root, Args } from "type-graphql";
 
-import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
+import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
 import { PaginatedProductResponse } from "@api/modules/shared/types/PaginatedResponse";
 import { Collection } from "@api/entity/Collection";
 import { BaseService } from "@api/modules/shared/services/Base.service";
@@ -15,13 +15,13 @@ export class CollectionEntityResolver {
   @FieldResolver(() => PaginatedProductResponse, { complexity: PAGINATED_RESPONSE_COMPLEXITY })
   products(
     @Root() { id }: Collection,
-    @Args() paginationArgs: PagniationArgs
+    @Args() paginationArgs: FilterArgs
   ): Promise<PaginatedProductResponse> {
     return BaseService.findManyToMany(Product, {
       childId: id,
       relationName: "collections",
       relations: this.productService.relations,
-      paginationArgs,
+      filterArgs: paginationArgs,
     });
   }
 }

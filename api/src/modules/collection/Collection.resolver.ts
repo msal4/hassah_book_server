@@ -2,7 +2,7 @@ import { Resolver, Query, Args, Mutation, Arg, Authorized } from "type-graphql";
 
 import { CollectionService } from "@api/modules/collection/collection/Collection.service";
 import { PaginatedCollectionResponse } from "@api/modules/shared/types/PaginatedResponse";
-import { PagniationArgs } from "@api/modules/shared/types/PaginationArgs";
+import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
 import { Collection } from "@api/entity/Collection";
 import { CreateCollectionInput } from "@api/modules/collection/collection/CreateCollectionInput";
 import { UpdateCollectionInput } from "@api/modules/collection/collection/UpdateCollectionInput";
@@ -12,7 +12,7 @@ import { Roles } from "@api/modules/utils/auth";
 export class CollectionResolver {
   constructor(private readonly collectionService: CollectionService) {}
   @Query(() => PaginatedCollectionResponse)
-  collections(@Args() args: PagniationArgs): Promise<PaginatedCollectionResponse> {
+  collections(@Args() args: FilterArgs): Promise<PaginatedCollectionResponse> {
     return this.collectionService.findAll(args);
   }
 
