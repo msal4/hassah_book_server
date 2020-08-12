@@ -1,5 +1,5 @@
 import faker from "faker";
-import { useSeeding, runSeeder } from "typeorm-seeding";
+import { useSeeding, factory } from "typeorm-seeding";
 
 import { gCall } from "@api/test-utils/gCall";
 import { Category } from "@api/entity/Category";
@@ -7,12 +7,12 @@ import { Collection } from "@api/entity/Collection";
 import { Author } from "@api/entity/Author";
 import { Publisher } from "@api/entity/Publisher";
 import { ProductStatus } from "@api/entity/Product";
-import { ApiSeeder } from "@api/seeds/ApiSeeder";
 import { mockRequestContext } from "@api/test-utils/mockRequestContext";
+import { Admin } from "@api/entity/Admin";
+import { createMockRequest } from "@api/test-utils/createMockRequest";
 
 beforeAll(async () => {
   await useSeeding();
-  await runSeeder(ApiSeeder);
 });
 
 const createProductMutation = `
@@ -62,16 +62,18 @@ const transform = (obj: Category | Collection | Author | Publisher) => {
 
 describe("Product", () => {
   it("create product", async () => {
-    const category = await Category.findOne();
-    const collection = await Collection.findOne();
-    const author = await Author.findOne();
-    const publisher = await Publisher.findOne();
+    const admin = await factory(Admin)().create();
+    const category = await factory(Category)().create();
+    const collection = await factory(Collection)().create();
+    const author = await factory(Author)().create();
+    const publisher = await factory(Publisher)().create();
 
     const data = {
       name: faker.name.findName(),
       overview: faker.lorem.paragraph(),
       image: faker.image.city(),
       pages: 100,
+      price: 1000,
       status: ProductStatus.Available,
       publishedAt: new Date(),
       author: { id: author!.id },
@@ -83,7 +85,7 @@ describe("Product", () => {
     const response = await gCall({
       source: createProductMutation,
       variableValues: { data },
-      contextValue: mockRequestContext(),
+      contextValue: mockRequestContext({ req: createMockRequest(admin) }),
     });
 
     expect(response).toMatchObject({

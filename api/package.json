@@ -41,7 +41,7 @@
     "api:run-dev": "ts-node-dev -r tsconfig-paths/register",
     "dev": "yarn api:run-dev src/index.ts",
     "test:setup": "yarn api:run src/test-utils/setup.ts",
-    "test": "yarn test:setup && jest",
+    "test": "yarn test:setup && jest -i",
     "test:watch": "yarn test --watch",
     "seed:config": "yarn api:run ./node_modules/typeorm-seeding/dist/cli.js config",
     "seed:run": "yarn api:run ./node_modules/typeorm-seeding/dist/cli.js seed",

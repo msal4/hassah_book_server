@@ -1,4 +1,4 @@
-import { InputType, Field, Int } from "type-graphql";
+import { InputType, Field, Int, Float } from "type-graphql";
 
 import { ProductStatus } from "@api/entity/Product";
 import { ObjectIdInput } from "@api/modules/shared/types/ObjectIdInput";
@@ -13,6 +13,9 @@ export class CreateProductInput {
 
   @Field({ description: "An poster or cover image for the product." })
   image: string;
+
+  @Field(() => Float, { description: "Product price." })
+  price: number;
 
   @Field({ description: "The current status of the product." })
   status?: ProductStatus;

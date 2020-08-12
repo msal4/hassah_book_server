@@ -5,16 +5,13 @@ import { ormconfig } from "@api/test-utils/ormconfig";
 beforeAll(async () => {
   await createConnection({ ...ormconfig, synchronize: false, dropSchema: false });
 });
-afterEach(async () => {
+afterAll(async () => {
   try {
-    // Clean database after each test
     for (const entity of getConnection().entityMetadatas) {
       await getRepository(entity.name).query(`TRUNCATE TABLE "${entity.tableName}" CASCADE;`);
     }
   } catch (err) {
     console.log(`ERROR: Cleaning test database: ${err}`);
   }
-});
-afterAll(async () => {
   await getConnection().close();
 });
