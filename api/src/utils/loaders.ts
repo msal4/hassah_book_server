@@ -17,7 +17,7 @@ const loader = <T extends { id: string }>(Entity: ClassType<T>) => {
     // id { id: "..."}, This is not what i want since i'm expecting a string. I could avoid this by
     // removing relations and returning only the id of the entity in create mutations. I could also use
     // .reload() method on the entity but I don't like it since I would have to write a lot of ifs.
-    // I think a better way would be to check if it's an object in the loader even though the loader has
+    // I think a better way would be to check if it's an object here even though the loader has
     // nothing to do with it.
     // typeorm issue: https://github.com/typeorm/typeorm/issues/3490
     const allIds: string[] = ids.map((id) => (typeof id === "object" ? id.id : id));
