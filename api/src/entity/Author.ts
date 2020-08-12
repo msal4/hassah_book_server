@@ -1,28 +1,13 @@
-import { ObjectType, Field, ID } from "type-graphql";
-import {
-  Entity,
-  BaseEntity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToMany,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from "typeorm";
+import { ObjectType, Field } from "type-graphql";
+import { Entity, Column, OneToMany } from "typeorm";
 
+import { BaseProductParent } from "@api/entity/shared/BaseProductParent";
 import { Product } from "@api/entity/Product";
 import { Lazy } from "@api/modules/shared/types/Lazy";
 
 @ObjectType()
 @Entity()
-export class Author extends BaseEntity {
-  @Field(() => ID)
-  @PrimaryGeneratedColumn("uuid")
-  readonly id: string;
-
-  @Field()
-  @Column()
-  name: string;
-
+export class Author extends BaseProductParent {
   @Field()
   @Column()
   overview: string;
@@ -30,14 +15,6 @@ export class Author extends BaseEntity {
   @Field()
   @Column()
   image: string;
-
-  @Field()
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @Field()
-  @UpdateDateColumn()
-  updatedAt: Date;
 
   @OneToMany(() => Product, (product) => product.author)
   products: Lazy<Product[]>;

@@ -83,6 +83,10 @@ export class Product extends BaseEntity {
   @ManyToOne(() => Publisher, (publisher) => publisher.products)
   publisher?: Lazy<Publisher>;
 
+  @Field()
+  @Column("varchar", { default: "en" })
+  language: string;
+
   @OneToMany(() => Favorite, (favorite) => favorite.product)
   favorites: Lazy<Favorite[]>;
 
