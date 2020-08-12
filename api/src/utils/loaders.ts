@@ -9,8 +9,10 @@ import { Author } from "@api/entity/Author";
 import { Category } from "@api/entity/Category";
 import { Collection } from "@api/entity/Collection";
 
+type Id = string | { id: string };
+
 const loader = <T extends { id: string }>(Entity: ClassType<T>) => {
-  const batchLoadFn = async (ids: readonly string[]): Promise<T[]> => {
+  const batchLoadFn = async (ids: readonly Id[]): Promise<T[]> => {
     // Creating new entities returns an entity object with the relations being objects which contain the
     // id { id: "..."}, This is not what i want since i'm expecting a string. I could avoid this by
     // removing relations and returning only the id of the entity in create mutations. I could also use
@@ -18,7 +20,7 @@ const loader = <T extends { id: string }>(Entity: ClassType<T>) => {
     // I think a better way would be to check if it's an object in the loader even though the loader has
     // nothing to do with it.
     // typeorm issue: https://github.com/typeorm/typeorm/issues/3490
-    const allIds: string[] = ids.map((id) => (typeof id === "object" ? (id as any).id : id));
+    const allIds: string[] = ids.map((id) => (typeof id === "object" ? id.id : id));
 
     const items = await getRepository(Entity).findByIds(allIds);
 
@@ -27,7 +29,7 @@ const loader = <T extends { id: string }>(Entity: ClassType<T>) => {
     return allIds.map((id) => mappedItems[id]);
   };
 
-  return new DataLoader((ids: readonly string[]) => batchLoadFn(ids));
+  return new DataLoader((ids: readonly Id[]) => batchLoadFn(ids));
 };
 
 export const createLoaders = () => ({
