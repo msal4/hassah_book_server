@@ -9,7 +9,7 @@ import { LoginResponse } from "@api/modules/shared/types/LoginResponse";
 
 @Resolver()
 export class LoginReslover {
-  @Mutation((_returns) => LoginResponse)
+  @Mutation(() => LoginResponse)
   async login(@Arg("data") data: LoginInput, @Ctx() { res }: RequestContext): Promise<LoginResponse> {
     // Find a user
     const phone = normalizePhone(data.phone);

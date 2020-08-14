@@ -5,18 +5,27 @@ import { ValidationError } from "apollo-server-express";
 import { User } from "@api/entity/User";
 import { RegisterInput } from "@api/modules/user/register/RegisterInput";
 import { isPhoneAlreadyExist } from "@api/modules/user/register/isPhoneAlreadyExist";
-import { normalizePhone } from "@api/modules/utils/normalizePhone";
+import { PhoneSessionInfo } from "@api/entity/PhoneSessionInfo";
+import { relyingparty } from "@api/modules/utils/auth";
 
 export class RegisterResolver {
-  // TODO: implement phone number verification.
-  @Mutation((_returns) => User)
-  async register(@Arg("data") data: RegisterInput): Promise<User> {
-    const phone = normalizePhone(data.phone);
+  @Mutation(() => User)
+  async register(@Arg("data") { sessionInfo, code, name, password, address }: RegisterInput): Promise<User> {
+    const session = await PhoneSessionInfo.findOne({ where: { sessionInfo } });
+    if (!session) {
+      throw new Error("No session found!");
+    }
 
-    if (await isPhoneAlreadyExist(phone)) {
+    if (await isPhoneAlreadyExist(session.phoneNumber)) {
       throw new ValidationError(`phone number already in use`);
     }
 
-    return await User.create({ ...data, phone }).save();
+    const response = await relyingparty.verifyPhoneNumber({ code, sessionInfo } as any);
+
+    if (response.status !== 200) {
+      throw new Error("Invalid verification code or session!");
+    }
+
+    return await User.create({ phone: session.phoneNumber, name, password, address }).save();
   }
 }
