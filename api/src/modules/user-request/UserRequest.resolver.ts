@@ -15,17 +15,17 @@ export class UserRequestResolver {
 
   @Authorized(Roles.Admin)
   @Query(() => PaginatedUserRequestResponse)
-  requests(@Args() { skip, take }: FilterArgs): Promise<PaginatedUserRequestResponse> {
-    return this.userRequestService.findAll({ skip, take });
+  requests(@Args() args: FilterArgs): Promise<PaginatedUserRequestResponse> {
+    return this.userRequestService.findAll(args);
   }
 
   @Authorized(Roles.User)
   @Query(() => PaginatedUserRequestResponse)
   myRequests(
     @Ctx() { payload }: RequestContext,
-    @Args() { skip, take }: FilterArgs
+    @Args() args: FilterArgs
   ): Promise<PaginatedUserRequestResponse> {
-    return this.userRequestService.findAll({ where: { user: { id: payload!.userId } }, skip, take });
+    return this.userRequestService.findAll({ where: { user: { id: payload!.userId } }, ...args });
   }
 
   @Authorized(Roles.User)

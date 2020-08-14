@@ -11,7 +11,7 @@ export class AuthorEntityResolver {
   constructor(private readonly productService: ProductService) {}
 
   @FieldResolver(() => PaginatedProductResponse, { complexity: PAGINATED_RESPONSE_COMPLEXITY })
-  products(@Root() author: Author, @Args() { skip, take }: FilterArgs): Promise<PaginatedProductResponse> {
-    return this.productService.findAll({ where: { author }, skip, take });
+  products(@Root() author: Author, @Args() args: FilterArgs): Promise<PaginatedProductResponse> {
+    return this.productService.findAll({ where: { author }, ...args });
   }
 }

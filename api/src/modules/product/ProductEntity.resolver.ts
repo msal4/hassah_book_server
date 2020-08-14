@@ -8,7 +8,7 @@ import {
 } from "@api/modules/shared/types/PaginatedResponse";
 import { FavoriteService } from "@api/modules/favorite/favorite/Favorite.service";
 import { Roles } from "@api/modules/utils/auth";
-import { PurchaseService } from "@api/modules/purchase/purchase/Purchase.service";
+import { PurchaseService } from "@api/modules/purchase/Purchase.service";
 import { Author } from "@api/entity/Author";
 import { RequestContext } from "@api/modules/shared/types/RequestContext";
 import { Publisher } from "@api/entity/Publisher";
@@ -50,19 +50,13 @@ export class ProductEntityResolver {
 
   @Authorized(Roles.Admin)
   @FieldResolver(() => PaginatedFavoriteResponse, { complexity: PAGINATED_RESPONSE_COMPLEXITY })
-  favorites(
-    @Root() product: Product,
-    @Args() { skip, take }: FilterArgs
-  ): Promise<PaginatedFavoriteResponse> {
-    return this.favoriteService.findAll({ skip, take, where: { product } });
+  favorites(@Root() product: Product, @Args() args: FilterArgs): Promise<PaginatedFavoriteResponse> {
+    return this.favoriteService.findAll({ ...args, where: { product } });
   }
 
   @Authorized(Roles.Admin)
   @FieldResolver(() => PaginatedPurchaseResponse, { complexity: PAGINATED_RESPONSE_COMPLEXITY })
-  purchases(
-    @Root() product: Product,
-    @Args() { skip, take }: FilterArgs
-  ): Promise<PaginatedPurchaseResponse> {
-    return this.purchaseService.findAll({ skip, take, where: { product } });
+  purchases(@Root() product: Product, @Args() args: FilterArgs): Promise<PaginatedPurchaseResponse> {
+    return this.purchaseService.findAll({ ...args, where: { product } });
   }
 }

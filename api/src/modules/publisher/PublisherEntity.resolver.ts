@@ -10,10 +10,7 @@ export class PublisherEntityResolver {
   constructor(private readonly productService: ProductService) {}
 
   @FieldResolver(() => PaginatedProductResponse)
-  products(
-    @Root() publisher: Publisher,
-    @Args() { skip, take }: FilterArgs
-  ): Promise<PaginatedProductResponse> {
-    return this.productService.findAll({ where: { publisher }, skip, take });
+  products(@Root() publisher: Publisher, @Args() args: FilterArgs): Promise<PaginatedProductResponse> {
+    return this.productService.findAll({ where: { publisher }, ...args });
   }
 }

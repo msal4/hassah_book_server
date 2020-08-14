@@ -1,7 +1,7 @@
 import { InputType, Field } from "type-graphql";
 import { IsNotEmpty, IsPhoneNumber } from "class-validator";
 
-import { PurchasePartialInput } from "@api/modules/purchase/purchase/PurchasePartialInput";
+import { PurchasePartialInput } from "@api/modules/purchase/PurchasePartialInput";
 
 @InputType()
 export class PlaceOrderInput {
