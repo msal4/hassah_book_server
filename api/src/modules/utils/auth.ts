@@ -7,6 +7,7 @@ import { RequestContext } from "@api/modules/shared/types/RequestContext";
 import { JwtAccessPayload } from "@api/modules/shared/types/JwtPayload";
 import { Admin } from "@api/entity/Admin";
 import { User } from "@api/entity/User";
+import { google } from "googleapis";
 
 export enum Roles {
   Admin = "Admin",
@@ -63,3 +64,8 @@ export const createRefreshToken = (user: BaseUser) =>
 export const sendRefreshTokenCookie = (res: Response, token: string) => {
   res.cookie("skal", token, { httpOnly: true });
 };
+
+export const relyingparty = google.identitytoolkit({
+  version: "v3",
+  auth: process.env.GOOGLE_CLOUD_API_KEY!,
+}).relyingparty;
