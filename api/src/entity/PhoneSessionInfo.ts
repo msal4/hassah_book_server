@@ -1,4 +1,4 @@
-import { Entity, BaseEntity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn } from "typeorm";
 
 @Entity()
 export class PhoneSessionInfo extends BaseEntity {
@@ -10,4 +10,7 @@ export class PhoneSessionInfo extends BaseEntity {
 
   @Column()
   phoneNumber: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
 }
