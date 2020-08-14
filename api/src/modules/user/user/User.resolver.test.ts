@@ -12,7 +12,7 @@ mutation Login($data: LoginInput!){
 }
 `;
 
-describe("Login Resolver", () => {
+describe("Login", () => {
   it("login existing user", async () => {
     const user = {
       name: faker.name.findName(),
