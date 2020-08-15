@@ -17,6 +17,7 @@ import { SendVerificationCodeInput } from "@api/modules/user/user/SendVerificati
 import { RegisterInput } from "@api/modules/user/user/RegisterInput";
 import { LoginInput } from "@api/modules/user/user/LoginInput";
 import { LoginResponse } from "@api/modules/shared/types/LoginResponse";
+import { VerificationInput } from "@api/modules/user/user/VerficationCodeInput";
 
 @Service()
 export class UserService extends BaseService<User> {
@@ -24,7 +25,7 @@ export class UserService extends BaseService<User> {
     const phoneNumber = normalizePhone(data.phoneNumber);
 
     if (await isPhoneAlreadyExist(phoneNumber)) {
-      throw new ValidationError(`phone number already in use`);
+      throw new ValidationError(`Phone number already in use`);
     }
 
     const response = await relyingparty.sendVerificationCode({
@@ -43,14 +44,14 @@ export class UserService extends BaseService<User> {
     return { sessionInfo };
   }
 
-  async register({ sessionInfo, code, name, password, address }: RegisterInput): Promise<User> {
+  async verifyCode({ code, sessionInfo }: VerificationInput): Promise<string> {
     const session = await PhoneSessionInfo.findOne({ where: { sessionInfo } });
     if (!session) {
       throw new Error("No session found!");
     }
 
     if (await isPhoneAlreadyExist(session.phoneNumber)) {
-      throw new ValidationError(`phone number already in use`);
+      throw new ValidationError("Phone number already in use");
     }
 
     const response = await relyingparty.verifyPhoneNumber({ code, sessionInfo } as any);
@@ -59,19 +60,24 @@ export class UserService extends BaseService<User> {
       throw new Error("Invalid verification code or session!");
     }
 
-    return await User.create({ phone: session.phoneNumber, name, password, address }).save();
+    return response.data.phoneNumber!;
+  }
+
+  async register(data: RegisterInput): Promise<User> {
+    const phone = await this.verifyCode(data);
+    return await User.create({ ...data, phone }).save();
   }
 
   async login(res: Response, data: LoginInput): Promise<LoginResponse> {
     const phone = normalizePhone(data.phone);
     const user = await User.findOne({ where: { phone } });
     if (!user) {
-      throw new Error("no user found");
+      throw new Error("No user found");
     }
 
     const valid = await user.validatePassword(data.password);
     if (!valid) {
-      throw new Error("password is incorrect");
+      throw new Error("Password is incorrect");
     }
 
     sendRefreshTokenCookie(res, createRefreshToken(user));

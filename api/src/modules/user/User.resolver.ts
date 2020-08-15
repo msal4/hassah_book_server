@@ -12,15 +12,16 @@ import { RequestContext } from "@api/modules/shared/types/RequestContext";
 import { RegisterInput } from "@api/modules/user/user/RegisterInput";
 import { LoginResponse } from "@api/modules/shared/types/LoginResponse";
 import { LoginInput } from "@api/modules/user/user/LoginInput";
+import { VerificationInput } from "@api/modules/user/user/VerficationCodeInput";
 
 @Resolver()
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
   @Authorized(Roles.User)
-  @Query(() => User, { nullable: true })
-  me(@Ctx() { payload }: RequestContext): Promise<User | undefined> {
-    return User.findOne(payload?.userId);
+  @Query(() => User)
+  me(@Ctx() { payload }: RequestContext): Promise<User> {
+    return User.findOne(payload!.userId).then((user) => user!);
   }
 
   @Authorized(Roles.Admin)
@@ -38,6 +39,17 @@ export class UserResolver {
   @Mutation(() => SessionInfo)
   sendVerificationCode(@Arg("data") data: SendVerificationCodeInput): Promise<SessionInfo> {
     return this.userService.sendVerficationCode(data);
+  }
+
+  @Authorized(Roles.User)
+  @Mutation(() => Boolean)
+  async updatePhoneNumber(
+    @Arg("data") data: VerificationInput,
+    @Ctx() { payload }: RequestContext
+  ): Promise<boolean> {
+    const phone = await this.userService.verifyCode(data);
+    const user = await User.findOne({ id: payload!.userId });
+    return this.userService.update({ id: user!.id, phone });
   }
 
   @Mutation(() => User)

@@ -1,18 +1,10 @@
 import { InputType, Field } from "type-graphql";
-import { IsNotEmpty, Length, MinLength } from "class-validator";
+import { Length, MinLength } from "class-validator";
 
-import { VERIFICATION_CODE_LENGTH } from "@api/modules/constants/phone";
+import { VerificationInput } from "@api/modules/user/user/VerficationCodeInput";
 
 @InputType()
-export class RegisterInput {
-  @Field()
-  @IsNotEmpty()
-  sessionInfo: string;
-
-  @Field()
-  @Length(VERIFICATION_CODE_LENGTH, VERIFICATION_CODE_LENGTH)
-  code: string;
-
+export class RegisterInput extends VerificationInput {
   @Field()
   @Length(1, 50)
   name: string;
