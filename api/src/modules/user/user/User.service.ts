@@ -21,17 +21,8 @@ import { VerificationInput } from "@api/modules/user/user/VerficationCodeInput";
 
 @Service()
 export class UserService extends BaseService<User> {
-  async sendVerficationCode(data: SendVerificationCodeInput) {
-    const phoneNumber = normalizePhone(data.phoneNumber);
-
-    if (await isPhoneAlreadyExist(phoneNumber)) {
-      throw new ValidationError(`Phone number already in use`);
-    }
-
-    const response = await relyingparty.sendVerificationCode({
-      phoneNumber,
-      recaptchaToken: data.recaptchaToken,
-    } as any);
+  async sendVerficationCode({ phoneNumber, recaptchaToken }: SendVerificationCodeInput) {
+    const response = await relyingparty.sendVerificationCode({ phoneNumber, recaptchaToken } as any);
 
     if (response.status !== 200) {
       throw new Error("Something went wrong while sending verification code!");

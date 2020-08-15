@@ -1,4 +1,5 @@
 import { Resolver, Query, Authorized, Args, Mutation, Arg, Ctx } from "type-graphql";
+import { ValidationError } from "apollo-server-express";
 
 import { Roles } from "@api/modules/utils/auth";
 import { PaginatedUserResponse } from "@api/modules/shared/types/PaginatedResponse";
@@ -13,6 +14,9 @@ import { RegisterInput } from "@api/modules/user/user/RegisterInput";
 import { LoginResponse } from "@api/modules/shared/types/LoginResponse";
 import { LoginInput } from "@api/modules/user/user/LoginInput";
 import { VerificationInput } from "@api/modules/user/user/VerficationCodeInput";
+import { UpdatePasswordInput } from "@api/modules/user/user/UpdatePasswordInput";
+import { isPhoneAlreadyExist } from "@api/modules/user/user/isPhoneAlreadyExist";
+import { normalizePhone } from "@api/modules/utils/normalizePhone";
 
 @Resolver()
 export class UserResolver {
@@ -37,8 +41,51 @@ export class UserResolver {
   }
 
   @Mutation(() => SessionInfo)
-  sendVerificationCode(@Arg("data") data: SendVerificationCodeInput): Promise<SessionInfo> {
-    return this.userService.sendVerficationCode(data);
+  async sendVerificationCode(@Arg("data") data: SendVerificationCodeInput): Promise<SessionInfo> {
+    const phoneNumber = normalizePhone(data.phoneNumber);
+
+    if (await isPhoneAlreadyExist(phoneNumber)) {
+      throw new ValidationError(`Phone number already in use`);
+    }
+
+    return await this.userService.sendVerficationCode({ ...data, phoneNumber });
+  }
+
+  @Mutation(() => SessionInfo)
+  async forgotPassword(@Arg("data") data: SendVerificationCodeInput): Promise<SessionInfo> {
+    const phoneNumber = normalizePhone(data.phoneNumber);
+
+    const exist = await isPhoneAlreadyExist(phoneNumber);
+    if (!exist) {
+      throw new Error("No user found with this number");
+    }
+
+    return await this.userService.sendVerficationCode({ ...data, phoneNumber });
+  }
+
+  @Mutation(() => LoginResponse)
+  async updatePassword(
+    @Arg("data") { password, ...data }: UpdatePasswordInput,
+    @Ctx() { res }: RequestContext
+  ): Promise<LoginResponse> {
+    const phone = await this.userService.verifyCode(data);
+
+    const user = await User.findOne({ phone });
+    if (!user) {
+      throw new Error("No user found");
+    }
+
+    const samePassword = await user.validatePassword(password);
+    if (samePassword) {
+      throw new Error("Please use a new password");
+    }
+
+    // Update password
+    user.password = password;
+    await user.hashPassword();
+    user.save();
+
+    return await this.userService.login(res, { phone, password });
   }
 
   @Authorized(Roles.User)
@@ -48,8 +95,7 @@ export class UserResolver {
     @Ctx() { payload }: RequestContext
   ): Promise<boolean> {
     const phone = await this.userService.verifyCode(data);
-    const user = await User.findOne({ id: payload!.userId });
-    return this.userService.update({ id: user!.id, phone });
+    return this.userService.update({ id: payload!.userId, phone });
   }
 
   @Mutation(() => User)
