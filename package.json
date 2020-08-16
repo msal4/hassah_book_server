@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "name": "hassah-book",
+  "workspaces": [
+    "api"
+  ],
+  "scripts": {
+    "api": "yarn workspace @hb/api start"
+  }
+}

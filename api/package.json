@@ -1,4 +1,6 @@
 {
+  "name": "@hb/api",
+  "version": "1.0.0",
   "dependencies": {
     "apollo-server-express": "^2.16.1",
     "bcryptjs": "^2.4.3",
@@ -40,7 +42,7 @@
   "scripts": {
     "api:run": "ts-node -r tsconfig-paths/register",
     "api:run-dev": "ts-node-dev -r tsconfig-paths/register",
-    "dev": "yarn api:run-dev src/index.ts",
+    "start": "yarn api:run-dev src/index.ts",
     "test:setup": "yarn api:run src/test-utils/setup.ts",
     "test": "yarn test:setup && jest -i",
     "test:watch": "yarn test --watch",
