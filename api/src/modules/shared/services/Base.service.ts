@@ -67,7 +67,7 @@ export class BaseService<T extends BaseEntity> {
     try {
       const item = await this.repository.findOne({ where: { id: data.id } });
       this.repository.merge(item!, data);
-      item!.save();
+      await item!.save();
       return true;
     } catch (err) {
       console.error(err);
