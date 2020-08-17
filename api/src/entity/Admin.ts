@@ -2,7 +2,7 @@ import { ObjectType, Field } from "type-graphql";
 import { Entity, Column } from "typeorm";
 import { IsEmail } from "class-validator";
 
-import { BaseUser } from "@api/entity/shared/BaseUser";
+import { BaseUser } from "@api/entity/base/BaseUser";
 
 @ObjectType()
 @Entity()

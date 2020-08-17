@@ -8,7 +8,7 @@ import cookieParser from "cookie-parser";
 
 import { createSchema } from "@api/utils/createSchema";
 import { refreshToken } from "@api/utils/refreshToken";
-import { RequestContext } from "@api/modules/shared/types/RequestContext";
+import { RequestContext } from "@api/modules/types/RequestContext";
 import { createLoaders } from "@api/utils/loaders";
 import { queryComplexityPlugin } from "@api/utils/queryComplexity.plugin";
 

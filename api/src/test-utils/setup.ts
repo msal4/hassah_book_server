@@ -7,7 +7,7 @@ import { ormconfig } from "@api/test-utils/ormconfig";
 
 export default async () => {
   const startTime = Date.now();
-  // to avoid establishing a connection if it already exist.
+  // to avoid establishing a connection if it already exists.
   try {
     await createConnection(ormconfig);
   } catch {}

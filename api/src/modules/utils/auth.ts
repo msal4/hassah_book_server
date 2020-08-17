@@ -2,9 +2,9 @@ import { sign, verify } from "jsonwebtoken";
 import { Response } from "express";
 import { AuthChecker } from "type-graphql";
 
-import { BaseUser } from "@api/entity/shared/BaseUser";
-import { RequestContext } from "@api/modules/shared/types/RequestContext";
-import { JwtAccessPayload } from "@api/modules/shared/types/JwtPayload";
+import { BaseUser } from "@api/entity/base/BaseUser";
+import { RequestContext } from "@api/modules/types/RequestContext";
+import { JwtAccessPayload } from "@api/modules/types/JwtPayload";
 import { Admin } from "@api/entity/Admin";
 import { User } from "@api/entity/User";
 import { google } from "googleapis";

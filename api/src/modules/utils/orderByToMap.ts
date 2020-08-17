@@ -1,4 +1,4 @@
-import { OrderByMap, OrderType } from "@api/modules/shared/types/FilterArgs";
+import { OrderByMap, OrderType } from "@api/modules/types/FilterArgs";
 
 export function orderByToMap<T>(order?: OrderByMap[], ...prefixes: string[]) {
   return order?.reduce(

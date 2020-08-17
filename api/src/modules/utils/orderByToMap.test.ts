@@ -1,4 +1,4 @@
-import { OrderType } from "@api/modules/shared/types/FilterArgs";
+import { OrderType } from "@api/modules/types/FilterArgs";
 import { orderByToMap } from "@api/modules/utils/orderByToMap";
 
 describe("OrderBy to Map", () => {

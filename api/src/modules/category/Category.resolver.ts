@@ -1,8 +1,8 @@
 import { Resolver, Query, Args, Mutation, Arg, Authorized } from "type-graphql";
 
 import { CategoryService } from "@api/modules/category/category/Category.service";
-import { PaginatedCategoryResponse } from "@api/modules/shared/types/PaginatedResponse";
-import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
+import { PaginatedCategoryResponse } from "@api/modules/types/PaginatedResponse";
+import { FilterArgs } from "@api/modules/types/FilterArgs";
 import { CreateCategoryInput } from "@api/modules/category/category/CreateCategoryInput";
 import { UpdateCategoryInput } from "@api/modules/category/category/UpdateCategoryInput";
 import { Category } from "@api/entity/Category";

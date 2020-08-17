@@ -3,7 +3,7 @@ import { Resolver, FieldResolver, Root, Ctx } from "type-graphql";
 import { Favorite } from "@api/entity/Favorite";
 import { User } from "@api/entity/User";
 import { Product } from "@api/entity/Product";
-import { RequestContext } from "@api/modules/shared/types/RequestContext";
+import { RequestContext } from "@api/modules/types/RequestContext";
 
 @Resolver(() => Favorite)
 export class FavoriteEntityResolver {

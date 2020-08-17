@@ -2,8 +2,8 @@ import { useSeeding, factory } from "typeorm-seeding";
 
 import { Category } from "@api/entity/Category";
 import { CategoryService } from "@api/modules/category/category/Category.service";
-import { PaginatedCategoryResponse } from "@api/modules/shared/types/PaginatedResponse";
-import { OrderType } from "@api/modules/shared/types/FilterArgs";
+import { PaginatedCategoryResponse } from "@api/modules/types/PaginatedResponse";
+import { OrderType } from "@api/modules/types/FilterArgs";
 
 // Since all services are based on BaseService and the resolvers don't have any logic on them.
 // I only have to test BaseService and the custom methods on these services and resolvers if they exist.
@@ -15,6 +15,7 @@ beforeAll(async () => {
 // I'm using the CategoryService to test BaseService but it should work with any entity.
 describe("BaseService", () => {
   // TODO: Test findManyToMany.
+
   it("findAll", async () => {
     const service = new CategoryService();
     const categories = await factory(Category)().createMany(5);

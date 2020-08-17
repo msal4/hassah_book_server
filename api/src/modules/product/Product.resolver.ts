@@ -1,8 +1,8 @@
 import { Resolver, Args, Query, Mutation, Arg, Authorized } from "type-graphql";
 
-import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
+import { FilterArgs } from "@api/modules/types/FilterArgs";
 import { Product } from "@api/entity/Product";
-import { PaginatedProductResponse } from "@api/modules/shared/types/PaginatedResponse";
+import { PaginatedProductResponse } from "@api/modules/types/PaginatedResponse";
 import { ProductService } from "@api/modules/product/product/Product.service";
 import { CreateProductInput } from "@api/modules/product/product/CreateProductInput";
 import { UpdateProductInput } from "@api/modules/product/product/UpdateProductInput";

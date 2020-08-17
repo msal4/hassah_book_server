@@ -1,9 +1,9 @@
 import { Resolver, FieldResolver, Root, Args } from "type-graphql";
 
-import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
-import { PaginatedProductResponse } from "@api/modules/shared/types/PaginatedResponse";
+import { FilterArgs } from "@api/modules/types/FilterArgs";
+import { PaginatedProductResponse } from "@api/modules/types/PaginatedResponse";
 import { Collection } from "@api/entity/Collection";
-import { BaseService } from "@api/modules/shared/services/Base.service";
+import { BaseService } from "@api/modules/services/Base.service";
 import { Product } from "@api/entity/Product";
 import { ProductService } from "@api/modules/product/product/Product.service";
 import { PAGINATED_RESPONSE_COMPLEXITY } from "@api/modules/constants/query";

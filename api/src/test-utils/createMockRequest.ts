@@ -1,6 +1,6 @@
 import { mockRequest } from "mock-req-res";
 
-import { BaseUser } from "@api/entity/shared/BaseUser";
+import { BaseUser } from "@api/entity/base/BaseUser";
 import { createAccessToken } from "@api/modules/utils/auth";
 
 export function createMockRequest(user?: BaseUser) {

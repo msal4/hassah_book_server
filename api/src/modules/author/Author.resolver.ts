@@ -1,7 +1,7 @@
 import { Resolver, Query, Args, Mutation, Arg, Authorized } from "type-graphql";
 
-import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
-import { PaginatedAuthorResponse } from "@api/modules/shared/types/PaginatedResponse";
+import { FilterArgs } from "@api/modules/types/FilterArgs";
+import { PaginatedAuthorResponse } from "@api/modules/types/PaginatedResponse";
 import { CreateAuthorInput } from "@api/modules/author/author/CreateAuthorInput";
 import { UpdateAuthorInput } from "@api/modules/author/author/UpdateAuthorInput";
 import { AuthorService } from "@api/modules/author/author/Author.service";

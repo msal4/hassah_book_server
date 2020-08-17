@@ -1,4 +1,4 @@
-import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
+import { FilterArgs } from "@api/modules/types/FilterArgs";
 
 export interface FindManyToManyOptions {
   relationName: string;

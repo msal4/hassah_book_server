@@ -2,16 +2,16 @@ import { Resolver, Query, Authorized, Args, Mutation, Arg, Ctx } from "type-grap
 import { ValidationError } from "apollo-server-express";
 
 import { Roles } from "@api/modules/utils/auth";
-import { PaginatedUserResponse } from "@api/modules/shared/types/PaginatedResponse";
+import { PaginatedUserResponse } from "@api/modules/types/PaginatedResponse";
 import { User } from "@api/entity/User";
-import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
+import { FilterArgs } from "@api/modules/types/FilterArgs";
 import { UserService } from "@api/modules/user/user/User.service";
 import { UpdateProfileInput } from "@api/modules/user/user/UpdateProfileInput";
 import { SessionInfo } from "@api/modules/user/user/SessionInfo";
 import { SendVerificationCodeInput } from "@api/modules/user/user/SendVerificationCodeInput";
-import { RequestContext } from "@api/modules/shared/types/RequestContext";
+import { RequestContext } from "@api/modules/types/RequestContext";
 import { RegisterInput } from "@api/modules/user/user/RegisterInput";
-import { LoginResponse } from "@api/modules/shared/types/LoginResponse";
+import { LoginResponse } from "@api/modules/types/LoginResponse";
 import { LoginInput } from "@api/modules/user/user/LoginInput";
 import { VerificationInput } from "@api/modules/user/user/VerficationCodeInput";
 import { UpdatePasswordInput } from "@api/modules/user/user/UpdatePasswordInput";

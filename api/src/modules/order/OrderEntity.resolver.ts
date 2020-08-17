@@ -2,10 +2,10 @@ import { Resolver, FieldResolver, Root, Ctx } from "type-graphql";
 
 import { Order } from "@api/entity/Order";
 import { User } from "@api/entity/User";
-import { PaginatedPurchaseResponse } from "@api/modules/shared/types/PaginatedResponse";
+import { PaginatedPurchaseResponse } from "@api/modules/types/PaginatedResponse";
 import { PurchaseService } from "@api/modules/purchase/Purchase.service";
-import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
-import { RequestContext } from "@api/modules/shared/types/RequestContext";
+import { FilterArgs } from "@api/modules/types/FilterArgs";
+import { RequestContext } from "@api/modules/types/RequestContext";
 import { PAGINATED_RESPONSE_COMPLEXITY } from "@api/modules/constants/query";
 
 @Resolver(() => Order)

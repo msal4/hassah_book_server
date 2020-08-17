@@ -12,7 +12,7 @@ import {
 
 import { User } from "@api/entity/User";
 import { Purchase } from "@api/entity/Purchase";
-import { Lazy } from "@api/modules/shared/types/Lazy";
+import { Lazy } from "@api/modules/types/Lazy";
 
 export enum OrderStatus {
   Pending = "Pending",

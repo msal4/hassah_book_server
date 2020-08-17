@@ -1,9 +1,9 @@
 import { Resolver, Query, Args, Ctx, Mutation, Arg, Authorized } from "type-graphql";
 
 import { OrderService } from "@api/modules/order/order/Order.service";
-import { PaginatedOrderResponse } from "@api/modules/shared/types/PaginatedResponse";
-import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
-import { RequestContext } from "@api/modules/shared/types/RequestContext";
+import { PaginatedOrderResponse } from "@api/modules/types/PaginatedResponse";
+import { FilterArgs } from "@api/modules/types/FilterArgs";
+import { RequestContext } from "@api/modules/types/RequestContext";
 import { Order, OrderStatus } from "@api/entity/Order";
 import { PlaceOrderInput } from "@api/modules/order/order/PlaceOrderInput";
 import { UpdateOrderInput } from "@api/modules/order/order/UpdateOrderInput";

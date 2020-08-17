@@ -3,7 +3,7 @@ import { Entity, BaseEntity, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn
 
 import { User } from "@api/entity/User";
 import { Product } from "@api/entity/Product";
-import { Lazy } from "@api/modules/shared/types/Lazy";
+import { Lazy } from "@api/modules/types/Lazy";
 
 @ObjectType()
 @Entity()

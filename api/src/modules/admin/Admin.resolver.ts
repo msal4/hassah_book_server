@@ -2,8 +2,8 @@ import { Resolver, Mutation, Arg, Ctx, Authorized } from "type-graphql";
 
 import { AdminService } from "@api/modules/admin/admin/Admin.service";
 import { AdminLoginInput } from "@api/modules/admin/admin/AdminLoginInput";
-import { LoginResponse } from "@api/modules/shared/types/LoginResponse";
-import { RequestContext } from "@api/modules/shared/types/RequestContext";
+import { LoginResponse } from "@api/modules/types/LoginResponse";
+import { RequestContext } from "@api/modules/types/RequestContext";
 import { Admin } from "@api/entity/Admin";
 import { AdminRegisterInput } from "@api/modules/admin/admin/AdminRegisterInput";
 import { Roles } from "@api/modules/utils/auth";

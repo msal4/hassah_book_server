@@ -1,7 +1,7 @@
 import { InputType, Field, Int, Float } from "type-graphql";
 
 import { ProductStatus } from "@api/entity/Product";
-import { ObjectIdInput } from "@api/modules/shared/types/ObjectIdInput";
+import { ObjectIdInput } from "@api/modules/types/ObjectIdInput";
 
 @InputType({ description: "The input data for creating new products." })
 export class CreateProductInput {

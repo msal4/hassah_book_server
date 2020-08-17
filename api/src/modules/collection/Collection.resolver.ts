@@ -1,8 +1,8 @@
 import { Resolver, Query, Args, Mutation, Arg, Authorized } from "type-graphql";
 
 import { CollectionService } from "@api/modules/collection/collection/Collection.service";
-import { PaginatedCollectionResponse } from "@api/modules/shared/types/PaginatedResponse";
-import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
+import { PaginatedCollectionResponse } from "@api/modules/types/PaginatedResponse";
+import { FilterArgs } from "@api/modules/types/FilterArgs";
 import { Collection } from "@api/entity/Collection";
 import { CreateCollectionInput } from "@api/modules/collection/collection/CreateCollectionInput";
 import { UpdateCollectionInput } from "@api/modules/collection/collection/UpdateCollectionInput";

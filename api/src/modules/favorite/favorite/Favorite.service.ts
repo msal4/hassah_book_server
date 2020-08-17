@@ -1,7 +1,7 @@
 import { Service } from "typedi";
 
 import { Favorite } from "@api/entity/Favorite";
-import { BaseService } from "@api/modules/shared/services/Base.service";
+import { BaseService } from "@api/modules/services/Base.service";
 
 interface FavoriteData {
   userId: string;

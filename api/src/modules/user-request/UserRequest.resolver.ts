@@ -1,9 +1,9 @@
 import { Resolver, Query, Ctx, Args, Mutation, Arg, Authorized } from "type-graphql";
 
-import { PaginatedUserRequestResponse } from "@api/modules/shared/types/PaginatedResponse";
+import { PaginatedUserRequestResponse } from "@api/modules/types/PaginatedResponse";
 import { UserRequestService } from "@api/modules/user-request/user-request/UserRequest.service";
-import { RequestContext } from "@api/modules/shared/types/RequestContext";
-import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
+import { RequestContext } from "@api/modules/types/RequestContext";
+import { FilterArgs } from "@api/modules/types/FilterArgs";
 import { UserRequest } from "@api/entity/UserRequest";
 import { CreateUserRequestInput } from "@api/modules/user-request/user-request/CreateUserRequestInput";
 import { UpdateUserRequestInput } from "@api/modules/user-request/user-request/UpdateUserRequestInput";

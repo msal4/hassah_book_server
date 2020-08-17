@@ -1,16 +1,13 @@
 import { Resolver, FieldResolver, Root, Args, Authorized, Ctx } from "type-graphql";
 
 import { Product } from "@api/entity/Product";
-import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
-import {
-  PaginatedFavoriteResponse,
-  PaginatedPurchaseResponse,
-} from "@api/modules/shared/types/PaginatedResponse";
+import { FilterArgs } from "@api/modules/types/FilterArgs";
+import { PaginatedFavoriteResponse, PaginatedPurchaseResponse } from "@api/modules/types/PaginatedResponse";
 import { FavoriteService } from "@api/modules/favorite/favorite/Favorite.service";
 import { Roles } from "@api/modules/utils/auth";
 import { PurchaseService } from "@api/modules/purchase/Purchase.service";
 import { Author } from "@api/entity/Author";
-import { RequestContext } from "@api/modules/shared/types/RequestContext";
+import { RequestContext } from "@api/modules/types/RequestContext";
 import { Publisher } from "@api/entity/Publisher";
 import { Category } from "@api/entity/Category";
 import { Collection } from "@api/entity/Collection";

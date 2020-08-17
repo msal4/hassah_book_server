@@ -1,9 +1,9 @@
 import { ObjectType, Field } from "type-graphql";
 import { Entity, Column, OneToMany } from "typeorm";
 
-import { BaseProductParent } from "@api/entity/shared/BaseProductParent";
+import { BaseProductParent } from "@api/entity/base/BaseProductParent";
 import { Product } from "@api/entity/Product";
-import { Lazy } from "@api/modules/shared/types/Lazy";
+import { Lazy } from "@api/modules/types/Lazy";
 
 @ObjectType()
 @Entity()

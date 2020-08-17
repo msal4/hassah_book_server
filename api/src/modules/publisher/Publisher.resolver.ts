@@ -1,7 +1,7 @@
 import { Resolver, Query, Args, Mutation, Arg, Authorized } from "type-graphql";
 
-import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
-import { PaginatedPublisherResponse } from "@api/modules/shared/types/PaginatedResponse";
+import { FilterArgs } from "@api/modules/types/FilterArgs";
+import { PaginatedPublisherResponse } from "@api/modules/types/PaginatedResponse";
 import { CreatePublisherInput } from "@api/modules/publisher/publisher/CreatePublisherInput";
 import { UpdatePublisherInput } from "@api/modules/publisher/publisher/UpdatePublisherInput";
 import { PublisherService } from "@api/modules/publisher/publisher/Publisher.service";

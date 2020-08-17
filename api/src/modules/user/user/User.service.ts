@@ -2,7 +2,7 @@ import { Service } from "typedi";
 import { ValidationError } from "apollo-server-express";
 import { Response } from "express";
 
-import { BaseService } from "@api/modules/shared/services/Base.service";
+import { BaseService } from "@api/modules/services/Base.service";
 import { User } from "@api/entity/User";
 import { normalizePhone } from "@api/modules/utils/normalizePhone";
 import { isPhoneAlreadyExist } from "@api/modules/user/user/isPhoneAlreadyExist";
@@ -16,7 +16,7 @@ import { PhoneSessionInfo } from "@api/entity/PhoneSessionInfo";
 import { SendVerificationCodeInput } from "@api/modules/user/user/SendVerificationCodeInput";
 import { RegisterInput } from "@api/modules/user/user/RegisterInput";
 import { LoginInput } from "@api/modules/user/user/LoginInput";
-import { LoginResponse } from "@api/modules/shared/types/LoginResponse";
+import { LoginResponse } from "@api/modules/types/LoginResponse";
 import { VerificationInput } from "@api/modules/user/user/VerficationCodeInput";
 
 @Service()

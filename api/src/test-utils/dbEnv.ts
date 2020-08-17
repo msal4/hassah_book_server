@@ -5,6 +5,7 @@ import { ormconfig } from "@api/test-utils/ormconfig";
 beforeAll(async () => {
   await createConnection({ ...ormconfig, synchronize: false, dropSchema: false });
 });
+
 afterAll(async () => {
   try {
     for (const entity of getConnection().entityMetadatas) {

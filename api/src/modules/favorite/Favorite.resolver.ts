@@ -1,7 +1,7 @@
 import { Resolver, Mutation, Arg, Ctx, Authorized } from "type-graphql";
 
 import { FavoriteService } from "@api/modules/favorite/favorite/Favorite.service";
-import { RequestContext } from "@api/modules/shared/types/RequestContext";
+import { RequestContext } from "@api/modules/types/RequestContext";
 import { Roles } from "@api/modules/utils/auth";
 
 @Resolver()

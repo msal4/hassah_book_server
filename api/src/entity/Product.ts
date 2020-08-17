@@ -17,7 +17,7 @@ import { Category } from "@api/entity/Category";
 import { Collection } from "@api/entity/Collection";
 import { Favorite } from "@api/entity/Favorite";
 import { Purchase } from "@api/entity/Purchase";
-import { Lazy } from "@api/modules/shared/types/Lazy";
+import { Lazy } from "@api/modules/types/Lazy";
 
 export enum ProductStatus {
   Available = "Available",

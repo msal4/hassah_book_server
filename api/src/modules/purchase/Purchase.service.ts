@@ -1,6 +1,6 @@
 import { Service } from "typedi";
 
-import { BaseService } from "@api/modules/shared/services/Base.service";
+import { BaseService } from "@api/modules/services/Base.service";
 import { Purchase } from "@api/entity/Purchase";
 
 @Service()
