@@ -1,15 +1,15 @@
-import { firstCharToLowerCase } from "@api/modules/utils/string";
+import { lowerCamelCase } from "@api/modules/utils/string";
 
 describe("String Utils", () => {
-  describe("firstCharToLowerCase", () => {
+  describe("lowerCamelCase", () => {
     it("first character to lower case", () => {
-      expect(firstCharToLowerCase("ThisIsAString")).toBe("thisIsAString");
+      expect(lowerCamelCase("ThisIsAString")).toBe("thisIsAString");
     });
     it("empty string", () => {
-      expect(firstCharToLowerCase("")).toBe("");
+      expect(lowerCamelCase("")).toBe("");
     });
     it("undefined", () => {
-      expect(firstCharToLowerCase(undefined as any)).toBe("");
+      expect(lowerCamelCase(undefined as any)).toBe("");
     });
   });
 });

@@ -1,4 +1,4 @@
-export function firstCharToLowerCase(str: string): string {
+export function lowerCamelCase(str: string): string {
   if (!str) return "";
   return str[0].toLowerCase() + str.substring(1);
 }

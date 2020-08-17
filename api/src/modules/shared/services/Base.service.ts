@@ -6,7 +6,7 @@ import { hasMore } from "@api/modules/utils/hasMore";
 import { FindManyToManyOptions } from "@api/modules/shared/services/base/FindManyToManyOptions";
 import { FilterArgs } from "@api/modules/shared/types/FilterArgs";
 import { orderByToMap } from "@api/modules/utils/orderByToMap";
-import { firstCharToLowerCase } from "@api/modules/utils/string";
+import { lowerCamelCase } from "@api/modules/utils/string";
 
 // The default service on which other services are based on.
 export class BaseService<T extends BaseEntity> {
@@ -31,7 +31,7 @@ export class BaseService<T extends BaseEntity> {
     { childId, relationName, relations = [], filterArgs }: FindManyToManyOptions
   ) {
     const repository = getRepository(Entity);
-    const tableName = firstCharToLowerCase(Entity.name);
+    const tableName = lowerCamelCase(Entity.name);
 
     // Since typeorm does not handle pagination for relations I have to write the query myself.
     // It should be resolved soon but for now this will do the trick.
