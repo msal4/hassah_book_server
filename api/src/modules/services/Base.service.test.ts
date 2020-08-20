@@ -2,8 +2,11 @@ import { useSeeding, factory } from "typeorm-seeding";
 
 import { Category } from "@api/entity/Category";
 import { CategoryService } from "@api/modules/category/category/Category.service";
-import { PaginatedCategoryResponse } from "@api/modules/types/PaginatedResponse";
+import { PaginatedCategoryResponse, PaginatedProductResponse } from "@api/modules/types/PaginatedResponse";
 import { OrderType } from "@api/modules/types/FilterArgs";
+import { BaseService } from "@api/modules/services/Base.service";
+import { Product } from "@api/entity/Product";
+import { Author } from "@api/entity/Author";
 
 // Since all services are based on BaseService and the resolvers don't have any logic on them.
 // I only have to test BaseService and the custom methods on these services and resolvers if they exist.
@@ -14,7 +17,47 @@ beforeAll(async () => {
 
 // I'm using the CategoryService to test BaseService but it should work with any entity.
 describe("BaseService", () => {
-  // TODO: Test findManyToMany.
+  it("findManyToMany", async () => {
+    const category = await factory(Category)().create();
+    let products = await BaseService.findManyToMany(Product, {
+      childId: category.id,
+      relationName: "categories",
+    });
+
+    expect(products).toMatchObject({ items: [], total: 0, hasMore: false } as PaginatedProductResponse);
+    const author = await Author.create({ name: "hi", image: "bye", overview: "lie" }).save();
+
+    const createProducts = async (amount: number) => {
+      const products = [];
+      for (let i = 0; i < amount; i++) {
+        const product = await Product.create({
+          name: "dshflsd",
+          image: "fa",
+          overview: "ad",
+          price: 100,
+          author,
+          categories: [category],
+        }).save();
+
+        products.push(product);
+      }
+
+      return products;
+    };
+
+    const categoryProducts = await createProducts(3);
+
+    products = await BaseService.findManyToMany(Product, {
+      childId: category.id,
+      relationName: "categories",
+    });
+
+    expect({
+      items: categoryProducts,
+      hasMore: false,
+      total: categoryProducts.length,
+    } as PaginatedProductResponse).toMatchObject(products);
+  });
 
   it("findAll", async () => {
     const service = new CategoryService();
@@ -64,13 +107,13 @@ describe("BaseService", () => {
   it("update", async () => {
     const service = new CategoryService();
 
-    let category = await Category.findOne();
+    let category = await factory(Category)().create();
     expect(category).toBeDefined();
 
-    const updated = await service.update({ id: category!.id, name: "AnotherTestCat" });
+    const updated = await service.update({ id: category.id, name: "AnotherTestCat" });
     expect(updated).toBeTruthy();
 
-    await category?.reload();
+    await category.reload();
 
     expect(category).toBeDefined();
     expect(category).toMatchObject({ name: "AnotherTestCat" });
@@ -79,13 +122,13 @@ describe("BaseService", () => {
   it("delete", async () => {
     const service = new CategoryService();
 
-    let category = await Category.findOne();
+    const category = await factory(Category)().create();
     expect(category).toBeDefined();
 
-    const deleted = await service.delete(category!.id);
+    const deleted = await service.delete(category.id);
     expect(deleted).toBeTruthy();
 
-    category = await Category.findOne(category!.id);
-    expect(category).toBeUndefined();
+    const deletedCategory = await Category.findOne(category.id);
+    expect(deletedCategory).toBeUndefined();
   });
 });

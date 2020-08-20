@@ -19,6 +19,7 @@ define(Product, (faker, context?: ProductFactoryContext) => {
   const publisher = faker.random.arrayElement(context!.publishers);
   product.publisher = publisher;
 
+  // TODO: Fix foreign key violation issue.
   const author = faker.random.arrayElement(context!.authors);
   product.author = author;
 
