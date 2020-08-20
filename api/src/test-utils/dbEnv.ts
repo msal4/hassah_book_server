@@ -6,7 +6,7 @@ beforeAll(async () => {
   await createConnection({ ...ormconfig, synchronize: false, dropSchema: false });
 });
 
-afterAll(async () => {
+afterEach(async () => {
   try {
     for (const entity of getConnection().entityMetadatas) {
       await getRepository(entity.name).query(`TRUNCATE TABLE "${entity.tableName}" CASCADE;`);
@@ -14,5 +14,8 @@ afterAll(async () => {
   } catch (err) {
     console.log(`ERROR: Cleaning test database: ${err}`);
   }
+});
+
+afterAll(async () => {
   await getConnection().close();
 });
