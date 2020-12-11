@@ -1,12 +1,12 @@
-import { FindManyOptions, Repository, BaseEntity, DeepPartial, getRepository } from "typeorm";
+import { Repository, BaseEntity, DeepPartial, getRepository } from "typeorm";
 import { ClassType } from "type-graphql";
 
 import { PaginatedResponse } from "@api/modules/types/PaginatedResponse";
 import { hasMore } from "@api/modules/utils/hasMore";
 import { FindManyToManyOptions } from "@api/modules/services/base/FindManyToManyOptions";
-import { FilterArgs } from "@api/modules/types/FilterArgs";
 import { orderByToMap } from "@api/modules/utils/orderByToMap";
 import { lowerCamelCase } from "@api/modules/utils/string";
+import { FindAllOptions } from "@api/modules/types/FindAllOptions";
 
 // The default service on which other services are based on.
 export class BaseService<T extends BaseEntity> {
@@ -50,7 +50,7 @@ export class BaseService<T extends BaseEntity> {
     return { items, total, hasMore: filterArgs ? hasMore(filterArgs, total) : false };
   }
 
-  async findAll(options: FilterArgs & FindManyOptions<T>): Promise<PaginatedResponse<T>> {
+  async findAll(options: FindAllOptions<T>): Promise<PaginatedResponse<T>> {
     const [items, total] = await this.repository.findAndCount({
       ...options,
       order: orderByToMap<T>(options.order),
