@@ -2,7 +2,7 @@
 require("ts-node/register");
 require("tsconfig-paths/register");
 
-import { createConnection } from "typeorm";
+import { createConnection, getConnection } from "typeorm";
 import { ormconfig } from "@api/test-utils/ormconfig";
 
 export default async () => {
@@ -11,8 +11,7 @@ export default async () => {
   try {
     await createConnection(ormconfig);
   } catch {}
-  // TODO: run migrations here once I start using them.
-  // await connection.runMigrations()
+  await getConnection().runMigrations();
   const finishTime = Date.now();
   console.log(`Connected in ${finishTime - startTime}ms`);
 };

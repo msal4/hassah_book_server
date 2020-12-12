@@ -9,7 +9,9 @@ export const ormconfig: ConnectionOptions = {
   password: "postgres",
   database: "hassahbook-test",
   port: 5432,
-  synchronize: true,
+  synchronize: false,
   dropSchema: true,
   entities: [join(__dirname, "../entity/*.*")],
+  migrations: [join(__dirname, "../migration/*.*")],
+  cli: { migrationsDir: join(__dirname, "../migration/") },
 };
