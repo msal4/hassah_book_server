@@ -1,11 +1,11 @@
-import { Repository, BaseEntity, DeepPartial, getRepository } from "typeorm";
+import { Repository, BaseEntity, DeepPartial, getRepository, SelectQueryBuilder } from "typeorm";
 import { ClassType } from "type-graphql";
 
 import { PaginatedResponse } from "@api/modules/types/PaginatedResponse";
 import { hasMore } from "@api/modules/utils/hasMore";
 import { FindManyToManyOptions } from "@api/modules/services/base/FindManyToManyOptions";
 import { orderByToMap } from "@api/modules/utils/orderByToMap";
-import { lowerCamelCase } from "@api/modules/utils/string";
+import { lowerCamelCase, tsQuery } from "@api/modules/utils/string";
 import { FindAllOptions } from "@api/modules/types/FindAllOptions";
 
 // The default service on which other services are based on.
@@ -14,7 +14,11 @@ export class BaseService<T extends BaseEntity> {
     const className = this.constructor.name;
     if (className.endsWith("Service")) {
       this.entityName = className.substr(0, className.indexOf("Service"));
+      this.tableName = lowerCamelCase(this.entityName);
       this.repository = getRepository(this.entityName);
+      this.hasDocument = !!this.repository.metadata.columns.find(
+        (column) => column.propertyName === "document"
+      );
     } else {
       throw new Error("Service name should be the name of the entity with the suffix 'Service'");
     }
@@ -25,6 +29,9 @@ export class BaseService<T extends BaseEntity> {
   public relations: string[] = [];
   // The entity name that is retrieved from the class name.
   protected readonly entityName: string;
+  protected readonly tableName: string;
+  // Determines if the table has a document column used for full-text search.
+  protected readonly hasDocument: boolean = false;
 
   static async findManyToMany<R>(
     Entity: ClassType<R>,
@@ -51,12 +58,54 @@ export class BaseService<T extends BaseEntity> {
   }
 
   async findAll(options: FindAllOptions<T>): Promise<PaginatedResponse<T>> {
-    const [items, total] = await this.repository.findAndCount({
-      ...options,
-      order: orderByToMap<T>(options.order),
-      loadRelationIds: { relations: this.relations },
-    });
+    let query = this.repository
+      .createQueryBuilder(this.tableName)
+      .select()
+      .loadAllRelationIds({ relations: this.relations });
+
+    if (options.where) {
+      query = query.where(options.where);
+    }
+
+    query = this.applyOrderBy(query, options);
+
+    query = this.applySearchQuery(query, options);
+
+    const [items, total] = await query.skip(options.skip).take(options.take).getManyAndCount();
+
     return { items, total, hasMore: hasMore(options, total) };
+  }
+
+  private applyOrderBy(query: SelectQueryBuilder<T>, options: FindAllOptions<T>): SelectQueryBuilder<T> {
+    if (!options.order) {
+      return query;
+    }
+
+    let q = query;
+    for (const ob of options.order) {
+      q = q.addOrderBy(`${this.tableName}.${ob.field}`, ob.order);
+    }
+    return q;
+  }
+
+  private applySearchQuery(query: SelectQueryBuilder<T>, options: FindAllOptions<T>): SelectQueryBuilder<T> {
+    if (!options.searchQuery) {
+      return query;
+    }
+
+    // Fallback to good old 'LIKE' if the document column does not exist.
+    if (!this.hasDocument) {
+      return query.andWhere(`${this.tableName}::TEXT like '%' || :query || '%'`, {
+        query: options.searchQuery,
+      });
+    }
+
+    // Use full-text search.
+    return query
+      .andWhere(`${this.tableName}.document @@ to_tsquery(:query)`, {
+        query: tsQuery(options.searchQuery),
+      })
+      .addOrderBy(`ts_rank(${this.tableName}.document, to_tsquery(:query))`, "DESC");
   }
 
   create(data: DeepPartial<T>): Promise<T> {

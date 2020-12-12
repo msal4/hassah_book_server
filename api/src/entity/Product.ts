@@ -67,6 +67,9 @@ export class Product extends BaseEntity {
   @Column("varchar", { default: "en" })
   language: string;
 
+  @Column("tsvector", { select: false })
+  document: any;
+
   @Field()
   @Column({ type: "timestamp", default: "now()" })
   publishedAt: Date;
