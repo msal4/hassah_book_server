@@ -31,4 +31,7 @@ export class FilterArgs {
 
   @Field(() => [OrderByMap], { nullable: true })
   order?: OrderByMap[];
+
+  @Field({ nullable: true })
+  searchQuery?: string;
 }

@@ -13,7 +13,8 @@
     "graphql": "^15.3.0",
     "graphql-query-complexity": "^0.6.0",
     "jsonwebtoken": "^8.5.1",
-    "pg": "^8.3.0",
+    "pg": "^8.5.1",
+    "pg-tsquery": "^8.1.0",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.0.0-rc.3",
     "typedi": "^0.8.0",
@@ -46,10 +47,8 @@
     "test:setup": "yarn api:run src/test-utils/setup.ts",
     "test": "yarn test:setup && jest -i",
     "test:watch": "yarn test --watch",
-    "seed:config": "yarn api:run ./node_modules/typeorm-seeding/dist/cli.js config",
-    "seed:run": "yarn api:run ./node_modules/typeorm-seeding/dist/cli.js seed",
-    "schema:drop": "yarn api:run ./node_modules/typeorm/cli.js schema:drop",
-    "schema:sync": "yarn api:run ./node_modules/typeorm/cli.js schema:sync",
-    "drop-and-seed": "yarn schema:drop && yarn schema:sync && yarn seed:run"
+    "orm": "yarn api:run ../node_modules/typeorm/cli.js",
+    "orm-seeding": "yarn api:run ../node_modules/typeorm-seeding/dist/cli.js",
+    "drop-and-seed": "yarn orm schema:drop && yarn orm migration:run && yarn orm-seeding seed"
   }
 }
