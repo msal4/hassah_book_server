@@ -12,8 +12,6 @@ import { RequestContext } from "@api/modules/types/RequestContext";
 import { createLoaders } from "@api/utils/loaders";
 import { queryComplexityPlugin } from "@api/utils/queryComplexity.plugin";
 
-const PORT = 4000;
-
 async function bootstrap() {
   // Create typeorm connection using the default configuration in .env .
   await createConnection();
@@ -32,8 +30,8 @@ async function bootstrap() {
   });
   apolloServer.applyMiddleware({ app });
 
-  app.listen(PORT, () => {
-    console.log(`Listening on port ${PORT}`);
+  app.listen(process.env.PORT, () => {
+    console.log(`Listening on port ${process.env.PORT}`);
   });
 }
 
