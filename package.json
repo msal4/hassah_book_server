@@ -6,5 +6,8 @@
   ],
   "scripts": {
     "api": "yarn workspace @hb/api"
+  },
+  "devDependencies": {
+    "prettier": "^2.2.1"
   }
 }

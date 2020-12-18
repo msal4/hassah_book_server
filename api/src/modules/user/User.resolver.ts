@@ -48,7 +48,7 @@ export class UserResolver {
       throw new ValidationError(`Phone number already in use`);
     }
 
-    return await this.userService.sendVerficationCode({ ...data, phoneNumber });
+    return await this.userService.sendVerificationCode({ ...data, phoneNumber });
   }
 
   @Mutation(() => SessionInfo)
@@ -60,7 +60,7 @@ export class UserResolver {
       throw new Error("No user found with this number");
     }
 
-    return await this.userService.sendVerficationCode({ ...data, phoneNumber });
+    return await this.userService.sendVerificationCode({ ...data, phoneNumber });
   }
 
   @Mutation(() => LoginResponse)
@@ -83,7 +83,7 @@ export class UserResolver {
     // Update password
     user.password = password;
     await user.hashPassword();
-    user.save();
+    await user.save();
 
     return await this.userService.login(res, { phone, password });
   }
@@ -95,7 +95,7 @@ export class UserResolver {
     @Ctx() { payload }: RequestContext
   ): Promise<boolean> {
     const phone = await this.userService.verifyCode(data);
-    return this.userService.update({ id: payload!.userId, phone });
+    return await this.userService.update({ id: payload!.userId, phone });
   }
 
   @Mutation(() => User)
@@ -104,7 +104,7 @@ export class UserResolver {
   }
 
   @Mutation(() => LoginResponse)
-  async login(@Arg("data") data: LoginInput, @Ctx() { res }: RequestContext): Promise<LoginResponse> {
+  login(@Arg("data") data: LoginInput, @Ctx() { res }: RequestContext): Promise<LoginResponse> {
     return this.userService.login(res, data);
   }
 }

@@ -29,6 +29,7 @@ export class BaseService<T extends BaseEntity> {
   public relations: string[] = [];
   // The entity name that is retrieved from the class name.
   protected readonly entityName: string;
+  // The camel case table name that is derived from `entityName`.
   protected readonly tableName: string;
   // Determines if the table has a document column used for full-text search.
   protected readonly hasDocument: boolean = false;
@@ -40,9 +41,9 @@ export class BaseService<T extends BaseEntity> {
     const repository = getRepository(Entity);
     const tableName = lowerCamelCase(Entity.name);
 
-    // Since typeorm does not handle pagination for relations I have to write the query myself.
+    // Since typeorm does not handle pagination for relations I wrote the query myself.
     // It should be resolved soon but for now this will do the trick.
-    // issue: https://github.com/typeorm/typeorm/issues/5392
+    // issues: https://github.com/typeorm/typeorm/issues/5392, https://github.com/typeorm/typeorm/issues/3251
     const [items, total] = await repository
       .createQueryBuilder(tableName)
       .innerJoin(`${tableName}.${relationName}`, `${tableName}Item`, `${tableName}Item.id = :childId`, {
@@ -57,7 +58,7 @@ export class BaseService<T extends BaseEntity> {
     return { items, total, hasMore: filterArgs ? hasMore(filterArgs, total) : false };
   }
 
-  async findAll(options: FindAllOptions<T>): Promise<PaginatedResponse<T>> {
+  async findAll(options: FindAllOptions): Promise<PaginatedResponse<T>> {
     let query = this.repository
       .createQueryBuilder(this.tableName)
       .select()
@@ -76,19 +77,18 @@ export class BaseService<T extends BaseEntity> {
     return { items, total, hasMore: hasMore(options, total) };
   }
 
-  private applyOrderBy(query: SelectQueryBuilder<T>, options: FindAllOptions<T>): SelectQueryBuilder<T> {
+  private applyOrderBy(query: SelectQueryBuilder<T>, options: FindAllOptions): SelectQueryBuilder<T> {
     if (!options.order) {
       return query;
     }
 
-    let q = query;
     for (const ob of options.order) {
-      q = q.addOrderBy(`${this.tableName}.${ob.field}`, ob.order);
+      query = query.addOrderBy(`${this.tableName}.${ob.field}`, ob.order);
     }
-    return q;
+    return query;
   }
 
-  private applySearchQuery(query: SelectQueryBuilder<T>, options: FindAllOptions<T>): SelectQueryBuilder<T> {
+  private applySearchQuery(query: SelectQueryBuilder<T>, options: FindAllOptions): SelectQueryBuilder<T> {
     if (!options.searchQuery) {
       return query;
     }

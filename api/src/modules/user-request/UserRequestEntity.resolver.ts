@@ -7,7 +7,7 @@ import { RequestContext } from "@api/modules/types/RequestContext";
 @Resolver(() => UserRequest)
 export class UserRequestResolver {
   @FieldResolver(() => User)
-  async user(@Ctx() { loaders }: RequestContext, @Root() { user }: UserRequest): Promise<User> {
+  user(@Ctx() { loaders }: RequestContext, @Root() { user }: UserRequest): Promise<User> {
     return loaders.userLoader.load(user as any);
   }
 }

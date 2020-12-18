@@ -65,7 +65,7 @@ export const sendRefreshTokenCookie = (res: Response, token: string) => {
   res.cookie("skal", token, { httpOnly: true });
 };
 
-export const relyingparty = google.identitytoolkit({
+export const relyingParty = google.identitytoolkit({
   version: "v3",
   auth: process.env.GOOGLE_CLOUD_API_KEY!,
 }).relyingparty;

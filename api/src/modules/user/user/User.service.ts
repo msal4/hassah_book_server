@@ -7,7 +7,7 @@ import { User } from "@api/entity/User";
 import { normalizePhone } from "@api/modules/utils/normalizePhone";
 import { isPhoneAlreadyExist } from "@api/modules/user/user/isPhoneAlreadyExist";
 import {
-  relyingparty,
+  relyingParty,
   sendRefreshTokenCookie,
   createRefreshToken,
   createAccessToken,
@@ -21,8 +21,8 @@ import { VerificationInput } from "@api/modules/user/user/VerficationCodeInput";
 
 @Service()
 export class UserService extends BaseService<User> {
-  async sendVerficationCode({ phoneNumber, recaptchaToken }: SendVerificationCodeInput) {
-    const response = await relyingparty.sendVerificationCode({ phoneNumber, recaptchaToken } as any);
+  async sendVerificationCode({ phoneNumber, recaptchaToken }: SendVerificationCodeInput) {
+    const response = await relyingParty.sendVerificationCode({ phoneNumber, recaptchaToken } as any);
 
     if (response.status !== 200) {
       throw new Error("Something went wrong while sending verification code!");
@@ -45,7 +45,7 @@ export class UserService extends BaseService<User> {
       throw new ValidationError("Phone number already in use");
     }
 
-    const response = await relyingparty.verifyPhoneNumber({ code, sessionInfo } as any);
+    const response = await relyingParty.verifyPhoneNumber({ code, sessionInfo } as any);
 
     if (response.status !== 200) {
       throw new Error("Invalid verification code or session!");

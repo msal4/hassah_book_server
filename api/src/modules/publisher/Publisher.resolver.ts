@@ -13,19 +13,19 @@ export class PublisherResolver {
   constructor(private readonly service: PublisherService) {}
 
   @Query(() => PaginatedPublisherResponse)
-  async publishers(@Args() args: FilterArgs): Promise<PaginatedPublisherResponse> {
+  publishers(@Args() args: FilterArgs): Promise<PaginatedPublisherResponse> {
     return this.service.findAll(args);
   }
 
   @Authorized(Roles.Admin)
   @Mutation(() => Publisher)
-  async createPublisher(@Arg("data") data: CreatePublisherInput): Promise<Publisher> {
+  createPublisher(@Arg("data") data: CreatePublisherInput): Promise<Publisher> {
     return this.service.create(data);
   }
 
   @Authorized(Roles.Admin)
   @Mutation(() => Boolean)
-  async updatePublisher(@Arg("data") data: UpdatePublisherInput): Promise<boolean> {
+  updatePublisher(@Arg("data") data: UpdatePublisherInput): Promise<boolean> {
     return this.service.update(data);
   }
 }

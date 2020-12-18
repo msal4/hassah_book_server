@@ -5,6 +5,7 @@ import { Admin } from "@api/entity/Admin";
 import { AdminLoginInput } from "@api/modules/admin/admin/AdminLoginInput";
 import { sendRefreshTokenCookie, createRefreshToken, createAccessToken } from "@api/modules/utils/auth";
 import { AdminRegisterInput } from "@api/modules/admin/admin/AdminRegisterInput";
+import { LoginResponse } from "@api/modules/types/LoginResponse";
 
 @Service()
 export class AdminService {
@@ -12,7 +13,7 @@ export class AdminService {
     return Admin.create(data).save();
   }
 
-  async login(res: Response, { email, password }: AdminLoginInput) {
+  async login(res: Response, { email, password }: AdminLoginInput): Promise<LoginResponse> {
     const admin = await Admin.findOne({ where: { email } });
     if (!admin) {
       throw new Error("no admin found");

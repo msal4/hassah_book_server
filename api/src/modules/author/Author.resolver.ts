@@ -13,19 +13,19 @@ export class AuthorResolver {
   constructor(private readonly service: AuthorService) {}
 
   @Query(() => PaginatedAuthorResponse)
-  async authors(@Args() args: FilterArgs): Promise<PaginatedAuthorResponse> {
+  authors(@Args() args: FilterArgs): Promise<PaginatedAuthorResponse> {
     return this.service.findAll(args);
   }
 
   @Authorized(Roles.Admin)
   @Mutation(() => Author)
-  async createAuthor(@Arg("data") data: CreateAuthorInput): Promise<Author> {
+  createAuthor(@Arg("data") data: CreateAuthorInput): Promise<Author> {
     return this.service.create(data);
   }
 
   @Authorized(Roles.Admin)
   @Mutation(() => Boolean)
-  async updateAuthor(@Arg("data") data: UpdateAuthorInput): Promise<boolean> {
+  updateAuthor(@Arg("data") data: UpdateAuthorInput): Promise<boolean> {
     return this.service.update(data);
   }
 }

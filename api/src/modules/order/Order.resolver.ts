@@ -13,7 +13,7 @@ import { Roles } from "@api/modules/utils/auth";
 export class OrderResolver {
   constructor(private readonly orderService: OrderService) {}
 
-  // TODO: authorization needed. Admin only.
+  @Authorized(Roles.Admin)
   @Query(() => PaginatedOrderResponse)
   orders(@Args() args: FilterArgs): Promise<PaginatedOrderResponse> {
     return this.orderService.findAll(args);

@@ -45,7 +45,7 @@ export class UserRequestResolver {
 
   @Authorized(Roles.Admin, Roles.User)
   @Mutation(() => Boolean)
-  async removeRequest(@Arg("requestId") requestId: string): Promise<boolean> {
-    return await this.userRequestService.delete(requestId);
+  removeRequest(@Arg("requestId") requestId: string): Promise<boolean> {
+    return this.userRequestService.delete(requestId);
   }
 }

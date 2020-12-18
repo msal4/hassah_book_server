@@ -11,7 +11,7 @@ export function IsAdminEmailAlreadyExist() {
     registerDecorator({
       name: "isAdminEmailAlreadyExist",
       target: object.constructor,
-      propertyName: propertyName,
+      propertyName,
       validator: {
         validate(value: any, _args: ValidationArguments) {
           return isAdminEmailAlreadyExist(value);

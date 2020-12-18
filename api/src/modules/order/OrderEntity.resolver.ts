@@ -13,7 +13,7 @@ export class OrderResolver {
   constructor(private readonly purchaseService: PurchaseService) {}
 
   @FieldResolver(() => User)
-  async user(@Ctx() { loaders }: RequestContext, @Root() { user }: Order): Promise<User> {
+  user(@Ctx() { loaders }: RequestContext, @Root() { user }: Order): Promise<User> {
     return loaders.userLoader.load(user as any);
   }
 

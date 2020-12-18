@@ -13,7 +13,7 @@ export class ProductResolver {
   constructor(private readonly productService: ProductService) {}
 
   @Query(() => PaginatedProductResponse)
-  async products(@Args() args: FilterArgs): Promise<PaginatedProductResponse> {
+  products(@Args() args: FilterArgs): Promise<PaginatedProductResponse> {
     return this.productService.findAll(args);
   }
 
