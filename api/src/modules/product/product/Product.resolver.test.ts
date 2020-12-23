@@ -10,14 +10,16 @@ import { ProductStatus } from "@api/entity/Product";
 import { mockRequestContext } from "@api/test-utils/mockRequestContext";
 import { Admin } from "@api/entity/Admin";
 import { createMockRequest } from "@api/test-utils/createMockRequest";
+import * as fs from "fs";
+import path from "path";
 
 beforeAll(async () => {
   await useSeeding();
 });
 
 const createProductMutation = `
-mutation CreateProduct($data: CreateProductInput!) {
-  createProduct(data: $data) {
+mutation CreateProduct($data: CreateProductInput!, $imageFile: Upload!) {
+  createProduct(data: $data, imageFile: $imageFile) {
     id
     name
     overview
@@ -71,7 +73,6 @@ describe("Product", () => {
     const data = {
       name: faker.name.findName(),
       overview: faker.lorem.paragraph(),
-      image: faker.image.city(),
       pages: 100,
       price: 1000,
       status: ProductStatus.Available,
@@ -82,9 +83,24 @@ describe("Product", () => {
       collections: [{ id: collection!.id }],
     };
 
+    const imageFileName = "test_image.jpg";
+    const imageFile = fs.createReadStream(
+      path.resolve(__dirname, "../../../test-utils/data/", imageFileName)
+    );
+
     const response = await gCall({
       source: createProductMutation,
-      variableValues: { data },
+      variableValues: {
+        data,
+        imageFile: new Promise((resolve) => {
+          resolve({
+            createReadStream: () => imageFile,
+            stream: imageFile,
+            filename: imageFileName,
+            mimetype: "image/jpg",
+          });
+        }),
+      },
       contextValue: mockRequestContext({ req: createMockRequest(admin) }),
     });
 
@@ -94,7 +110,6 @@ describe("Product", () => {
           name: data.name,
           overview: data.overview,
           pages: data.pages,
-          image: data.image,
           status: data.status,
           publishedAt: data.publishedAt.toISOString(),
           author: transform(author!),
@@ -104,5 +119,7 @@ describe("Product", () => {
         },
       },
     });
+
+    expect(response.data?.createProduct.image).toContain(imageFileName.replace("_", "-"));
   });
 });

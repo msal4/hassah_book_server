@@ -7,6 +7,7 @@ import { ProductService } from "@api/modules/product/product/Product.service";
 import { CreateProductInput } from "@api/modules/product/product/CreateProductInput";
 import { UpdateProductInput } from "@api/modules/product/product/UpdateProductInput";
 import { Roles } from "@api/modules/utils/auth";
+import { FileUpload, GraphQLUpload } from "graphql-upload";
 
 @Resolver()
 export class ProductResolver {
@@ -19,8 +20,11 @@ export class ProductResolver {
 
   @Authorized(Roles.Admin)
   @Mutation(() => Product)
-  createProduct(@Arg("data") data: CreateProductInput): Promise<Product> {
-    return this.productService.create(data);
+  async createProduct(
+    @Arg("data") data: CreateProductInput,
+    @Arg("imageFile", () => GraphQLUpload) imageFile: Promise<FileUpload>
+  ): Promise<Product> {
+    return await this.productService.create(data, await imageFile);
   }
 
   @Authorized(Roles.Admin)
