@@ -2,19 +2,19 @@ import { registerDecorator, ValidationArguments } from "class-validator";
 
 import { Admin } from "@api/entity/Admin";
 
-export function isAdminEmailAlreadyExist(email: string): Promise<boolean> {
-  return Admin.findOne({ where: { email } }).then((admin) => !!admin);
+export function isAdminEmailNotUsed(email: string): Promise<boolean> {
+  return Admin.findOne({ where: { email } }).then((admin) => !admin);
 }
 
-export function IsAdminEmailAlreadyExist() {
+export function IsAdminEmailNotUsed() {
   return function (object: Object, propertyName: string) {
     registerDecorator({
-      name: "isAdminEmailAlreadyExist",
+      name: "isAdminEmailNotUsed",
       target: object.constructor,
       propertyName,
       validator: {
-        validate(value: any, _args: ValidationArguments) {
-          return isAdminEmailAlreadyExist(value);
+        async validate(value: any, _args: ValidationArguments) {
+          return isAdminEmailNotUsed(value);
         },
         defaultMessage: () => "email already exist",
       },
