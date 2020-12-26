@@ -20,7 +20,7 @@ export class BaseService<T extends BaseEntity> {
         (column) => column.propertyName === "document"
       );
     } else {
-      throw new Error("Service name should be the name of the entity with the suffix 'Service'");
+      throw new Error("Service name should be the entity name with the suffix 'Service'");
     }
   }
 
@@ -109,14 +109,12 @@ export class BaseService<T extends BaseEntity> {
   }
 
   create(data: DeepPartial<T>): Promise<T> {
-    return this.repository.create(data).save();
+    return this.repository.save(data);
   }
 
   async update(data: DeepPartial<T> & { id: string }): Promise<boolean> {
     try {
-      const item = await this.repository.findOne({ where: { id: data.id } });
-      this.repository.merge(item!, data);
-      await item!.save();
+      await this.repository.save(data);
       return true;
     } catch (err) {
       console.error(err);
@@ -127,7 +125,6 @@ export class BaseService<T extends BaseEntity> {
   async delete(id: string): Promise<boolean> {
     try {
       await this.repository.delete(id);
-      // It'll return true even if there are no rows affected.
       return true;
     } catch (err) {
       console.error(err);

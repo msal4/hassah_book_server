@@ -1,3 +1,5 @@
+import fs from "fs";
+import path from "path";
 import faker from "faker";
 import { useSeeding, factory } from "typeorm-seeding";
 
@@ -6,15 +8,15 @@ import { Category } from "@api/entity/Category";
 import { Collection } from "@api/entity/Collection";
 import { Author } from "@api/entity/Author";
 import { Publisher } from "@api/entity/Publisher";
-import { ProductStatus } from "@api/entity/Product";
+import { Product, ProductStatus } from "@api/entity/Product";
 import { mockRequestContext } from "@api/test-utils/mockRequestContext";
 import { Admin } from "@api/entity/Admin";
 import { createMockRequest } from "@api/test-utils/createMockRequest";
-import * as fs from "fs";
-import path from "path";
+import { Lazy } from "@api/modules/types/Lazy";
 
 beforeAll(async () => {
   await useSeeding();
+  jest.setTimeout(60000);
 });
 
 const createProductMutation = `
@@ -58,17 +60,41 @@ mutation CreateProduct($data: CreateProductInput!, $imageFile: Upload!) {
 }
 `;
 
+const updateProductMutation = `
+mutation UpdateProduct($data: UpdateProductInput!, $imageFile: Upload!) {
+  updateProduct(data: $data, imageFile: $imageFile)
+}
+`;
+
+const deleteProductMutation = `
+mutation deleteProduct($id: ID!) {
+  deleteProduct(id: $id)
+}
+`;
+
 const transform = (obj: Category | Collection | Author | Publisher) => {
   return { ...obj, createdAt: obj.createdAt.toISOString(), updatedAt: obj.updatedAt.toISOString() };
 };
 
+const getIdOnly = async <T extends { id: string }>(item: Lazy<T>) => ({ id: (await item).id });
+
+const getIdsOnly = async <T extends { id: string }>(collection: Lazy<T[]>) =>
+  (await collection).map((item) => ({ id: item.id }));
+
 describe("Product", () => {
-  it("create product", async () => {
+  const imageFileName = "test_image.jpg";
+  const imageFile = fs.createReadStream(path.resolve(__dirname, "../../../test-utils/data/", imageFileName));
+  const createDependencies = async () => {
     const admin = await factory(Admin)().create();
     const category = await factory(Category)().create();
     const collection = await factory(Collection)().create();
     const author = await factory(Author)().create();
     const publisher = await factory(Publisher)().create();
+    return { admin, category, collection, author, publisher };
+  };
+
+  it("create product", async () => {
+    const { admin, author, publisher, category, collection } = await createDependencies();
 
     const data = {
       name: faker.name.findName(),
@@ -82,11 +108,6 @@ describe("Product", () => {
       categories: [{ id: category!.id }],
       collections: [{ id: collection!.id }],
     };
-
-    const imageFileName = "test_image.jpg";
-    const imageFile = fs.createReadStream(
-      path.resolve(__dirname, "../../../test-utils/data/", imageFileName)
-    );
 
     const response = await gCall({
       source: createProductMutation,
@@ -121,5 +142,81 @@ describe("Product", () => {
     });
 
     expect(response.data?.createProduct.image).toContain(imageFileName.replace("_", "-"));
+  });
+
+  it("update product", async () => {
+    const { admin, author, category, collection } = await createDependencies();
+
+    const product = await Product.create({
+      name: "Whatever",
+      price: 100.5,
+      overview: "Whatever",
+      pages: 100,
+      status: ProductStatus.Available,
+      image: "http://example.com/example.png",
+      categories: [category],
+      collections: [collection],
+      author,
+    }).save();
+
+    delete product.image;
+    delete product.createdAt;
+    delete product.updatedAt;
+
+    product.categories = (await getIdsOnly(product.categories)) as any;
+    product.collections = (await getIdsOnly(product.collections)) as any;
+    product.author = (await getIdOnly(product.author)) as any;
+
+    const response = await gCall({
+      source: updateProductMutation,
+      variableValues: {
+        data: { ...product, name: "hmmmm" },
+        imageFile: new Promise((resolve) => {
+          resolve({
+            createReadStream: () => imageFile,
+            stream: imageFile,
+            filename: imageFileName,
+            mimetype: "image/jpg",
+          });
+        }),
+      },
+      contextValue: mockRequestContext({ req: createMockRequest(admin) }),
+    });
+
+    expect(response).toMatchObject({
+      data: {
+        updateProduct: true,
+      },
+    });
+  });
+
+  it("delete product", async () => {
+    const { admin, author, category, collection } = await createDependencies();
+
+    const product = await Product.create({
+      name: "Whatever",
+      price: 100.5,
+      overview: "Whatever",
+      pages: 100,
+      status: ProductStatus.Available,
+      image: "http://example.com/example.png",
+      categories: [category],
+      collections: [collection],
+      author,
+    }).save();
+
+    const response = await gCall({
+      source: deleteProductMutation,
+      variableValues: {
+        id: product.id,
+      },
+      contextValue: mockRequestContext({ req: createMockRequest(admin) }),
+    });
+
+    expect(response).toMatchObject({
+      data: {
+        deleteProduct: true,
+      },
+    });
   });
 });

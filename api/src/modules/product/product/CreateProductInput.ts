@@ -23,6 +23,12 @@ export class CreateProductInput {
   })
   pages?: number;
 
+  @Field(() => String, {
+    description: "The language of the product.",
+    nullable: true,
+  })
+  language?: string;
+
   @Field(() => ObjectIdInput, { description: "The author/owner of the product." })
   author: ObjectIdInput;
 
