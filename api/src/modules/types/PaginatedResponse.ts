@@ -10,6 +10,7 @@ import { UserRequest } from "@api/entity/UserRequest";
 import { Order } from "@api/entity/Order";
 import { Purchase } from "@api/entity/Purchase";
 import { User } from "@api/entity/User";
+import { Admin } from "@api/entity/Admin";
 
 export interface PaginatedResponse<T> {
   items: T[];
@@ -32,6 +33,9 @@ export function PaginatedResponse<T>(TClass: ClassType<T>) {
 
   return PaginatedResponseClass;
 }
+
+export const PaginatedAdminResponse = PaginatedResponse(Admin);
+export type PaginatedAdminResponse = InstanceType<typeof PaginatedAdminResponse>;
 
 export const PaginatedUserResponse = PaginatedResponse(User);
 export type PaginatedUserResponse = InstanceType<typeof PaginatedUserResponse>;

@@ -9,6 +9,8 @@ import {
 } from "typeorm";
 import { hash, compare } from "bcryptjs";
 
+import { PASSWORD_SALT } from "@api/modules/constants/user";
+
 @ObjectType({ isAbstract: true })
 export abstract class BaseUser extends BaseEntity {
   @Field(() => ID)
@@ -36,7 +38,7 @@ export abstract class BaseUser extends BaseEntity {
 
   @BeforeInsert()
   async hashPassword() {
-    this.password = await hash(this.password, 12);
+    this.password = await hash(this.password, PASSWORD_SALT);
   }
 
   validatePassword(password: string) {
