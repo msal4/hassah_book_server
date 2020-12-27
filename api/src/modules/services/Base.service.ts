@@ -55,7 +55,7 @@ export class BaseService<T extends BaseEntity> {
       .take(filterArgs?.take)
       .getManyAndCount();
 
-    return { items, total, hasMore: filterArgs ? hasMore(filterArgs, total) : false };
+    return { items, total, hasMore: hasMore(filterArgs ?? { skip: 0, take: items.length }, total) };
   }
 
   async findAll(options: FindAllOptions): Promise<PaginatedResponse<T>> {
@@ -122,7 +122,7 @@ export class BaseService<T extends BaseEntity> {
       console.error(err);
       return false;
     }
-  }
+  } // compensate
 
   async delete(id: string): Promise<boolean> {
     try {
