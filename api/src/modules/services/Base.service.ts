@@ -21,6 +21,9 @@ export class BaseService<T extends BaseEntity> {
       this.hasDocument = !!this.repository.metadata.columns.find(
         (column) => column.propertyName === "document"
       );
+      this.hasImage = !!this.repository.metadata.columns.find(
+        (column) => column.propertyName === this.imageColumnName
+      );
     } else {
       throw new Error("Service name should be the entity name with the suffix 'Service'");
     }
@@ -35,6 +38,10 @@ export class BaseService<T extends BaseEntity> {
   protected readonly tableName: string;
   // Determines if the table has a document column used for full-text search.
   protected readonly hasDocument: boolean = false;
+  // Determines if the table has an image column.
+  protected readonly hasImage: boolean = false;
+  // The image column name.
+  protected readonly imageColumnName: string = "image";
   // The s3 instance.
   protected readonly s3 = new S3({
     credentials: {
@@ -120,13 +127,33 @@ export class BaseService<T extends BaseEntity> {
       .addOrderBy(`ts_rank(${this.tableName}.document, to_tsquery(:query))`, "DESC");
   }
 
-  public create(data: DeepPartial<T>): Promise<T> {
-    return this.repository.save(data);
+  public async create(
+    data: DeepPartial<T>,
+    imageFile?: FileUpload,
+    imageColumnName = this.imageColumnName
+  ): Promise<T> {
+    if (!imageFile || !this.hasImage) {
+      return this.repository.save(data);
+    }
+
+    const res = await this.uploadImage(imageFile);
+    return this.repository.save({ ...data, [imageColumnName]: res.Key });
   }
 
-  public async update(data: DeepPartial<T> & { id: string }): Promise<boolean> {
+  public async update(
+    data: DeepPartial<T> & { id: string },
+    imageFile?: FileUpload,
+    imageColumnName = this.imageColumnName
+  ): Promise<boolean> {
     try {
-      await this.repository.save(data);
+      if (!imageFile || !this.hasImage) {
+        await this.repository.save(data);
+        return true;
+      }
+
+      const item = await this.repository.findOne({ where: { id: data.id } });
+      const res = await this.uploadImage(imageFile, item && (item as any)[imageColumnName]);
+      await this.repository.save({ ...data, [imageColumnName]: res.Key });
       return true;
     } catch (err) {
       console.error(err);
@@ -134,9 +161,18 @@ export class BaseService<T extends BaseEntity> {
     }
   }
 
-  public async delete(id: string): Promise<boolean> {
+  public async delete(id: string, imageColumnName = this.imageColumnName): Promise<boolean> {
     try {
-      await this.repository.delete(id);
+      const item = await this.repository.findOne({ where: { id } });
+      if (!item) {
+        return true;
+      }
+
+      if (this.hasImage) {
+        await this.s3.deleteObject({ Bucket: this.bucket, Key: (item as any)[imageColumnName] }).promise();
+      }
+
+      await item.remove();
       return true;
     } catch (err) {
       console.error(err);

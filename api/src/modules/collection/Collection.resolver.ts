@@ -1,4 +1,5 @@
 import { Resolver, Query, Args, Mutation, Arg, Authorized } from "type-graphql";
+import { FileUpload } from "graphql-upload";
 
 import { CollectionService } from "@api/modules/collection/collection/Collection.service";
 import { PaginatedCollectionResponse } from "@api/modules/types/PaginatedResponse";
@@ -18,13 +19,19 @@ export class CollectionResolver {
 
   @Authorized(Roles.Admin)
   @Mutation(() => Collection)
-  createCollection(@Arg("data") data: CreateCollectionInput): Promise<Collection> {
-    return this.collectionService.create(data);
+  async createCollection(
+    @Arg("data") data: CreateCollectionInput,
+    imageFile?: Promise<FileUpload>
+  ): Promise<Collection> {
+    return this.collectionService.create(data, await imageFile);
   }
 
   @Authorized(Roles.Admin)
   @Mutation(() => Boolean)
-  updateCollection(@Arg("data") data: UpdateCollectionInput): Promise<boolean> {
-    return this.collectionService.update(data);
+  async updateCollection(
+    @Arg("data") data: UpdateCollectionInput,
+    imageFile?: Promise<FileUpload>
+  ): Promise<boolean> {
+    return this.collectionService.update(data, await imageFile);
   }
 }

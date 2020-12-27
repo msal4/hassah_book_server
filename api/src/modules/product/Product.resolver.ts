@@ -24,7 +24,7 @@ export class ProductResolver {
     @Arg("data") data: CreateProductInput,
     @Arg("imageFile", () => GraphQLUpload) imageFile: Promise<FileUpload>
   ): Promise<Product> {
-    return await this.productService.create(data, await imageFile);
+    return this.productService.create(data, await imageFile);
   }
 
   @Authorized(Roles.Admin)
@@ -33,7 +33,7 @@ export class ProductResolver {
     @Arg("data") data: UpdateProductInput,
     @Arg("imageFile", () => GraphQLUpload, { nullable: true }) imageFile?: Promise<FileUpload>
   ): Promise<boolean> {
-    return await this.productService.update(data, await imageFile);
+    return this.productService.update(data, await imageFile);
   }
 
   @Authorized(Roles.Admin)

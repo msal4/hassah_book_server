@@ -16,7 +16,7 @@ import { Lazy } from "@api/modules/types/Lazy";
 
 beforeAll(async () => {
   await useSeeding();
-  jest.setTimeout(60000);
+  jest.setTimeout(100000);
 });
 
 const createProductMutation = `
