@@ -1,11 +1,13 @@
 import { Repository, BaseEntity, DeepPartial, getRepository, SelectQueryBuilder } from "typeorm";
 import { ClassType } from "type-graphql";
+import { FileUpload } from "graphql-upload";
+import { S3 } from "aws-sdk";
 
 import { PaginatedResponse } from "@api/modules/types/PaginatedResponse";
 import { hasMore } from "@api/modules/utils/hasMore";
 import { FindManyToManyOptions } from "@api/modules/services/base/FindManyToManyOptions";
 import { orderByToMap } from "@api/modules/utils/orderByToMap";
-import { lowerCamelCase, tsQuery } from "@api/modules/utils/string";
+import { formatFileName, lowerCamelCase, tsQuery } from "@api/modules/utils/string";
 import { FindAllOptions } from "@api/modules/types/FindAllOptions";
 
 // The default service on which other services are based on.
@@ -19,8 +21,11 @@ export class BaseService<T extends BaseEntity> {
       this.hasDocument = !!this.repository.metadata.columns.find(
         (column) => column.propertyName === "document"
       );
+      this.hasImage = !!this.repository.metadata.columns.find(
+        (column) => column.propertyName === this.imageColumnName
+      );
     } else {
-      throw new Error("Service name should be the name of the entity with the suffix 'Service'");
+      throw new Error("Service name should be the entity name with the suffix 'Service'");
     }
   }
 
@@ -33,6 +38,20 @@ export class BaseService<T extends BaseEntity> {
   protected readonly tableName: string;
   // Determines if the table has a document column used for full-text search.
   protected readonly hasDocument: boolean = false;
+  // Determines if the table has an image column.
+  protected readonly hasImage: boolean = false;
+  // The image column name.
+  protected readonly imageColumnName: string = "image";
+  // The s3 instance.
+  protected readonly s3 = new S3({
+    credentials: {
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+      secretAccessKey: process.env.AWS_SECRET_KEY!,
+    },
+    apiVersion: "2006-03-01",
+  });
+  // The name of the s3 bucket where uploaded files are stored.
+  protected readonly bucket = process.env.AWS_S3_BUCKET!;
 
   static async findManyToMany<R>(
     Entity: ClassType<R>,
@@ -58,7 +77,7 @@ export class BaseService<T extends BaseEntity> {
     return { items, total, hasMore: hasMore(filterArgs ?? { skip: 0, take: items.length }, total) };
   }
 
-  async findAll(options: FindAllOptions): Promise<PaginatedResponse<T>> {
+  public async findAll(options: FindAllOptions): Promise<PaginatedResponse<T>> {
     let query = this.repository
       .createQueryBuilder(this.tableName)
       .select()
@@ -108,15 +127,33 @@ export class BaseService<T extends BaseEntity> {
       .addOrderBy(`ts_rank(${this.tableName}.document, to_tsquery(:query))`, "DESC");
   }
 
-  create(data: DeepPartial<T>): Promise<T> {
-    return this.repository.create(data).save();
+  public async create(
+    data: DeepPartial<T>,
+    imageFile?: FileUpload,
+    imageColumnName = this.imageColumnName
+  ): Promise<T> {
+    if (!imageFile || !this.hasImage) {
+      return this.repository.save(data);
+    }
+
+    const res = await this.uploadImage(imageFile);
+    return this.repository.save({ ...data, [imageColumnName]: res.Key });
   }
 
-  async update(data: DeepPartial<T> & { id: string }): Promise<boolean> {
+  public async update(
+    data: DeepPartial<T> & { id: string },
+    imageFile?: FileUpload,
+    imageColumnName = this.imageColumnName
+  ): Promise<boolean> {
     try {
+      if (!imageFile || !this.hasImage) {
+        await this.repository.save(data);
+        return true;
+      }
+
       const item = await this.repository.findOne({ where: { id: data.id } });
-      this.repository.merge(item!, data);
-      await item!.save();
+      const res = await this.uploadImage(imageFile, item && (item as any)[imageColumnName]);
+      await this.repository.save({ ...data, [imageColumnName]: res.Key });
       return true;
     } catch (err) {
       console.error(err);
@@ -124,14 +161,36 @@ export class BaseService<T extends BaseEntity> {
     }
   } // compensate
 
-  async delete(id: string): Promise<boolean> {
+  public async delete(id: string, imageColumnName = this.imageColumnName): Promise<boolean> {
     try {
-      await this.repository.delete(id);
-      // It'll return true even if there are no rows affected.
+      const item = await this.repository.findOne({ where: { id } });
+      if (!item) {
+        return true;
+      }
+
+      if (this.hasImage) {
+        await this.s3.deleteObject({ Bucket: this.bucket, Key: (item as any)[imageColumnName] }).promise();
+      }
+
+      await item.remove();
       return true;
     } catch (err) {
       console.error(err);
       return false;
     }
+  }
+
+  protected uploadImage({ createReadStream, mimetype, filename }: FileUpload, currentImagePath?: string) {
+    const newImagePath = `${this.tableName.toLowerCase()}/${formatFileName(filename)}`;
+
+    return this.s3
+      .upload({
+        Bucket: this.bucket,
+        Key: currentImagePath ?? newImagePath,
+        Body: createReadStream(),
+        ContentType: mimetype,
+        ACL: "public-read",
+      })
+      .promise();
   }
 }

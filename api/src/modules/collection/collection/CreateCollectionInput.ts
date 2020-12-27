@@ -8,8 +8,4 @@ export class CreateCollectionInput implements Partial<Category> {
   @Field()
   @IsNotEmpty()
   name: string;
-
-  @Field()
-  @IsNotEmpty()
-  image: string;
 }

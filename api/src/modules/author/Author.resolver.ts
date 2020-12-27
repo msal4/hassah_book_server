@@ -1,4 +1,5 @@
 import { Resolver, Query, Args, Mutation, Arg, Authorized } from "type-graphql";
+import { FileUpload, GraphQLUpload } from "graphql-upload";
 
 import { FilterArgs } from "@api/modules/types/FilterArgs";
 import { PaginatedAuthorResponse } from "@api/modules/types/PaginatedResponse";
@@ -19,13 +20,16 @@ export class AuthorResolver {
 
   @Authorized(Roles.Admin)
   @Mutation(() => Author)
-  createAuthor(@Arg("data") data: CreateAuthorInput): Promise<Author> {
-    return this.service.create(data);
+  async createAuthor(
+    @Arg("data") data: CreateAuthorInput,
+    @Arg("imageFile", () => GraphQLUpload) imageFile: Promise<FileUpload>
+  ): Promise<Author> {
+    return this.service.create(data, await imageFile);
   }
 
   @Authorized(Roles.Admin)
   @Mutation(() => Boolean)
-  updateAuthor(@Arg("data") data: UpdateAuthorInput): Promise<boolean> {
-    return this.service.update(data);
+  async updateAuthor(@Arg("data") data: UpdateAuthorInput, imageFile: Promise<FileUpload>): Promise<boolean> {
+    return this.service.update(data, await imageFile);
   }
 }

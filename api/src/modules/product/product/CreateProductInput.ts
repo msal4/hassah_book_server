@@ -11,9 +11,6 @@ export class CreateProductInput {
   @Field({ description: "A brief description of the product." })
   overview: string;
 
-  @Field({ description: "An poster or cover image for the product." })
-  image: string;
-
   @Field(() => Float, { description: "Product price." })
   price: number;
 
@@ -25,6 +22,12 @@ export class CreateProductInput {
     nullable: true,
   })
   pages?: number;
+
+  @Field(() => String, {
+    description: "The language of the product.",
+    nullable: true,
+  })
+  language?: string;
 
   @Field(() => ObjectIdInput, { description: "The author/owner of the product." })
   author: ObjectIdInput;

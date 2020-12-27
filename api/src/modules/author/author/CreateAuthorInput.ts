@@ -10,8 +10,4 @@ export class CreateAuthorInput {
   @Field()
   @IsNotEmpty()
   overview: string;
-
-  @Field()
-  @IsNotEmpty()
-  image: string;
 }

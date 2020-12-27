@@ -1,8 +1,20 @@
+import dayjs from "dayjs";
 import tsquery from "pg-tsquery";
 
 export function lowerCamelCase(str: string): string {
   if (!str) return "";
   return str[0].toLowerCase() + str.substring(1);
+}
+
+export function formatFileName(filename: string): string {
+  const date = dayjs().format("YYYYMMDDHH");
+  const randomStr = Math.random().toString(36).substr(2, 5);
+  const cleanName = filename
+    .toLowerCase()
+    .substring(0, filename.lastIndexOf("."))
+    .replace(/[^a-z0-9]/g, "-")
+    .substring(0, 10);
+  return `${date}-${randomStr}-${cleanName}${filename.substring(filename.lastIndexOf("."))}`;
 }
 
 const query = tsquery();
