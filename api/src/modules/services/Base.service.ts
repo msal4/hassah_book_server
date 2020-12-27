@@ -1,11 +1,13 @@
 import { Repository, BaseEntity, DeepPartial, getRepository, SelectQueryBuilder } from "typeorm";
 import { ClassType } from "type-graphql";
+import { FileUpload } from "graphql-upload";
+import { S3 } from "aws-sdk";
 
 import { PaginatedResponse } from "@api/modules/types/PaginatedResponse";
 import { hasMore } from "@api/modules/utils/hasMore";
 import { FindManyToManyOptions } from "@api/modules/services/base/FindManyToManyOptions";
 import { orderByToMap } from "@api/modules/utils/orderByToMap";
-import { lowerCamelCase, tsQuery } from "@api/modules/utils/string";
+import { formatFileName, lowerCamelCase, tsQuery } from "@api/modules/utils/string";
 import { FindAllOptions } from "@api/modules/types/FindAllOptions";
 
 // The default service on which other services are based on.
@@ -33,6 +35,16 @@ export class BaseService<T extends BaseEntity> {
   protected readonly tableName: string;
   // Determines if the table has a document column used for full-text search.
   protected readonly hasDocument: boolean = false;
+  // The s3 instance.
+  protected readonly s3 = new S3({
+    credentials: {
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+      secretAccessKey: process.env.AWS_SECRET_KEY!,
+    },
+    apiVersion: "2006-03-01",
+  });
+  // The name of the s3 bucket where uploaded files are stored.
+  protected readonly bucket = process.env.AWS_S3_BUCKET!;
 
   static async findManyToMany<R>(
     Entity: ClassType<R>,
@@ -58,7 +70,7 @@ export class BaseService<T extends BaseEntity> {
     return { items, total, hasMore: filterArgs ? hasMore(filterArgs, total) : false };
   }
 
-  async findAll(options: FindAllOptions): Promise<PaginatedResponse<T>> {
+  public async findAll(options: FindAllOptions): Promise<PaginatedResponse<T>> {
     let query = this.repository
       .createQueryBuilder(this.tableName)
       .select()
@@ -108,11 +120,11 @@ export class BaseService<T extends BaseEntity> {
       .addOrderBy(`ts_rank(${this.tableName}.document, to_tsquery(:query))`, "DESC");
   }
 
-  create(data: DeepPartial<T>): Promise<T> {
+  public create(data: DeepPartial<T>): Promise<T> {
     return this.repository.save(data);
   }
 
-  async update(data: DeepPartial<T> & { id: string }): Promise<boolean> {
+  public async update(data: DeepPartial<T> & { id: string }): Promise<boolean> {
     try {
       await this.repository.save(data);
       return true;
@@ -122,7 +134,7 @@ export class BaseService<T extends BaseEntity> {
     }
   }
 
-  async delete(id: string): Promise<boolean> {
+  public async delete(id: string): Promise<boolean> {
     try {
       await this.repository.delete(id);
       return true;
@@ -130,5 +142,19 @@ export class BaseService<T extends BaseEntity> {
       console.error(err);
       return false;
     }
+  }
+
+  protected uploadImage({ createReadStream, mimetype, filename }: FileUpload, currentImagePath?: string) {
+    const newImagePath = `${this.tableName.toLowerCase()}/${formatFileName(filename)}`;
+
+    return this.s3
+      .upload({
+        Bucket: this.bucket,
+        Key: currentImagePath ?? newImagePath,
+        Body: createReadStream(),
+        ContentType: mimetype,
+        ACL: "public-read",
+      })
+      .promise();
   }
 }
