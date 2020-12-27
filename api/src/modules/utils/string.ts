@@ -1,14 +1,9 @@
 import dayjs from "dayjs";
 import tsquery from "pg-tsquery";
-import url from "url";
 
 export function lowerCamelCase(str: string): string {
   if (!str) return "";
   return str[0].toLowerCase() + str.substring(1);
-}
-
-export function formatUrlToPath(value: string): string | undefined {
-  return url.parse(value).pathname?.replace(new RegExp("^/+"), "");
 }
 
 export function formatFileName(filename: string): string {

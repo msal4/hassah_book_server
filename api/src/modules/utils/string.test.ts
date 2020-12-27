@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-import { formatFileName, formatUrlToPath, lowerCamelCase } from "@api/modules/utils/string";
+import { formatFileName, lowerCamelCase } from "@api/modules/utils/string";
 
 describe("String Utils", () => {
   describe("lowerCamelCase", () => {
@@ -59,25 +59,5 @@ describe("String Utils", () => {
       expect(res.startsWith(date)).toBeTruthy();
       expect(res.endsWith(expected)).toBeTruthy();
     });
-  });
-});
-
-describe("formatUrlToPath", () => {
-  const expected = "images/products/2020122522-3gtcz-2020-12-18.jpg";
-
-  it("empty string", () => {
-    expect(formatUrlToPath("")).toBe(undefined);
-  });
-
-  it("one slash at the beginning", () => {
-    const url = "https://hassahbook.s3.amazonaws.com/images/products/2020122522-3gtcz-2020-12-18.jpg";
-    expect(formatUrlToPath(url)).toBe(expected);
-  });
-
-  it("multiple slashes at the beginning", () => {
-    const url = "https://hassahbook.s3.amazonaws.com///images/products/2020122522-3gtcz-2020-12-18.jpg";
-    const url2 = "https://hassahbook.s3.amazonaws.com//////images/products/2020122522-3gtcz-2020-12-18.jpg";
-    expect(formatUrlToPath(url)).toBe(expected);
-    expect(formatUrlToPath(url2)).toBe(expected);
   });
 });
