@@ -1,13 +1,13 @@
 import { sign, verify } from "jsonwebtoken";
 import { Response } from "express";
 import { AuthChecker } from "type-graphql";
+import { google } from "googleapis";
 
 import { BaseUser } from "@api/entity/base/BaseUser";
 import { RequestContext } from "@api/modules/types/RequestContext";
 import { JwtAccessPayload } from "@api/modules/types/JwtPayload";
 import { Admin } from "@api/entity/Admin";
 import { User } from "@api/entity/User";
-import { google } from "googleapis";
 
 export enum Roles {
   Admin = "Admin",
