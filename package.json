@@ -53,8 +53,8 @@
     "test:setup": "yarn api:run src/test-utils/setup.ts",
     "test": "yarn test:setup && jest -i",
     "test:watch": "yarn test --watch",
-    "orm": "yarn api:run ../node_modules/typeorm/cli.js",
-    "orm-seeding": "yarn api:run ../node_modules/typeorm-seeding/dist/cli.js",
+    "orm": "yarn api:run ./node_modules/typeorm/cli.js",
+    "orm-seeding": "yarn api:run ./node_modules/typeorm-seeding/dist/cli.js",
     "drop-and-seed": "yarn orm schema:drop && yarn orm migration:run && yarn orm-seeding seed"
   }
 }
