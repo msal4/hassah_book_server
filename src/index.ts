@@ -20,6 +20,7 @@ async function bootstrap() {
 
   const app = express();
   app.use(cookieParser());
+  app.set("trust proxy", 1);
   app.get("/", (_req, res) => res.send('<a href="/graphql">Graphql Playground</a>'));
   app.post("/refresh_token", refreshToken);
 
