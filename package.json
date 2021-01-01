@@ -8,6 +8,7 @@
     "bcryptjs": "^2.4.3",
     "class-validator": "^0.12.2",
     "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
     "dataloader": "^2.0.0",
     "dayjs": "^1.9.7",
     "dotenv": "^8.2.0",
@@ -38,12 +39,12 @@
     "faker": "^4.1.0",
     "jest": "^26.1.0",
     "mock-req-res": "^1.2.0",
+    "prettier": "^2.2.1",
     "sinon": "^9.0.2",
     "ts-jest": "^26.1.4",
     "ts-node-dev": "^1.0.0-pre.56",
     "tsconfig-paths": "^3.9.0",
-    "typescript": "^3.9.7",
-    "prettier": "^2.2.1"
+    "typescript": "^3.9.7"
   },
   "scripts": {
     "api:run": "ts-node -r tsconfig-paths/register",

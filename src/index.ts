@@ -5,6 +5,7 @@ import { ApolloServer } from "apollo-server-express";
 import { createConnection } from "typeorm";
 import express from "express";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 import { createSchema } from "@api/utils/createSchema";
 import { refreshToken } from "@api/utils/refreshToken";
@@ -19,6 +20,7 @@ async function bootstrap() {
   const schema = await createSchema();
 
   const app = express();
+  app.use(cors({ credentials: true, origin: process.env.ORIGIN }));
   app.use(cookieParser());
   app.set("trust proxy", 1);
   app.get("/", (_req, res) => res.send('<a href="/graphql">Graphql Playground</a>'));

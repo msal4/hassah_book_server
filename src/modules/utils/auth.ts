@@ -62,7 +62,7 @@ export const createRefreshToken = (user: BaseUser) =>
   });
 
 export const sendRefreshTokenCookie = (res: Response, token: string) => {
-  res.cookie("skal", token, { httpOnly: true });
+  res.cookie("skal", token, { httpOnly: true, secure: process.env.ORIGIN?.startsWith("https") });
 };
 
 export const relyingParty = google.identitytoolkit({

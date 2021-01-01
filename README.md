@@ -68,3 +68,7 @@ The backend for Hassah Book.
           dokku config:set --no-restart <APP_NAME> DOKKU_LETSENCRYPT_EMAIL=<EMAIL_ADDRESS>
           dokku letsencrypt <APP_NAME> 
           ``` 
+        - set `ORIGIN` using
+          ```bash
+          dokku config:set ORIGIN=https://<DOMAIN>
+          ```

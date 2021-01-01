@@ -11,7 +11,7 @@ import { JwtRefreshPayload } from "@api/modules/types/JwtPayload";
 import { User } from "@api/entity/User";
 
 export async function refreshToken(req: Request, res: Response) {
-  const token = req.cookies.skal as string;
+  const token = req.cookies.skal as string | undefined;
   if (!token) {
     return res.send({ ok: false, accessToken: "" });
   }
