@@ -159,7 +159,7 @@ export class BaseService<T extends BaseEntity> {
       console.error(err);
       return false;
     }
-  } // compensate
+  }
 
   public async delete(id: string, imageColumnName = this.imageColumnName): Promise<boolean> {
     try {
