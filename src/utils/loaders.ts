@@ -8,6 +8,7 @@ import { Publisher } from "@api/entity/Publisher";
 import { Author } from "@api/entity/Author";
 import { Category } from "@api/entity/Category";
 import { Collection } from "@api/entity/Collection";
+import { Order } from "@api/entity/Order";
 
 type Id = string | { id: string };
 
@@ -37,8 +38,9 @@ export const createLoaders = () => ({
   productLoader: loader(Product),
   authorLoader: loader(Author),
   publisherLoader: loader(Publisher),
-  categoriesLoader: loader(Category),
-  collectionsLoader: loader(Collection),
+  categoryLoader: loader(Category),
+  collectionLoader: loader(Collection),
+  orderLoader: loader(Order),
 });
 
 export type Loaders = ReturnType<typeof createLoaders>;

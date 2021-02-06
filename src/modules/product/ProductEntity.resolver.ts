@@ -32,7 +32,7 @@ export class ProductEntityResolver {
 
   @FieldResolver(() => [Category])
   async categories(@Root() { categories }: Product, @Ctx() { loaders }: RequestContext): Promise<Category[]> {
-    const items = await loaders.categoriesLoader.loadMany(categories as any);
+    const items = await loaders.categoryLoader.loadMany(categories as any);
     return items.reduce((cats, item) => (item instanceof Error ? cats : [...cats, item]), [] as Category[]);
   }
 
@@ -41,7 +41,7 @@ export class ProductEntityResolver {
     @Root() { collections }: Product,
     @Ctx() { loaders }: RequestContext
   ): Promise<Collection[]> {
-    const items = await loaders.collectionsLoader.loadMany(collections as any);
+    const items = await loaders.collectionLoader.loadMany(collections as any);
     return items.reduce((cats, item) => (item instanceof Error ? cats : [...cats, item]), [] as Collection[]);
   }
 
