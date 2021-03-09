@@ -15,7 +15,7 @@ export class ProductResolver {
 
   @Query(() => Product, { nullable: true })
   product(@Arg("id", () => ID) id: string): Promise<Product | null> {
-    return this.productService.findOne(id);
+    return this.productService.findOne({ where: { id } });
   }
 
   @Query(() => PaginatedProductResponse)

@@ -15,7 +15,7 @@ export class OrderResolver {
 
   @Query(() => Order, { nullable: true })
   order(@Arg("id", () => ID) id: string): Promise<Order | null> {
-    return this.orderService.findOne(id);
+    return this.orderService.findOne({ where: { id } });
   }
 
   @Authorized(Roles.Admin)

@@ -15,7 +15,7 @@ export class AuthorResolver {
 
   @Query(() => Author, { nullable: true })
   author(@Arg("id", () => ID) id: string): Promise<Author | null> {
-    return this.service.findOne(id);
+    return this.service.findOne({ where: { id } });
   }
 
   @Query(() => PaginatedAuthorResponse)

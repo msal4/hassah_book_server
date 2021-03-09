@@ -159,8 +159,11 @@ describe("Product", () => {
       author,
     }).save();
 
+    // @ts-ignore
     delete product.image;
+    // @ts-ignore
     delete product.createdAt;
+    // @ts-ignore
     delete product.updatedAt;
 
     product.categories = (await getIdsOnly(product.categories)) as any;

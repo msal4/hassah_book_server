@@ -14,7 +14,7 @@ export class CategoryResolver {
 
   @Query(() => Category, { nullable: true })
   category(@Arg("id", () => ID) id: string): Promise<Category | null> {
-    return this.categoryService.findOne(id);
+    return this.categoryService.findOne({ where: { id } });
   }
 
   @Query(() => PaginatedCategoryResponse)

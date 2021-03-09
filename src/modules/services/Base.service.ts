@@ -1,4 +1,11 @@
-import { Repository, BaseEntity, DeepPartial, getRepository, SelectQueryBuilder } from "typeorm";
+import {
+  Repository,
+  BaseEntity,
+  DeepPartial,
+  getRepository,
+  SelectQueryBuilder,
+  FindOneOptions,
+} from "typeorm";
 import { ClassType } from "type-graphql";
 import { FileUpload } from "graphql-upload";
 import { S3 } from "aws-sdk";
@@ -77,8 +84,12 @@ export class BaseService<T extends BaseEntity> {
     return { items, total, hasMore: hasMore(filterArgs ?? { skip: 0, take: items.length }, total) };
   }
 
-  public async findOne(id: string): Promise<T | null> {
-    const item = await this.repository.findOne(id, { loadRelationIds: true, relations: this.relations });
+  public async findOne(options: FindOneOptions<T>): Promise<T | null> {
+    const item = await this.repository.findOne({
+      ...options,
+      loadRelationIds: true,
+      relations: this.relations,
+    });
     return item ?? null;
   }
 

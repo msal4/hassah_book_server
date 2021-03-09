@@ -15,7 +15,7 @@ export class CollectionResolver {
 
   @Query(() => Collection, { nullable: true })
   collection(@Arg("id", () => ID) id: string): Promise<Collection | null> {
-    return this.collectionService.findOne(id);
+    return this.collectionService.findOne({ where: { id } });
   }
 
   @Query(() => PaginatedCollectionResponse)

@@ -14,7 +14,7 @@ export class PublisherResolver {
 
   @Query(() => Publisher, { nullable: true })
   publisher(@Arg("id", () => ID) id: string): Promise<Publisher | null> {
-    return this.service.findOne(id);
+    return this.service.findOne({ where: { id } });
   }
 
   @Query(() => PaginatedPublisherResponse)

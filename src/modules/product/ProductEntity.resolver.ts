@@ -25,6 +25,17 @@ export class ProductEntityResolver {
     return loaders.authorLoader.load(author as any);
   }
 
+  @FieldResolver(() => Boolean, { complexity: ({ childComplexity }) => childComplexity + 1 })
+  async isFavorite(@Root() { id }: Product, @Ctx() { payload }: RequestContext): Promise<boolean> {
+    if (!payload?.userId) return false;
+
+    const favorite = await this.favoriteService.findOne({
+      where: { user: { id: payload?.userId }, product: { id } },
+    });
+
+    return !!favorite;
+  }
+
   @FieldResolver(() => Publisher)
   publisher(@Root() { publisher }: Product, @Ctx() { loaders }: RequestContext): Promise<Publisher> {
     return loaders.publisherLoader.load(publisher as any);

@@ -9,6 +9,7 @@ import { Author } from "@api/entity/Author";
 import { Category } from "@api/entity/Category";
 import { Collection } from "@api/entity/Collection";
 import { Order } from "@api/entity/Order";
+import { Favorite } from "@api/entity/Favorite";
 
 type Id = string | { id: string };
 
