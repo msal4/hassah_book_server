@@ -1,4 +1,4 @@
-import { Resolver, Query, Args, Ctx, Mutation, Arg, Authorized } from "type-graphql";
+import { Resolver, Query, Args, Ctx, Mutation, Arg, Authorized, ID } from "type-graphql";
 
 import { OrderService } from "@api/modules/order/order/Order.service";
 import { PaginatedOrderResponse } from "@api/modules/types/PaginatedResponse";
@@ -12,6 +12,11 @@ import { Roles } from "@api/modules/utils/auth";
 @Resolver()
 export class OrderResolver {
   constructor(private readonly orderService: OrderService) {}
+
+  @Query(() => Order, { nullable: true })
+  order(@Arg("id", () => ID) id: string): Promise<Order | null> {
+    return this.orderService.findOne(id);
+  }
 
   @Authorized(Roles.Admin)
   @Query(() => PaginatedOrderResponse)

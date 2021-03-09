@@ -1,4 +1,4 @@
-import { Resolver, Query, Args, Mutation, Arg, Authorized } from "type-graphql";
+import { Resolver, Query, Args, Mutation, Arg, Authorized, ID } from "type-graphql";
 
 import { FilterArgs } from "@api/modules/types/FilterArgs";
 import { PaginatedPublisherResponse } from "@api/modules/types/PaginatedResponse";
@@ -11,6 +11,11 @@ import { Roles } from "@api/modules/utils/auth";
 @Resolver()
 export class PublisherResolver {
   constructor(private readonly service: PublisherService) {}
+
+  @Query(() => Publisher, { nullable: true })
+  publisher(@Arg("id", () => ID) id: string): Promise<Publisher | null> {
+    return this.service.findOne(id);
+  }
 
   @Query(() => PaginatedPublisherResponse)
   publishers(@Args() args: FilterArgs): Promise<PaginatedPublisherResponse> {

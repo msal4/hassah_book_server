@@ -77,6 +77,11 @@ export class BaseService<T extends BaseEntity> {
     return { items, total, hasMore: hasMore(filterArgs ?? { skip: 0, take: items.length }, total) };
   }
 
+  public async findOne(id: string): Promise<T | null> {
+    const item = await this.repository.findOne(id, { loadRelationIds: true, relations: this.relations });
+    return item ?? null;
+  }
+
   public async findAll(options: FindAllOptions): Promise<PaginatedResponse<T>> {
     let query = this.repository
       .createQueryBuilder(this.tableName)

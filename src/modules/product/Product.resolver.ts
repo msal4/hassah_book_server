@@ -13,6 +13,11 @@ import { Roles } from "@api/modules/utils/auth";
 export class ProductResolver {
   constructor(private readonly productService: ProductService) {}
 
+  @Query(() => Product, { nullable: true })
+  product(@Arg("id", () => ID) id: string): Promise<Product | null> {
+    return this.productService.findOne(id);
+  }
+
   @Query(() => PaginatedProductResponse)
   products(@Args() args: FilterArgs): Promise<PaginatedProductResponse> {
     return this.productService.findAll(args);

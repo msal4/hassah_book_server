@@ -1,4 +1,4 @@
-import { Resolver, Query, Args, Mutation, Arg, Authorized } from "type-graphql";
+import { Resolver, Query, Args, Mutation, Arg, Authorized, ID } from "type-graphql";
 import { FileUpload, GraphQLUpload } from "graphql-upload";
 
 import { FilterArgs } from "@api/modules/types/FilterArgs";
@@ -12,6 +12,11 @@ import { Roles } from "@api/modules/utils/auth";
 @Resolver()
 export class AuthorResolver {
   constructor(private readonly service: AuthorService) {}
+
+  @Query(() => Author, { nullable: true })
+  author(@Arg("id", () => ID) id: string): Promise<Author | null> {
+    return this.service.findOne(id);
+  }
 
   @Query(() => PaginatedAuthorResponse)
   authors(@Args() args: FilterArgs): Promise<PaginatedAuthorResponse> {

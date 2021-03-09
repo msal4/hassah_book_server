@@ -1,4 +1,4 @@
-import { Resolver, Query, Args, Mutation, Arg, Authorized } from "type-graphql";
+import { Resolver, Query, Args, Mutation, Arg, Authorized, ID } from "type-graphql";
 import { FileUpload } from "graphql-upload";
 
 import { CollectionService } from "@api/modules/collection/collection/Collection.service";
@@ -12,6 +12,12 @@ import { Roles } from "@api/modules/utils/auth";
 @Resolver()
 export class CollectionResolver {
   constructor(private readonly collectionService: CollectionService) {}
+
+  @Query(() => Collection, { nullable: true })
+  collection(@Arg("id", () => ID) id: string): Promise<Collection | null> {
+    return this.collectionService.findOne(id);
+  }
+
   @Query(() => PaginatedCollectionResponse)
   collections(@Args() args: FilterArgs): Promise<PaginatedCollectionResponse> {
     return this.collectionService.findAll(args);

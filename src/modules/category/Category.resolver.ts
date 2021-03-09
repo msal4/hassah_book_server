@@ -1,4 +1,4 @@
-import { Resolver, Query, Args, Mutation, Arg, Authorized } from "type-graphql";
+import { Resolver, Query, Args, Mutation, Arg, Authorized, ID } from "type-graphql";
 
 import { CategoryService } from "@api/modules/category/category/Category.service";
 import { PaginatedCategoryResponse } from "@api/modules/types/PaginatedResponse";
@@ -11,6 +11,11 @@ import { Roles } from "@api/modules/utils/auth";
 @Resolver()
 export class CategoryResolver {
   constructor(private readonly categoryService: CategoryService) {}
+
+  @Query(() => Category, { nullable: true })
+  category(@Arg("id", () => ID) id: string): Promise<Category | null> {
+    return this.categoryService.findOne(id);
+  }
 
   @Query(() => PaginatedCategoryResponse)
   categories(@Args() args: FilterArgs): Promise<PaginatedCategoryResponse> {

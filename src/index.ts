@@ -20,7 +20,9 @@ async function bootstrap() {
   const schema = await createSchema();
 
   const app = express();
-  app.use(cors({ credentials: true, origin: process.env.ORIGIN }));
+  app.use(
+    cors({ credentials: true, origin: process.env.NODE_ENV == "development" ? "*" : process.env.ORIGIN })
+  );
   app.use(cookieParser());
   app.set("trust proxy", 1);
   app.get("/", (_req, res) => res.send('<a href="/graphql">Graphql Playground</a>'));
