@@ -1,17 +1,11 @@
 import { Service } from "typedi";
 import { ValidationError } from "apollo-server-express";
-import { Response } from "express";
 
 import { BaseService } from "@api/modules/services/Base.service";
 import { User } from "@api/entity/User";
 import { normalizePhone } from "@api/modules/utils/normalizePhone";
 import { isPhoneAlreadyExist } from "@api/modules/user/user/isPhoneAlreadyExist";
-import {
-  relyingParty,
-  sendRefreshTokenCookie,
-  createRefreshToken,
-  createAccessToken,
-} from "@api/modules/utils/auth";
+import { relyingParty, createTokens } from "@api/modules/utils/auth";
 import { PhoneSessionInfo } from "@api/entity/PhoneSessionInfo";
 import { SendVerificationCodeInput } from "@api/modules/user/user/SendVerificationCodeInput";
 import { RegisterInput } from "@api/modules/user/user/RegisterInput";
@@ -59,7 +53,7 @@ export class UserService extends BaseService<User> {
     return await User.create({ ...data, phone }).save();
   }
 
-  async login(res: Response, data: LoginInput): Promise<LoginResponse> {
+  async login(data: LoginInput): Promise<LoginResponse> {
     const phone = normalizePhone(data.phone);
     const user = await User.findOne({ where: { phone } });
     if (!user) {
@@ -71,8 +65,6 @@ export class UserService extends BaseService<User> {
       throw new Error("Password is incorrect");
     }
 
-    sendRefreshTokenCookie(res, createRefreshToken(user));
-
-    return { accessToken: createAccessToken(user) };
+    return createTokens(user);
   }
 }

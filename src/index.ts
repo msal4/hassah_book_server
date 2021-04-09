@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import "dotenv/config";
 
-import { ApolloServer } from "apollo-server-express";
+import { ApolloServer, ApolloServerExpressConfig } from "apollo-server-express";
 import { createConnection } from "typeorm";
 import express from "express";
 import cookieParser from "cookie-parser";
@@ -20,8 +20,9 @@ async function bootstrap() {
   const schema = await createSchema();
 
   const app = express();
-  app.use(cors({ credentials: true, origin: process.env.ORIGIN }));
   app.use(cookieParser());
+  app.use(cors());
+  app.use(express.json());
   app.set("trust proxy", 1);
   app.get("/", (_req, res) => res.send('<a href="/graphql">Graphql Playground</a>'));
   app.post("/refresh_token", refreshToken);
@@ -30,7 +31,7 @@ async function bootstrap() {
     schema,
     context: ({ req, res }) => ({ req, res, loaders: createLoaders() } as RequestContext),
     plugins: [queryComplexityPlugin(schema)],
-  });
+  } as ApolloServerExpressConfig);
   apolloServer.applyMiddleware({ app });
 
   app.listen(process.env.PORT, () => {

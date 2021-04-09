@@ -4,4 +4,6 @@ import { ObjectType, Field } from "type-graphql";
 export class LoginResponse {
   @Field()
   accessToken: string;
+  @Field()
+  refreshToken: string;
 }

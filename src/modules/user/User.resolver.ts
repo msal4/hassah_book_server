@@ -64,10 +64,7 @@ export class UserResolver {
   }
 
   @Mutation(() => LoginResponse)
-  async updatePassword(
-    @Arg("data") { password, ...data }: UpdatePasswordInput,
-    @Ctx() { res }: RequestContext
-  ): Promise<LoginResponse> {
+  async updatePassword(@Arg("data") { password, ...data }: UpdatePasswordInput): Promise<LoginResponse> {
     const phone = await this.userService.verifyCode(data);
 
     const user = await User.findOne({ phone });
@@ -85,7 +82,7 @@ export class UserResolver {
     await user.hashPassword();
     await user.save();
 
-    return await this.userService.login(res, { phone, password });
+    return await this.userService.login({ phone, password });
   }
 
   @Authorized(Roles.User)
@@ -104,7 +101,7 @@ export class UserResolver {
   }
 
   @Mutation(() => LoginResponse)
-  login(@Arg("data") data: LoginInput, @Ctx() { res }: RequestContext): Promise<LoginResponse> {
-    return this.userService.login(res, data);
+  login(@Arg("data") data: LoginInput): Promise<LoginResponse> {
+    return this.userService.login(data);
   }
 }

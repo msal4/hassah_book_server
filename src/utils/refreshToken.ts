@@ -1,38 +1,40 @@
 import { Request, Response } from "express";
 import { verify } from "jsonwebtoken";
 
-import {
-  sendRefreshTokenCookie,
-  createAccessToken,
-  createRefreshToken,
-  getRefreshSecret,
-} from "@api/modules/utils/auth";
+import { getRefreshSecret, createTokens } from "@api/modules/utils/auth";
 import { JwtRefreshPayload } from "@api/modules/types/JwtPayload";
 import { User } from "@api/entity/User";
+import { Admin } from "@api/entity/Admin";
+import { BaseUser } from "@api/entity/base/BaseUser";
 
 export async function refreshToken(req: Request, res: Response) {
-  const token = req.cookies.skal as string | undefined;
+  if (!req.body) {
+    return res.status(401).send({ ok: false });
+  }
+
+  const token = req.body.token as string;
   if (!token) {
-    return res.send({ ok: false, accessToken: "" });
+    return res.status(401).send({ ok: false });
   }
 
   try {
     const payload = verify(token, getRefreshSecret()) as JwtRefreshPayload;
-    const user = await User.findOne(payload?.userId);
+    let user: BaseUser | undefined = await User.findOne(payload?.userId);
     if (!user) {
-      return res.send({ ok: false, accessToken: "" });
+      user = await Admin.findOne(payload?.userId);
+      if (!user) {
+        return res.status(401).send({ ok: false });
+      }
     }
 
     // Checks if the token is invalidated.
     if (payload.tokenVersion !== user.tokenVersion) {
-      return res.send({ ok: false, accessToken: "" });
+      return res.status(401).send({ ok: false });
     }
 
-    sendRefreshTokenCookie(res, createRefreshToken(user));
-
-    return res.send({ ok: true, accessToken: createAccessToken(user) });
+    return res.send({ ok: true, ...createTokens(user) });
   } catch (err) {
     console.log(err);
-    return res.send({ ok: false, accessToken: "" });
+    return res.status(401).send({ ok: false });
   }
 }

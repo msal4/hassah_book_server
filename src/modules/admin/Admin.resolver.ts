@@ -22,8 +22,8 @@ export class AdminResolver {
   }
 
   @Mutation(() => LoginResponse)
-  adminLogin(@Ctx() { res }: RequestContext, @Arg("data") data: AdminLoginInput): Promise<LoginResponse> {
-    return this.adminService.login(res, data);
+  adminLogin(@Arg("data") data: AdminLoginInput): Promise<LoginResponse> {
+    return this.adminService.login(data);
   }
 
   @Authorized(Roles.Admin)
