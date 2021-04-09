@@ -42,21 +42,21 @@ export const authChecker: AuthChecker<RequestContext, Roles> = async ({ root, co
   const token = parseAuthorizationToken(context.req);
 
   try {
-    context.payload = verify(token, getAccessSecret()) as JwtAccessPayload;
+    context.payload = verify(token, accessSecret) as JwtAccessPayload;
     return await checkRoles(context.payload.userId, roles, root);
   } catch (err) {
     return false;
   }
 };
 
-export const getAccessSecret = (): string => process.env.JWT_ACCESS_SECRET ?? "testsecretkey";
-export const getRefreshSecret = (): string => process.env.JWT_REFRESH_SECRET ?? "anothertestsecretkey";
+export const accessSecret: string = process.env.JWT_ACCESS_SECRET ?? "testsecretkey";
+export const refreshSecret: string = process.env.JWT_REFRESH_SECRET ?? "anothertestsecretkey";
 
 export const createAccessToken = (user: BaseUser) =>
-  sign({ userId: user.id }, getAccessSecret(), { expiresIn: process.env.ACCESS_TOKEN_LIFETIME ?? "15m" });
+  sign({ userId: user.id }, accessSecret, { expiresIn: process.env.ACCESS_TOKEN_LIFETIME ?? "15m" });
 
 export const createRefreshToken = (user: BaseUser) =>
-  sign({ userId: user.id, tokenVersion: user.tokenVersion }, getRefreshSecret(), {
+  sign({ userId: user.id, tokenVersion: user.tokenVersion }, refreshSecret, {
     expiresIn: process.env.REFRESH_TOKEN_LIFETIME ?? "8w",
   });
 

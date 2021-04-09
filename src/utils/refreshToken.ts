@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { verify } from "jsonwebtoken";
 
-import { getRefreshSecret, createTokens } from "@api/modules/utils/auth";
+import { refreshSecret, createTokens } from "@api/modules/utils/auth";
 import { JwtRefreshPayload } from "@api/modules/types/JwtPayload";
 import { User } from "@api/entity/User";
 import { Admin } from "@api/entity/Admin";
@@ -18,7 +18,7 @@ export async function refreshToken(req: Request, res: Response) {
   }
 
   try {
-    const payload = verify(token, getRefreshSecret()) as JwtRefreshPayload;
+    const payload = verify(token, refreshSecret) as JwtRefreshPayload;
     let user: BaseUser | undefined = await User.findOne(payload?.userId);
     if (!user) {
       user = await Admin.findOne(payload?.userId);
