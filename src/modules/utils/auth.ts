@@ -45,6 +45,7 @@ export const authChecker: AuthChecker<RequestContext, Roles> = async ({ root, co
     context.payload = verify(token, accessSecret) as JwtAccessPayload;
     return await checkRoles(context.payload.userId, roles, root);
   } catch (err) {
+    context.res.status(401);
     return false;
   }
 };
