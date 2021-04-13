@@ -34,7 +34,6 @@ export async function refreshToken(req: Request, res: Response) {
 
     return res.send({ ok: true, ...createTokens(user) });
   } catch (err) {
-    console.log(err);
     return res.status(401).send({ ok: false });
   }
 }
