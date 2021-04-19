@@ -4,4 +4,6 @@ import { BaseService } from "@api/modules/services/Base.service";
 import { Purchase } from "@api/entity/Purchase";
 
 @Service()
-export class PurchaseService extends BaseService<Purchase> {}
+export class PurchaseService extends BaseService<Purchase> {
+  relations = ["product", "order"];
+}
