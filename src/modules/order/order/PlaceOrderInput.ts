@@ -9,9 +9,13 @@ export class PlaceOrderInput {
   @IsNotEmpty()
   address: string;
 
-  @Field({ nullable: true })
+  @Field()
+  @IsNotEmpty()
+  province: string;
+
+  @Field()
   @IsPhoneNumber("IQ")
-  phone?: string;
+  phone: string;
 
   @Field(() => [PurchasePartialInput])
   purchases: PurchasePartialInput[];

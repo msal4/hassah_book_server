@@ -17,6 +17,10 @@ export class User extends BaseUser {
 
   @Field({ nullable: true })
   @Column({ nullable: true })
+  province?: string;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
   address?: string;
 
   @Field()
