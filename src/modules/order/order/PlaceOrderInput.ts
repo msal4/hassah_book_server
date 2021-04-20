@@ -13,7 +13,7 @@ export class PlaceOrderInput {
   @IsNotEmpty()
   province: string;
 
-  @Field({ nullable: true })
+  @Field()
   @IsPhoneNumber("IQ")
   phone: string;
 
