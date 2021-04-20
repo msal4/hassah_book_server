@@ -15,5 +15,8 @@ export class RegisterInput extends VerificationInput {
   password: string;
 
   @Field({ nullable: true })
+  province?: string;
+
+  @Field({ nullable: true })
   address?: string;
 }
