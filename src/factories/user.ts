@@ -7,6 +7,7 @@ define(User, (faker) => {
   user.name = faker.name.findName();
   user.phone = faker.phone.phoneNumber("077########");
   user.confirmed = faker.random.boolean();
+  user.province = faker.address.state();
   user.address = faker.address.streetAddress(true);
   user.password = faker.lorem.sentence();
   return user;

@@ -37,6 +37,10 @@ export class Order extends BaseEntity {
 
   @Field()
   @Column()
+  province: string;
+
+  @Field()
+  @Column()
   address: string;
 
   @Field({ nullable: true })

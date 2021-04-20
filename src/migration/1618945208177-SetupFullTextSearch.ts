@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class SetupFullTextSearch1607703587706 implements MigrationInterface {
+export class SetupFullTextSearch1618945208177 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
         UPDATE product
@@ -31,5 +31,5 @@ export class SetupFullTextSearch1607703587706 implements MigrationInterface {
     `);
   }
 
-  public async down(): Promise<void> {}
+  public async down(_: QueryRunner): Promise<void> {}
 }
