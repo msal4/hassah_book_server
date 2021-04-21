@@ -22,9 +22,9 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@api/*": ["./src/*"]
+      "@api/*": ["./*"]
     }
   },
   "exclude": ["node_modules"],
-  "include": ["./src/**/*.ts"]
+  "include": ["./**/*.ts"]
 }

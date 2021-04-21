@@ -50,9 +50,9 @@
   "scripts": {
     "api:run": "ts-node -r tsconfig-paths/register",
     "api:run-dev": "ts-node-dev -r tsconfig-paths/register",
-    "start": "yarn api:run-dev src/index.ts",
-    "prod": "yarn api:run src/index.ts",
-    "test:setup": "yarn api:run src/test-utils/setup.ts",
+    "start": "yarn api:run-dev index.ts",
+    "prod": "yarn api:run index.ts",
+    "test:setup": "yarn api:run test-utils/setup.ts",
     "test": "yarn test:setup && jest -i",
     "test:watch": "yarn test --watch",
     "orm": "yarn api:run ./node_modules/typeorm/cli.js",

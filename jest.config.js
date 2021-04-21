@@ -2,9 +2,9 @@ module.exports = {
   preset: "ts-jest",
   testEnvironment: "node",
   moduleNameMapper: {
-    "@api/(.*)$": ["<rootDir>/src/$1"],
+    "@api/(.*)$": ["<rootDir>/$1"],
   },
-  globalSetup: "./src/test-utils/setup.ts",
-  setupFilesAfterEnv: ["./src/test-utils/dbEnv.ts"],
+  globalSetup: "./test-utils/setup.ts",
+  setupFilesAfterEnv: ["./test-utils/dbEnv.ts"],
   testTimeout: 20000,
 };
