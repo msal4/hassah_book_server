@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class SetupFullTextSearch1618945208177 implements MigrationInterface {
+export class SetupFullTextSearch1619108320970 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
         UPDATE product

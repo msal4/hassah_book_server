@@ -1,4 +1,4 @@
-import { ObjectType, Field, ID, registerEnumType } from "type-graphql";
+import { ObjectType, Field, ID, registerEnumType, Float } from "type-graphql";
 import {
   Entity,
   BaseEntity,
@@ -50,6 +50,10 @@ export class Order extends BaseEntity {
   @Field(() => OrderStatus)
   @Column({ type: "enum", enum: OrderStatus, default: OrderStatus.Pending })
   status: OrderStatus;
+
+  @Field(() => Float)
+  @Column({ default: 0 })
+  totalPrice: number;
 
   @Field()
   @CreateDateColumn()
