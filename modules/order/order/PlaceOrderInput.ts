@@ -1,5 +1,5 @@
 import { InputType, Field } from "type-graphql";
-import { IsNotEmpty, IsPhoneNumber } from "class-validator";
+import { ArrayNotEmpty, IsNotEmpty, IsPhoneNumber } from "class-validator";
 
 import { PurchasePartialInput } from "@api/modules/purchase/PurchasePartialInput";
 
@@ -18,5 +18,6 @@ export class PlaceOrderInput {
   phone: string;
 
   @Field(() => [PurchasePartialInput])
+  @ArrayNotEmpty()
   purchases: PurchasePartialInput[];
 }
