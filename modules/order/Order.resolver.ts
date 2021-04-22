@@ -1,4 +1,4 @@
-import { Resolver, Query, Args, Ctx, Mutation, Arg, Authorized, ID } from "type-graphql";
+import { Arg, Args, Authorized, Ctx, ID, Mutation, Query, Resolver } from "type-graphql";
 
 import { OrderService } from "@api/modules/order/order/Order.service";
 import { PaginatedOrderResponse } from "@api/modules/types/PaginatedResponse";
@@ -8,10 +8,12 @@ import { Order, OrderStatus } from "@api/entity/Order";
 import { PlaceOrderInput } from "@api/modules/order/order/PlaceOrderInput";
 import { UpdateOrderInput } from "@api/modules/order/order/UpdateOrderInput";
 import { Roles } from "@api/modules/utils/auth";
+import { ProductService } from "@api/modules/product/product/Product.service";
+import { Product } from "@api/entity/Product";
 
 @Resolver()
 export class OrderResolver {
-  constructor(private readonly orderService: OrderService) {}
+  constructor(private readonly orderService: OrderService, private readonly productService: ProductService) {}
 
   @Query(() => Order, { nullable: true })
   order(@Arg("id", () => ID) id: string): Promise<Order | null> {
@@ -32,8 +34,23 @@ export class OrderResolver {
 
   @Authorized(Roles.User)
   @Mutation(() => Order)
-  placeOrder(@Ctx() { payload }: RequestContext, @Arg("data") data: PlaceOrderInput): Promise<Order> {
-    return this.orderService.create({ ...data, user: { id: payload!.userId } });
+  async placeOrder(@Ctx() { payload }: RequestContext, @Arg("data") data: PlaceOrderInput): Promise<Order> {
+    const totalPrice = await this.calculateTotalPrice(data);
+
+    return this.orderService.create({ ...data, user: { id: payload!.userId }, totalPrice });
+  }
+
+  private async calculateTotalPrice(data: PlaceOrderInput) {
+    // Get all the purchased products.
+    const productIds = data.purchases.map((p) => p.product.id);
+    const products = await this.productService.repository.findByIds(productIds);
+    // Map each product to it's id to then retain the order of ids.
+    const mappedProducts: { [key: string]: Product } = products.reduce(
+      (map, item) => ({ ...map, [item.id]: item }),
+      {}
+    );
+    // Sum the total.
+    return data.purchases.reduce((total, p) => total + p.quantity * mappedProducts[p.product.id].price, 0);
   }
 
   @Authorized(Roles.User)
