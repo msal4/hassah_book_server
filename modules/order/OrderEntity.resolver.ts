@@ -1,4 +1,4 @@
-import { Resolver, FieldResolver, Root, Ctx, Args } from "type-graphql";
+import { Resolver, FieldResolver, Root, Ctx, Args, Float } from "type-graphql";
 
 import { Order } from "@api/entity/Order";
 import { User } from "@api/entity/User";
@@ -11,6 +11,16 @@ import { PAGINATED_RESPONSE_COMPLEXITY } from "@api/modules/constants/query";
 @Resolver(() => Order)
 export class OrderEntityResolver {
   constructor(private readonly purchaseService: PurchaseService) {}
+
+  @FieldResolver(() => Float)
+  async totalPrice(@Root() { id }: Order): Promise<number> {
+    const res = await this.purchaseService.repository.query(
+      `SELECT COALESCE(SUM(product.price), 0) as total FROM purchase INNER JOIN product ON product.id = "productId" WHERE "orderId" = $1`,
+      [id]
+    );
+
+    return res[0].total;
+  }
 
   @FieldResolver(() => User)
   user(@Ctx() { loaders }: RequestContext, @Root() { user }: Order): Promise<User> {
