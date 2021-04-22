@@ -10,6 +10,7 @@ import { UpdateOrderInput } from "@api/modules/order/order/UpdateOrderInput";
 import { Roles } from "@api/modules/utils/auth";
 import { ProductService } from "@api/modules/product/product/Product.service";
 import { Product } from "@api/entity/Product";
+import { PurchasePartialInput } from "@api/modules/purchase/PurchasePartialInput";
 
 @Resolver()
 export class OrderResolver {
@@ -35,14 +36,14 @@ export class OrderResolver {
   @Authorized(Roles.User)
   @Mutation(() => Order)
   async placeOrder(@Ctx() { payload }: RequestContext, @Arg("data") data: PlaceOrderInput): Promise<Order> {
-    const totalPrice = await this.calculateTotalPrice(data);
+    const totalPrice = await this.calculateTotalPrice(data.purchases);
 
     return this.orderService.create({ ...data, user: { id: payload!.userId }, totalPrice });
   }
 
-  private async calculateTotalPrice(data: PlaceOrderInput) {
+  private async calculateTotalPrice(purchases: PurchasePartialInput[]): Promise<number> {
     // Get all the purchased products.
-    const productIds = data.purchases.map((p) => p.product.id);
+    const productIds = purchases.map((p) => p.product.id);
     const products = await this.productService.repository.findByIds(productIds);
     // Map each product to it's id to then retain the order of ids.
     const mappedProducts: { [key: string]: Product } = products.reduce(
@@ -50,7 +51,7 @@ export class OrderResolver {
       {}
     );
     // Sum the total.
-    return data.purchases.reduce((total, p) => total + p.quantity * mappedProducts[p.product.id].price, 0);
+    return purchases.reduce((total, p) => total + p.quantity * mappedProducts[p.product.id].price, 0);
   }
 
   @Authorized(Roles.User)
