@@ -56,7 +56,10 @@ export class OrderResolver {
 
   @Authorized(Roles.User)
   @Mutation(() => Boolean)
-  async cancelOrder(@Ctx() { payload }: RequestContext, @Arg("orderId") orderId: string): Promise<boolean> {
+  async cancelOrder(
+    @Ctx() { payload }: RequestContext,
+    @Arg("orderId", () => ID) orderId: string
+  ): Promise<boolean> {
     const order = await this.orderService.repository.findOne({
       where: { id: orderId, user: { id: payload!.userId } },
     });
