@@ -5,6 +5,7 @@ import {
   getRepository,
   SelectQueryBuilder,
   FindOneOptions,
+  FindManyOptions,
 } from "typeorm";
 import { ClassType } from "type-graphql";
 import { FileUpload } from "graphql-upload";
@@ -141,6 +142,14 @@ export class BaseService<T extends BaseEntity> {
         query: tsQuery(options.searchQuery),
       })
       .addOrderBy(`ts_rank(${this.tableName}.document, to_tsquery(:query))`, "DESC");
+  }
+
+  public findByIds(ids: string[], options?: FindManyOptions<T>): Promise<T[]> {
+    return this.repository.findByIds(ids, {
+      ...(options ?? {}),
+      loadRelationIds: true,
+      relations: this.relations,
+    });
   }
 
   public async create(
