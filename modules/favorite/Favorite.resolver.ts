@@ -20,7 +20,10 @@ export class FavoriteResolver {
 
   @Authorized(Roles.User)
   @Mutation(() => Boolean)
-  addFavorite(@Ctx() { payload }: RequestContext, @Arg("productId") productId: string): Promise<boolean> {
+  addFavorite(
+    @Ctx() { payload }: RequestContext,
+    @Arg("productId", () => ID) productId: string
+  ): Promise<boolean> {
     return this.favoriteService.add({ userId: payload!.userId, productId });
   }
 
