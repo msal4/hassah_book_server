@@ -1,18 +1,19 @@
 import DataLoader from "dataloader";
-import { ClassType } from "type-graphql";
-import { getRepository } from "typeorm";
+import { BaseEntity } from "typeorm";
 
-import { User } from "@api/entity/User";
-import { Product } from "@api/entity/Product";
-import { Publisher } from "@api/entity/Publisher";
-import { Author } from "@api/entity/Author";
-import { Category } from "@api/entity/Category";
-import { Collection } from "@api/entity/Collection";
-import { Order } from "@api/entity/Order";
+import { BaseService } from "@api/modules/services/Base.service";
+import { Container } from "typedi";
+import { UserService } from "@api/modules/user/user/User.service";
+import { ProductService } from "@api/modules/product/product/Product.service";
+import { AuthorService } from "@api/modules/author/author/Author.service";
+import { PublisherService } from "@api/modules/publisher/publisher/Publisher.service";
+import { CategoryService } from "@api/modules/category/category/Category.service";
+import { CollectionService } from "@api/modules/collection/collection/Collection.service";
+import { OrderService } from "@api/modules/order/order/Order.service";
 
 type Id = string | { id: string };
 
-const loader = <T extends { id: string }>(Entity: ClassType<T>) => {
+const loader = <T extends BaseEntity & { id: string }>(service: BaseService<T>) => {
   const batchLoadFn = async (ids: readonly Id[]): Promise<T[]> => {
     // Creating new entities returns an entity object with the relations being objects which contain the
     // id { id: "..."}, This is not what i want since i'm expecting a string. I could avoid this by
@@ -23,7 +24,7 @@ const loader = <T extends { id: string }>(Entity: ClassType<T>) => {
     // typeorm issue: https://github.com/typeorm/typeorm/issues/3490
     const allIds: string[] = ids.map((id) => (typeof id === "object" ? id.id : id));
 
-    const items = await getRepository(Entity).findByIds(allIds);
+    const items = await service.findByIds(allIds);
 
     const mappedItems: { [key: string]: T } = items.reduce((map, item) => ({ ...map, [item.id]: item }), {});
 
@@ -34,13 +35,13 @@ const loader = <T extends { id: string }>(Entity: ClassType<T>) => {
 };
 
 export const createLoaders = () => ({
-  userLoader: loader(User),
-  productLoader: loader(Product),
-  authorLoader: loader(Author),
-  publisherLoader: loader(Publisher),
-  categoryLoader: loader(Category),
-  collectionLoader: loader(Collection),
-  orderLoader: loader(Order),
+  userLoader: loader(Container.get(UserService)),
+  productLoader: loader(Container.get(ProductService)),
+  authorLoader: loader(Container.get(AuthorService)),
+  publisherLoader: loader(Container.get(PublisherService)),
+  categoryLoader: loader(Container.get(CategoryService)),
+  collectionLoader: loader(Container.get(CollectionService)),
+  orderLoader: loader(Container.get(OrderService)),
 });
 
 export type Loaders = ReturnType<typeof createLoaders>;
