@@ -40,7 +40,7 @@ export class FavoriteResolver {
   @Mutation(() => Boolean)
   removeFavoriteByProductId(
     @Ctx() { payload }: RequestContext,
-    @Arg("productId") productId: string
+    @Arg("productId", () => ID) productId: string
   ): Promise<boolean> {
     return this.favoriteService.remove({ userId: payload!.userId, productId });
   }
