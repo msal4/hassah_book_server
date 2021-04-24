@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Arg, Ctx, Authorized, Root, Args, Query } from "type-graphql";
+import { Resolver, Mutation, Arg, Ctx, Authorized, Root, Args, Query, ID } from "type-graphql";
 
 import { FavoriteService } from "@api/modules/favorite/favorite/Favorite.service";
 import { RequestContext } from "@api/modules/types/RequestContext";
@@ -28,7 +28,7 @@ export class FavoriteResolver {
   @Mutation(() => Boolean)
   removeFavorite(
     @Ctx() { payload }: RequestContext,
-    @Arg("favoriteId") favoriteId: string
+    @Arg("favoriteId", () => ID) favoriteId: string
   ): Promise<boolean> {
     return this.favoriteService.remove({ userId: payload!.userId, favoriteId });
   }
