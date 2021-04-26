@@ -28,7 +28,7 @@ export class FavoriteService extends BaseService<Favorite> {
   }
 
   async remove({ userId, productId }: RemoveFavoriteData): Promise<boolean> {
-    if (!productId || userId) {
+    if (!productId || !userId) {
       return false;
     }
 
