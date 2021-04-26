@@ -1,11 +1,10 @@
-import { sign, verify } from "jsonwebtoken";
+import { sign } from "jsonwebtoken";
 import { AuthChecker } from "type-graphql";
 import { google } from "googleapis";
 import { Request } from "express";
 
 import { BaseUser } from "@api/entity/base/BaseUser";
 import { RequestContext } from "@api/modules/types/RequestContext";
-import { JwtAccessPayload } from "@api/modules/types/JwtPayload";
 import { Admin } from "@api/entity/Admin";
 import { User } from "@api/entity/User";
 
@@ -39,15 +38,18 @@ export const parseAuthorizationToken = (req: Request) => {
 };
 
 export const authChecker: AuthChecker<RequestContext, Roles> = async ({ root, context }, roles) => {
-  const token = parseAuthorizationToken(context.req);
-
-  try {
-    context.payload = verify(token, accessSecret) as JwtAccessPayload;
-    return await checkRoles(context.payload.userId, roles, root);
-  } catch (err) {
+  if (!context.payload) {
     context.res.status(401);
     return false;
   }
+
+  const authorized = await checkRoles(context.payload.userId, roles, root);
+  if (!authorized) {
+    context.res.status(401);
+    return false;
+  }
+
+  return true;
 };
 
 export const accessSecret: string = process.env.JWT_ACCESS_SECRET ?? "testsecretkey";

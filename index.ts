@@ -9,9 +9,8 @@ import cors from "cors";
 
 import { createSchema } from "@api/utils/createSchema";
 import { refreshToken } from "@api/utils/refreshToken";
-import { RequestContext } from "@api/modules/types/RequestContext";
-import { createLoaders } from "@api/utils/loaders";
 import { queryComplexityPlugin } from "@api/utils/queryComplexity.plugin";
+import { getContext } from "@api/utils/context";
 
 async function bootstrap() {
   // Create typeorm connection using the default configuration in .env .
@@ -29,7 +28,7 @@ async function bootstrap() {
 
   const apolloServer = new ApolloServer({
     schema,
-    context: ({ req, res }) => ({ req, res, loaders: createLoaders() } as RequestContext),
+    context: getContext,
     plugins: [queryComplexityPlugin(schema)],
   } as ApolloServerExpressConfig);
   apolloServer.applyMiddleware({ app });

@@ -30,7 +30,7 @@ export class ProductEntityResolver {
     if (!payload?.userId) return false;
 
     const favorite = await this.favoriteService.findOne({
-      where: { user: { id: payload?.userId }, product: { id } },
+      where: { user: { id: payload.userId }, product: { id } },
     });
 
     return !!favorite;
