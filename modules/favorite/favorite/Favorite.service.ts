@@ -11,7 +11,6 @@ interface FavoriteData {
 interface RemoveFavoriteData {
   userId: string;
   productId?: string;
-  favoriteId?: string;
 }
 
 @Service()
@@ -28,8 +27,8 @@ export class FavoriteService extends BaseService<Favorite> {
     }
   }
 
-  async remove({ userId, productId, favoriteId }: RemoveFavoriteData): Promise<boolean> {
-    if (!favoriteId && !productId) {
+  async remove({ userId, productId }: RemoveFavoriteData): Promise<boolean> {
+    if (!productId || userId) {
       return false;
     }
 
