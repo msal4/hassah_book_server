@@ -131,7 +131,7 @@ export class BaseService<T extends BaseEntity> {
 
     // Fallback to good old 'LIKE' if the document column does not exist.
     if (!this.hasDocument) {
-      return query.andWhere(`${this.tableName}::TEXT like '%' || :query || '%'`, {
+      return query.andWhere(`${this.tableName}::TEXT ILIKE '%' || :query || '%'`, {
         query: options.searchQuery,
       });
     }
