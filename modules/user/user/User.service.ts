@@ -57,14 +57,22 @@ export class UserService extends BaseService<User> {
     const phone = normalizePhone(data.phone);
     const user = await User.findOne({ where: { phone } });
     if (!user) {
-      throw new Error("No user found");
+      throw new NotFoundError();
     }
 
     const valid = await user.validatePassword(data.password);
     if (!valid) {
-      throw new Error("Password is incorrect");
+      throw new InvalidCredentialsError();
     }
 
     return createTokens(user);
   }
+}
+
+export class NotFoundError extends Error {
+  message = "user not found";
+}
+
+export class InvalidCredentialsError extends Error {
+  message = "invalid credentials";
 }

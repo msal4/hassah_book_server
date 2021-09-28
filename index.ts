@@ -11,6 +11,10 @@ import { createSchema } from "@api/utils/createSchema";
 import { refreshToken } from "@api/utils/refreshToken";
 import { queryComplexityPlugin } from "@api/utils/queryComplexity.plugin";
 import { getContext } from "@api/utils/context";
+import {
+  InvalidCredentialsError,
+  NotFoundError as UserNotFoundError,
+} from "./modules/user/user/User.service";
 
 async function bootstrap() {
   // Create typeorm connection using the default configuration in .env .
@@ -30,6 +34,16 @@ async function bootstrap() {
     schema,
     context: getContext,
     plugins: [queryComplexityPlugin(schema)],
+    formatError: (err) => {
+      const e = err.originalError;
+      if (e instanceof InvalidCredentialsError) {
+        return { ...err, extensions: { code: "INVALID_CREDENTIALS" } };
+      } else if (e instanceof UserNotFoundError) {
+        return { ...err, extensions: { code: "NOT_FOUND" } };
+      }
+
+      return err;
+    },
   } as ApolloServerExpressConfig);
   apolloServer.applyMiddleware({ app });
 
