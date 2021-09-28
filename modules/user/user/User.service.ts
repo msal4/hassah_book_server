@@ -1,5 +1,4 @@
 import { Service } from "typedi";
-import { ValidationError } from "apollo-server-express";
 
 import { BaseService } from "@api/modules/services/Base.service";
 import { User } from "@api/entity/User";
@@ -32,17 +31,17 @@ export class UserService extends BaseService<User> {
   async verifyCode({ code, sessionInfo }: VerificationInput): Promise<string> {
     const session = await PhoneSessionInfo.findOne({ where: { sessionInfo } });
     if (!session) {
-      throw new Error("No session found!");
+      throw new InvalidSessionError();
     }
 
     if (await isPhoneAlreadyExist(session.phoneNumber)) {
-      throw new ValidationError("Phone number already in use");
+      throw new PhoneInUseError();
     }
 
     const response = await relyingParty.verifyPhoneNumber({ code, sessionInfo } as any);
 
     if (response.status !== 200) {
-      throw new Error("Invalid verification code or session!");
+      throw new InvalidSessionError();
     }
 
     return response.data.phoneNumber!;
@@ -57,7 +56,7 @@ export class UserService extends BaseService<User> {
     const phone = normalizePhone(data.phone);
     const user = await User.findOne({ where: { phone } });
     if (!user) {
-      throw new NotFoundError();
+      throw new UserNotFoundError();
     }
 
     const valid = await user.validatePassword(data.password);
@@ -69,10 +68,18 @@ export class UserService extends BaseService<User> {
   }
 }
 
-export class NotFoundError extends Error {
+export class UserNotFoundError extends Error {
   message = "user not found";
 }
 
 export class InvalidCredentialsError extends Error {
   message = "invalid credentials";
+}
+
+export class PhoneInUseError extends Error {
+  message = "User with this phone number already exist";
+}
+
+export class InvalidSessionError extends Error {
+  message = "Invalid session";
 }

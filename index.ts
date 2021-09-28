@@ -13,7 +13,8 @@ import { queryComplexityPlugin } from "@api/utils/queryComplexity.plugin";
 import { getContext } from "@api/utils/context";
 import {
   InvalidCredentialsError,
-  NotFoundError as UserNotFoundError,
+  UserNotFoundError,
+  PhoneInUseError,
 } from "./modules/user/user/User.service";
 
 async function bootstrap() {
@@ -40,6 +41,8 @@ async function bootstrap() {
         return { ...err, extensions: { code: "INVALID_CREDENTIALS" } };
       } else if (e instanceof UserNotFoundError) {
         return { ...err, extensions: { code: "NOT_FOUND" } };
+      } else if (e instanceof PhoneInUseError) {
+        return { ...err, extensions: { code: "ALREADY_EXISTS" } };
       }
 
       return err;

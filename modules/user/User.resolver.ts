@@ -1,11 +1,10 @@
 import { Resolver, Query, Authorized, Args, Mutation, Arg, Ctx } from "type-graphql";
-import { ValidationError } from "apollo-server-express";
 
 import { Roles } from "@api/modules/utils/auth";
 import { PaginatedUserResponse } from "@api/modules/types/PaginatedResponse";
 import { User } from "@api/entity/User";
 import { FilterArgs } from "@api/modules/types/FilterArgs";
-import { UserService } from "@api/modules/user/user/User.service";
+import { PhoneInUseError, UserService } from "@api/modules/user/user/User.service";
 import { UpdateProfileInput } from "@api/modules/user/user/UpdateProfileInput";
 import { SessionInfo } from "@api/modules/user/user/SessionInfo";
 import { SendVerificationCodeInput } from "@api/modules/user/user/SendVerificationCodeInput";
@@ -45,7 +44,7 @@ export class UserResolver {
     const phoneNumber = normalizePhone(data.phoneNumber);
 
     if (await isPhoneAlreadyExist(phoneNumber)) {
-      throw new ValidationError(`Phone number already in use`);
+      throw new PhoneInUseError();
     }
 
     return await this.userService.sendVerificationCode({ ...data, phoneNumber });
