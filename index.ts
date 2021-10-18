@@ -16,10 +16,15 @@ import {
   UserNotFoundError,
   PhoneInUseError,
 } from "./modules/user/user/User.service";
+import { Admin } from "./entity/Admin";
 
 async function bootstrap() {
   // Create typeorm connection using the default configuration in .env .
   await createConnection();
+
+  if (!(await Admin.count())) {
+    Admin.create({ name: "Admin", email: "admin@hassahbook.com", password: "12345678" }).save();
+  }
 
   const schema = await createSchema();
 
