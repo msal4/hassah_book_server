@@ -78,6 +78,9 @@ export class BaseService<T extends BaseEntity> {
       })
       .orderBy(orderByToMap(filterArgs?.order, tableName, ".") ?? {})
       .loadAllRelationIds({ relations })
+      .andWhere(`${tableName}::TEXT ILIKE '%' || :query || '%'`, {
+        query: filterArgs?.searchQuery ?? "",
+      })
       .skip(filterArgs?.skip)
       .take(filterArgs?.take)
       .getManyAndCount();
