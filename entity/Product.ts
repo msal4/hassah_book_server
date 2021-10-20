@@ -9,6 +9,7 @@ import {
   UpdateDateColumn,
   OneToMany,
   BaseEntity,
+  DeleteDateColumn,
 } from "typeorm";
 
 import { Author } from "@api/entity/Author";
@@ -81,6 +82,9 @@ export class Product extends BaseEntity {
   @Field()
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
 
   @Field(() => Author)
   @ManyToOne(() => Author, (author) => author.products)

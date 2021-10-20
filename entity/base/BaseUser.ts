@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   BeforeInsert,
   BaseEntity,
+  DeleteDateColumn,
 } from "typeorm";
 import { hash, compare } from "bcryptjs";
 
@@ -35,6 +36,9 @@ export abstract class BaseUser extends BaseEntity {
   @Field()
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
 
   @BeforeInsert()
   async hashPassword() {

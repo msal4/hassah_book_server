@@ -7,6 +7,7 @@ import {
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  DeleteDateColumn,
 } from "typeorm";
 
 import { User } from "@api/entity/User";
@@ -51,6 +52,9 @@ export class UserRequest extends BaseEntity {
   @Field()
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
 
   @Field(() => User, { description: "The user who made the request" })
   @ManyToOne(() => User, (user) => user.requests)

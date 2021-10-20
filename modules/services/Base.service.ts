@@ -200,7 +200,7 @@ export class BaseService<T extends BaseEntity> {
         await this.s3.deleteObject({ Bucket: this.bucket, Key: (item as any)[imageColumnName] }).promise();
       }
 
-      await item.remove();
+      await item.softRemove();
       return true;
     } catch (err) {
       console.error(err);

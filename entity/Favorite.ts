@@ -1,5 +1,13 @@
 import { ObjectType, Field, ID } from "type-graphql";
-import { Entity, BaseEntity, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn, Unique } from "typeorm";
+import {
+  Entity,
+  BaseEntity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  Unique,
+  DeleteDateColumn,
+} from "typeorm";
 
 import { User } from "@api/entity/User";
 import { Product } from "@api/entity/Product";
@@ -16,6 +24,9 @@ export class Favorite extends BaseEntity {
   @Field()
   @CreateDateColumn()
   createdAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
 
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.favorites)

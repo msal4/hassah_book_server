@@ -1,37 +1,13 @@
-import { ObjectType, Field, ID } from "type-graphql";
-import {
-  Entity,
-  BaseEntity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToMany,
-  CreateDateColumn,
-  UpdateDateColumn,
-  JoinTable,
-} from "typeorm";
+import { ObjectType } from "type-graphql";
+import { Entity, ManyToMany, JoinTable } from "typeorm";
 
 import { Product } from "@api/entity/Product";
 import { Lazy } from "@api/modules/types/Lazy";
+import { BaseProductParent } from "./base/BaseProductParent";
 
 @ObjectType()
 @Entity()
-export class Category extends BaseEntity {
-  @Field(() => ID)
-  @PrimaryGeneratedColumn("uuid")
-  readonly id: string;
-
-  @Field()
-  @Column()
-  name: string;
-
-  @Field()
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @Field()
-  @UpdateDateColumn()
-  updatedAt: Date;
-
+export class Category extends BaseProductParent {
   @ManyToMany(() => Product, (product) => product.categories)
   @JoinTable()
   products: Lazy<Product[]>;

@@ -1,5 +1,12 @@
 import { Field, ID, ObjectType } from "type-graphql";
-import { PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BaseEntity } from "typeorm";
+import {
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  BaseEntity,
+  DeleteDateColumn,
+} from "typeorm";
 
 @ObjectType({ isAbstract: true })
 export abstract class BaseProductParent extends BaseEntity {
@@ -18,4 +25,7 @@ export abstract class BaseProductParent extends BaseEntity {
   @Field()
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
 }

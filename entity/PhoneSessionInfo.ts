@@ -1,4 +1,11 @@
-import { Entity, BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn } from "typeorm";
+import {
+  Entity,
+  BaseEntity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  DeleteDateColumn,
+} from "typeorm";
 
 @Entity()
 export class PhoneSessionInfo extends BaseEntity {
@@ -13,4 +20,7 @@ export class PhoneSessionInfo extends BaseEntity {
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
 }

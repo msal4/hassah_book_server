@@ -8,6 +8,7 @@ import {
   OneToMany,
   UpdateDateColumn,
   CreateDateColumn,
+  DeleteDateColumn,
 } from "typeorm";
 
 import { User } from "@api/entity/User";
@@ -62,6 +63,9 @@ export class Order extends BaseEntity {
   @Field()
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
 
   @ManyToOne(() => User, (user) => user.orders)
   user: Lazy<User>;
