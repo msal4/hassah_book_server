@@ -10,6 +10,7 @@ import {
 import { ClassType } from "type-graphql";
 import { FileUpload } from "graphql-upload";
 import { S3 } from "aws-sdk";
+import mime from "mime-types";
 
 import { PaginatedResponse } from "@api/modules/types/PaginatedResponse";
 import { hasMore } from "@api/modules/utils/hasMore";
@@ -17,7 +18,6 @@ import { FindManyToManyOptions } from "@api/modules/services/base/FindManyToMany
 import { orderByToMap } from "@api/modules/utils/orderByToMap";
 import { formatFileName, lowerCamelCase, tsQuery } from "@api/modules/utils/string";
 import { FindAllOptions } from "@api/modules/types/FindAllOptions";
-import mime from "mime-types";
 
 // The default service on which other services are based on.
 export class BaseService<T extends BaseEntity> {

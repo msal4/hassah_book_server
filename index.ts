@@ -53,7 +53,6 @@ async function bootstrap() {
       return err;
     },
   } as ApolloServerExpressConfig);
-  //app.use(graphqlUploadExpress());
   apolloServer.applyMiddleware({ app });
 
   app.listen(process.env.PORT, () => {

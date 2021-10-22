@@ -1,4 +1,4 @@
-import { Resolver, Query, Authorized, Args, Mutation, Arg, Ctx } from "type-graphql";
+import { Resolver, Query, Authorized, Args, Mutation, Arg, Ctx, ID } from "type-graphql";
 
 import { Roles } from "@api/modules/utils/auth";
 import { PaginatedUserResponse } from "@api/modules/types/PaginatedResponse";
@@ -16,6 +16,10 @@ import { VerificationInput } from "@api/modules/user/user/VerficationCodeInput";
 import { UpdatePasswordInput } from "@api/modules/user/user/UpdatePasswordInput";
 import { isPhoneAlreadyExist } from "@api/modules/user/user/isPhoneAlreadyExist";
 import { normalizePhone } from "@api/modules/utils/normalizePhone";
+import { CreateUserInput } from "@api/modules/user/user/CreateUserInput";
+import { UpdateUserInput } from "@api/modules/user/user/UpdateUserInput";
+import { hash } from "bcryptjs";
+import { PASSWORD_SALT } from "../constants/user";
 
 @Resolver()
 export class UserResolver {
@@ -27,10 +31,31 @@ export class UserResolver {
     return User.findOne(payload!.userId).then((user) => user!);
   }
 
+  @Query(() => User, { nullable: true })
+  user(@Arg("id", () => ID) id: string): Promise<User | null> {
+    return this.userService.findOne({ where: { id } });
+  }
+
   @Authorized(Roles.Admin)
   @Query(() => PaginatedUserResponse)
   users(@Args() args: FilterArgs): Promise<PaginatedUserResponse> {
     return this.userService.findAll(args);
+  }
+
+  @Authorized(Roles.Admin)
+  @Mutation(() => User)
+  createUser(@Arg("data") data: CreateUserInput): Promise<User> {
+    return this.userService.create(data);
+  }
+
+  @Authorized(Roles.Admin)
+  @Mutation(() => Boolean)
+  async updateUser(@Arg("data") data: UpdateUserInput): Promise<boolean> {
+    if (data.password) {
+      data.password = await hash(data.password, PASSWORD_SALT);
+    }
+
+    return this.userService.update(data);
   }
 
   @Authorized(Roles.User)
