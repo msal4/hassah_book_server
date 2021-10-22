@@ -3,6 +3,7 @@
   "name": "hassah-book",
   "version": "1.0.0",
   "dependencies": {
+    "@types/mime-types": "^2.1.1",
     "apollo-server-express": "^2.16.1",
     "aws-sdk": "^2.813.0",
     "bcryptjs": "^2.4.3",
@@ -18,6 +19,7 @@
     "graphql": "^15.3.0",
     "graphql-query-complexity": "^0.6.0",
     "jsonwebtoken": "^8.5.1",
+    "mime-types": "^2.1.33",
     "pg": "^8.5.1",
     "pg-tsquery": "^8.1.0",
     "reflect-metadata": "^0.1.13",
@@ -58,5 +60,8 @@
     "orm": "yarn api:run ./node_modules/typeorm/cli.js",
     "orm-seeding": "yarn api:run ./node_modules/typeorm-seeding/dist/cli.js",
     "drop-and-seed": "yarn orm schema:drop && yarn orm migration:run && yarn orm-seeding seed"
+  },
+  "resolutions": {
+    "fs-capacitor": "3.0.0"
   }
 }
