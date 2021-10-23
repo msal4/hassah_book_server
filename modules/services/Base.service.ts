@@ -190,9 +190,9 @@ export class BaseService<T extends BaseEntity> {
     }
   }
 
-  public async delete(id: string): Promise<boolean> {
+  public async delete(id: string, relations?: string[]): Promise<boolean> {
     try {
-      const item = await this.repository.findOne({ where: { id } });
+      const item = await this.repository.findOne({ where: { id }, relations });
       if (!item) {
         return true;
       }

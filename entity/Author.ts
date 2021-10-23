@@ -16,6 +16,6 @@ export class Author extends BaseProductParent {
   @Column()
   image: string;
 
-  @OneToMany(() => Product, (product) => product.author)
+  @OneToMany(() => Product, (product) => product.author, { cascade: true })
   products: Lazy<Product[]>;
 }

@@ -44,6 +44,6 @@ export class AuthorResolver {
   @Authorized(Roles.Admin)
   @Mutation(() => Boolean)
   deleteAuthor(@Arg("id", () => ID) id: string): Promise<boolean> {
-    return this.service.delete(id);
+    return this.service.delete(id, ["products"]);
   }
 }
