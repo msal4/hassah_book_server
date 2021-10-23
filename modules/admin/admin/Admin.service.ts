@@ -3,7 +3,6 @@ import { hash } from "bcryptjs";
 
 import { Admin } from "@api/entity/Admin";
 import { AdminLoginInput } from "@api/modules/admin/admin/AdminLoginInput";
-import { AdminRegisterInput } from "@api/modules/admin/admin/AdminRegisterInput";
 import { LoginResponse } from "@api/modules/types/LoginResponse";
 import { BaseService } from "@api/modules/services/Base.service";
 import { PASSWORD_SALT } from "@api/modules/constants/user";
@@ -12,10 +11,6 @@ import { createTokens } from "@api/modules/utils/auth";
 
 @Service()
 export class AdminService extends BaseService<Admin> {
-  register(data: AdminRegisterInput): Promise<Admin> {
-    return Admin.create(data).save();
-  }
-
   async login({ email, password }: AdminLoginInput): Promise<LoginResponse> {
     const admin = await Admin.findOne({ where: { email } });
     if (!admin) {

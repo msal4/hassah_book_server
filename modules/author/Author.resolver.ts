@@ -34,7 +34,10 @@ export class AuthorResolver {
 
   @Authorized(Roles.Admin)
   @Mutation(() => Boolean)
-  async updateAuthor(@Arg("data") data: UpdateAuthorInput, imageFile: Promise<FileUpload>): Promise<boolean> {
+  async updateAuthor(
+    @Arg("data") data: UpdateAuthorInput,
+    @Arg("imageFile", () => GraphQLUpload, { nullable: true }) imageFile?: Promise<FileUpload>
+  ): Promise<boolean> {
     return this.service.update(data, await imageFile);
   }
 }

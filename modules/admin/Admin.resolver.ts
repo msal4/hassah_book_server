@@ -22,14 +22,14 @@ export class AdminResolver {
   }
 
   @Mutation(() => LoginResponse)
-  adminLogin(@Arg("data") data: AdminLoginInput): Promise<LoginResponse> {
+  loginAdmin(@Arg("data") data: AdminLoginInput): Promise<LoginResponse> {
     return this.adminService.login(data);
   }
 
   @Authorized(Roles.Admin)
   @Mutation(() => Admin)
-  adminRegister(@Arg("data") data: AdminRegisterInput): Promise<Admin> {
-    return this.adminService.register(data);
+  createAdmin(@Arg("data") data: AdminRegisterInput): Promise<Admin> {
+    return this.adminService.create(data);
   }
 
   @Authorized(Roles.Admin)
