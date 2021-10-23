@@ -40,7 +40,7 @@ export class AdminResolver {
 
   @Authorized(Roles.Admin)
   @Mutation(() => Boolean)
-  adminDelete(@Arg("id", () => ID) id: string): Promise<boolean> {
+  deleteAdmin(@Arg("id", () => ID) id: string): Promise<boolean> {
     return this.adminService.delete(id);
   }
 }

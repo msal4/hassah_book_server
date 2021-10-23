@@ -190,16 +190,17 @@ export class BaseService<T extends BaseEntity> {
     }
   }
 
-  public async delete(id: string, imageColumnName = this.imageColumnName): Promise<boolean> {
+  public async delete(id: string): Promise<boolean> {
     try {
       const item = await this.repository.findOne({ where: { id } });
       if (!item) {
         return true;
       }
 
-      if (this.hasImage) {
-        await this.s3.deleteObject({ Bucket: this.bucket, Key: (item as any)[imageColumnName] }).promise();
-      }
+      // DON'T NEED TO REMOVE IMAGE
+      //if (this.hasImage) {
+      //  await this.s3.deleteObject({ Bucket: this.bucket, Key: (item as any)[imageColumnName] }).promise();
+      //}
 
       await item.softRemove();
       return true;

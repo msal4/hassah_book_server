@@ -33,4 +33,10 @@ export class PublisherResolver {
   updatePublisher(@Arg("data") data: UpdatePublisherInput): Promise<boolean> {
     return this.service.update(data);
   }
+
+  @Authorized(Roles.Admin)
+  @Mutation(() => Boolean)
+  deletePublisher(@Arg("id", () => ID) id: string) {
+    return this.service.delete(id);
+  }
 }

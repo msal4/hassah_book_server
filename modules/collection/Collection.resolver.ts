@@ -40,4 +40,10 @@ export class CollectionResolver {
   ): Promise<boolean> {
     return this.collectionService.update(data, await imageFile);
   }
+
+  @Authorized(Roles.Admin)
+  @Mutation(() => Boolean)
+  deleteCollection(@Arg("id", () => ID) id: string): Promise<boolean> {
+    return this.collectionService.delete(id);
+  }
 }

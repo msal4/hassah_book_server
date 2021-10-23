@@ -128,4 +128,10 @@ export class UserResolver {
   login(@Arg("data") data: LoginInput): Promise<LoginResponse> {
     return this.userService.login(data);
   }
+
+  @Authorized(Roles.Admin)
+  @Mutation(() => Boolean)
+  deleteUser(@Arg("id", () => ID) id: string): Promise<boolean> {
+    return this.userService.delete(id);
+  }
 }

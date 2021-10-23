@@ -33,4 +33,10 @@ export class CategoryResolver {
   updateCategory(@Arg("data") data: UpdateCategoryInput): Promise<boolean> {
     return this.categoryService.update(data);
   }
+
+  @Authorized(Roles.Admin)
+  @Mutation(() => Boolean)
+  deleteCategory(@Arg("id", () => ID) id: string): Promise<boolean> {
+    return this.categoryService.delete(id);
+  }
 }
