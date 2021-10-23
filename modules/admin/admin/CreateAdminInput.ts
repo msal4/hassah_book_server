@@ -1,11 +1,11 @@
 import { InputType, Field } from "type-graphql";
 import { IsNotEmpty, IsEmail } from "class-validator";
 
-import { AdminLoginInput } from "@api/modules/admin/admin/AdminLoginInput";
+import { LoginAdminInput } from "@api/modules/admin/admin/LoginAdminInput";
 import { IsAdminEmailNotUsed } from "@api/modules/admin/admin/IsAdminEmailNotUsed";
 
 @InputType()
-export class AdminRegisterInput extends AdminLoginInput {
+export class CreateAdminInput extends LoginAdminInput {
   @Field()
   @IsNotEmpty()
   name: string;

@@ -1,13 +1,13 @@
 import { Resolver, Mutation, Arg, Ctx, Authorized, ID, Query, Args } from "type-graphql";
 
 import { AdminService } from "@api/modules/admin/admin/Admin.service";
-import { AdminLoginInput } from "@api/modules/admin/admin/AdminLoginInput";
+import { LoginAdminInput } from "@api/modules/admin/admin/LoginAdminInput";
 import { LoginResponse } from "@api/modules/types/LoginResponse";
 import { RequestContext } from "@api/modules/types/RequestContext";
 import { Admin } from "@api/entity/Admin";
-import { AdminRegisterInput } from "@api/modules/admin/admin/AdminRegisterInput";
+import { CreateAdminInput } from "@api/modules/admin/admin/CreateAdminInput";
 import { Roles } from "@api/modules/utils/auth";
-import { AdminUpdateInput } from "@api/modules/admin/admin/AdminUpdateInput";
+import { UpdateAdminInput } from "@api/modules/admin/admin/UpdateAdminInput";
 import { PaginatedAdminResponse } from "@api/modules/types/PaginatedResponse";
 import { FilterArgs } from "@api/modules/types/FilterArgs";
 
@@ -16,25 +16,31 @@ export class AdminResolver {
   constructor(private readonly adminService: AdminService) {}
 
   @Authorized(Roles.Admin)
+  @Query(() => Admin)
+  admin(@Arg("id", () => ID) id: string): Promise<Admin | null> {
+    return this.adminService.findOne({ where: { id } });
+  }
+
+  @Authorized(Roles.Admin)
   @Query(() => PaginatedAdminResponse)
   admins(@Args() args: FilterArgs): Promise<PaginatedAdminResponse> {
     return this.adminService.findAll(args);
   }
 
   @Mutation(() => LoginResponse)
-  loginAdmin(@Arg("data") data: AdminLoginInput): Promise<LoginResponse> {
+  loginAdmin(@Arg("data") data: LoginAdminInput): Promise<LoginResponse> {
     return this.adminService.login(data);
   }
 
   @Authorized(Roles.Admin)
   @Mutation(() => Admin)
-  createAdmin(@Arg("data") data: AdminRegisterInput): Promise<Admin> {
+  createAdmin(@Arg("data") data: CreateAdminInput): Promise<Admin> {
     return this.adminService.create(data);
   }
 
   @Authorized(Roles.Admin)
   @Mutation(() => Boolean)
-  adminUpdate(@Ctx() { payload }: RequestContext, @Arg("data") data: AdminUpdateInput): Promise<boolean> {
+  updateAdmin(@Ctx() { payload }: RequestContext, @Arg("data") data: UpdateAdminInput): Promise<boolean> {
     return this.adminService.update({ ...data, id: data.id ?? payload?.userId });
   }
 

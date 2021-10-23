@@ -2,16 +2,16 @@ import { Service } from "typedi";
 import { hash } from "bcryptjs";
 
 import { Admin } from "@api/entity/Admin";
-import { AdminLoginInput } from "@api/modules/admin/admin/AdminLoginInput";
+import { LoginAdminInput } from "@api/modules/admin/admin/LoginAdminInput";
 import { LoginResponse } from "@api/modules/types/LoginResponse";
 import { BaseService } from "@api/modules/services/Base.service";
 import { PASSWORD_SALT } from "@api/modules/constants/user";
-import { AdminUpdateInput } from "@api/modules/admin/admin/AdminUpdateInput";
+import { UpdateAdminInput } from "@api/modules/admin/admin/UpdateAdminInput";
 import { createTokens } from "@api/modules/utils/auth";
 
 @Service()
 export class AdminService extends BaseService<Admin> {
-  async login({ email, password }: AdminLoginInput): Promise<LoginResponse> {
+  async login({ email, password }: LoginAdminInput): Promise<LoginResponse> {
     const admin = await Admin.findOne({ where: { email } });
     if (!admin) {
       throw new Error("no admin found");
@@ -25,7 +25,7 @@ export class AdminService extends BaseService<Admin> {
     return createTokens(admin);
   }
 
-  async update(data: AdminUpdateInput): Promise<boolean> {
+  async update(data: UpdateAdminInput): Promise<boolean> {
     try {
       const password = data.password && (await hash(data.password, PASSWORD_SALT));
       await this.repository.save({ ...data, password });
