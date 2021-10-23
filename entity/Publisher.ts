@@ -1,4 +1,4 @@
-import { ObjectType, Field } from "type-graphql";
+import { ObjectType } from "type-graphql";
 import { Entity, OneToMany } from "typeorm";
 
 import { Product } from "@api/entity/Product";
@@ -8,7 +8,6 @@ import { BaseProductParent } from "@api/entity/base/BaseProductParent";
 @ObjectType()
 @Entity()
 export class Publisher extends BaseProductParent {
-  @Field(() => [Product])
   @OneToMany(() => Product, (product) => product.publisher)
   products: Lazy<Product[]>;
 }
