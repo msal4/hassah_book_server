@@ -14,6 +14,12 @@ export class UserRequestResolver {
   constructor(private readonly userRequestService: UserRequestService) {}
 
   @Authorized(Roles.Admin)
+  @Query(() => UserRequest)
+  request(@Arg("id", () => ID) id: string): Promise<UserRequest | null> {
+    return this.userRequestService.findOne({ where: { id } });
+  }
+
+  @Authorized(Roles.Admin)
   @Query(() => PaginatedUserRequestResponse)
   requests(@Args() args: FilterArgs): Promise<PaginatedUserRequestResponse> {
     return this.userRequestService.findAll(args);
