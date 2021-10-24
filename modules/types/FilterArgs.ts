@@ -25,8 +25,8 @@ export class FilterArgs {
   skip: number;
 
   @Field(() => Int, { nullable: true, defaultValue: 10 })
-  @Min(1)
-  @Max(100)
+  @Min(0)
+  @Max(500)
   take: number;
 
   @Field(() => [OrderByMap], { nullable: true })
