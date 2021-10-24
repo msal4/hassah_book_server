@@ -1,4 +1,4 @@
-import { Resolver, Query, Ctx, Args, Mutation, Arg, Authorized } from "type-graphql";
+import { Resolver, Query, Ctx, Args, Mutation, Arg, Authorized, ID } from "type-graphql";
 
 import { PaginatedUserRequestResponse } from "@api/modules/types/PaginatedResponse";
 import { UserRequestService } from "@api/modules/user-request/user-request/UserRequest.service";
@@ -45,7 +45,7 @@ export class UserRequestResolver {
 
   @Authorized(Roles.Admin, Roles.User)
   @Mutation(() => Boolean)
-  removeRequest(@Arg("requestId") requestId: string): Promise<boolean> {
-    return this.userRequestService.delete(requestId);
+  deleteRequest(@Arg("id", () => ID) id: string): Promise<boolean> {
+    return this.userRequestService.delete(id);
   }
 }
