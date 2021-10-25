@@ -27,13 +27,13 @@ export class User extends BaseUser {
   @Column({ type: "boolean", default: false })
   confirmed: boolean;
 
-  @OneToMany(() => UserRequest, (request) => request.user)
+  @OneToMany(() => UserRequest, (request) => request.user, { cascade: true })
   requests: Lazy<UserRequest[]>;
 
   @OneToMany(() => Favorite, (favorite) => favorite.user)
   favorites: Lazy<Favorite[]>;
 
-  @OneToMany(() => Order, (order) => order.user)
+  @OneToMany(() => Order, (order) => order.user, { cascade: true })
   orders: Lazy<Order[]>;
 
   @BeforeInsert()

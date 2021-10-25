@@ -132,6 +132,6 @@ export class UserResolver {
   @Authorized(Roles.Admin)
   @Mutation(() => Boolean)
   deleteUser(@Arg("id", () => ID) id: string): Promise<boolean> {
-    return this.userService.delete(id);
+    return this.userService.delete(id, ["orders", "requests"]);
   }
 }

@@ -37,8 +37,11 @@ export class ProductEntityResolver {
   }
 
   @FieldResolver(() => Publisher)
-  publisher(@Root() { publisher }: Product, @Ctx() { loaders }: RequestContext): Promise<Publisher> {
-    return loaders.publisherLoader.load(publisher as any);
+  async publisher(
+    @Root() { publisher }: Product,
+    @Ctx() { loaders }: RequestContext
+  ): Promise<Publisher | null> {
+    return (publisher ?? null) && (await loaders.publisherLoader.load(publisher as any));
   }
 
   @FieldResolver(() => [Category])

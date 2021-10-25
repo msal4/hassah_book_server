@@ -92,7 +92,7 @@ export class Product extends BaseEntity {
 
   @Field(() => Publisher, { nullable: true })
   @ManyToOne(() => Publisher, (publisher) => publisher.products)
-  publisher?: Lazy<Publisher>;
+  publisher?: Lazy<Publisher | null>;
 
   @OneToMany(() => Favorite, (favorite) => favorite.product)
   favorites: Lazy<Favorite[]>;
