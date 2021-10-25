@@ -91,9 +91,9 @@ export class BaseService<T extends BaseEntity> {
 
   public async findOne(options: FindOneOptions<T>): Promise<T | null> {
     const item = await this.repository.findOne({
-      ...options,
       loadRelationIds: true,
       relations: this.relations,
+      ...options,
     });
     return item ?? null;
   }

@@ -38,7 +38,11 @@ export class OrderResolver {
   async placeOrder(@Ctx() { payload }: RequestContext, @Arg("data") data: PlaceOrderInput): Promise<Order> {
     const totalPrice = await this.calculateTotalPrice(data.purchases);
 
-    return this.orderService.create({ ...data, user: { id: payload!.userId }, totalPrice });
+    const order = await this.orderService.create({ ...data, user: { id: payload!.userId }, totalPrice });
+
+    this.orderService.sendOrderNotification(order.id);
+
+    return order;
   }
 
   private async calculateTotalPrice(purchases: PurchasePartialInput[]): Promise<number> {
