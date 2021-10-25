@@ -40,7 +40,7 @@ export class OrderResolver {
 
     const order = await this.orderService.create({ ...data, user: { id: payload!.userId }, totalPrice });
 
-    this.orderService.sendOrderNotification(order.id);
+    this.orderService.sendNewOrderNotification(order.id);
 
     return order;
   }
@@ -73,7 +73,11 @@ export class OrderResolver {
     // mistake, so, we give them a chance of canceling only while the order is still pending.
     if (!order || order.status !== OrderStatus.Pending) return false;
 
-    return await this.orderService.update({ id: order.id, status: OrderStatus.Canceled });
+    const res = await this.orderService.update({ id: order.id, status: OrderStatus.Canceled });
+
+    this.orderService.sendOrderCanceledNotification(order.id);
+
+    return res;
   }
 
   @Authorized(Roles.Admin)

@@ -9,6 +9,7 @@ import {
   UpdateDateColumn,
   CreateDateColumn,
   DeleteDateColumn,
+  Generated,
 } from "typeorm";
 
 import { User } from "@api/entity/User";
@@ -35,6 +36,11 @@ export class Order extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
   readonly id: string;
+
+  @Field()
+  @Column({ type: "bigint" })
+  @Generated("increment")
+  orderNumber: number;
 
   @Field()
   @Column()
