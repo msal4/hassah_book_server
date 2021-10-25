@@ -1,4 +1,4 @@
-import { ObjectType, Field, ID, registerEnumType, Float } from "type-graphql";
+import { ObjectType, Field, ID, registerEnumType, Float, Int } from "type-graphql";
 import {
   Entity,
   BaseEntity,
@@ -37,7 +37,7 @@ export class Order extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   readonly id: string;
 
-  @Field()
+  @Field(() => Int)
   @Column({ type: "bigint" })
   @Generated("increment")
   orderNumber: number;
