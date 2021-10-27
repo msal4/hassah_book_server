@@ -60,8 +60,8 @@ export class UserResolver {
 
   @Authorized(Roles.User)
   @Mutation(() => Boolean)
-  updateProfile(@Arg("data") data: UpdateProfileInput): Promise<boolean> {
-    return this.userService.update(data);
+  updateProfile(@Ctx() { payload }: RequestContext, @Arg("data") data: UpdateProfileInput): Promise<boolean> {
+    return this.userService.update({ id: payload!.userId, ...data });
   }
 
   @Mutation(() => SessionInfo)

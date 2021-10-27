@@ -1,14 +1,16 @@
-import { InputType, Field, ID } from "type-graphql";
-import { IsNotEmpty } from "class-validator";
+import { InputType, Field } from "type-graphql";
+import { IsNotEmpty, MaxLength } from "class-validator";
 
 @InputType()
 export class UpdateProfileInput {
-  @Field(() => ID)
-  id: string;
-
   @Field()
   @IsNotEmpty()
+  @MaxLength(100)
   name: string;
+
+  @Field()
+  @MaxLength(100)
+  province?: string;
 
   @Field()
   address?: string;
