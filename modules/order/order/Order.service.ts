@@ -34,7 +34,7 @@ ${acc}`,
       ""
     );
     const message = encodeURIComponent(
-      `*New order #${order.orderNumber}*
+      `*🎉 New order #${order.orderNumber}*
 
 ${user.name} ordered ${numberOfProducts} products
 
@@ -59,7 +59,7 @@ Phone: ${order.phone ?? user.phone}
     const user = await order.user;
 
     const message = encodeURIComponent(
-      `*Order #${order.orderNumber} canceled*
+      `*🗑 Order #${order.orderNumber} canceled*
 
 ${user.name} canceled order #${order.orderNumber}
 
