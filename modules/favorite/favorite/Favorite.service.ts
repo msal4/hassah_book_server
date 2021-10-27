@@ -36,7 +36,7 @@ export class FavoriteService extends BaseService<Favorite> {
       const favorite = await this.repository.findOne({
         where: { user: { id: userId }, product: { id: productId } },
       });
-      await this.delete(favorite!.id);
+      await favorite?.remove();
 
       return true;
     } catch (err) {
