@@ -9,8 +9,8 @@ import {
 } from "typeorm";
 import { ClassType } from "type-graphql";
 import { FileUpload } from "graphql-upload";
-import { S3 } from "aws-sdk";
 import mime from "mime-types";
+import { Client as MinioClient } from "minio";
 
 import { PaginatedResponse } from "@api/modules/types/PaginatedResponse";
 import { hasMore } from "@api/modules/utils/hasMore";
@@ -51,16 +51,14 @@ export class BaseService<T extends BaseEntity> {
   protected readonly hasImage: boolean = false;
   // The image column name.
   protected readonly imageColumnName: string = "image";
-  // The s3 instance.
-  protected readonly s3 = new S3({
-    credentials: {
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-      secretAccessKey: process.env.AWS_SECRET_KEY!,
-    },
-    apiVersion: "2006-03-01",
+  // The s3 compatible client.
+  protected readonly minio = new MinioClient({
+    endPoint: process.env.MINIO_HOST!,
+    accessKey: process.env.MINIO_ACCESS_KEY_ID!,
+    secretKey: process.env.MINIO_SECRET_KEY!,
   });
-  // The name of the s3 bucket where uploaded files are stored.
-  protected readonly bucket = process.env.AWS_S3_BUCKET!;
+  // The name of the bucket in which uploaded files are stored.
+  protected readonly bucket = process.env.MINIO_BUCKET!;
 
   static async findManyToMany<R>(
     Entity: ClassType<R>,
@@ -166,7 +164,7 @@ export class BaseService<T extends BaseEntity> {
     }
 
     const res = await this.uploadImage(imageFile);
-    return this.repository.save({ ...data, [imageColumnName]: res.Key });
+    return this.repository.save({ ...data, [imageColumnName]: res });
   }
 
   public async update(
@@ -182,7 +180,7 @@ export class BaseService<T extends BaseEntity> {
 
       const item = await this.repository.findOne({ where: { id: data.id } });
       const res = await this.uploadImage(imageFile, item && (item as any)[imageColumnName]);
-      await this.repository.save({ ...data, [imageColumnName]: res.Key });
+      await this.repository.save({ ...data, [imageColumnName]: res });
       return true;
     } catch (err) {
       console.error(err);
@@ -210,18 +208,16 @@ export class BaseService<T extends BaseEntity> {
     }
   }
 
-  protected uploadImage({ createReadStream, mimetype, filename }: FileUpload, currentImagePath?: string) {
+  protected async uploadImage(
+    { createReadStream, mimetype, filename }: FileUpload,
+    currentImagePath?: string
+  ) {
     const ext = mime.extension(mimetype);
-    const newImagePath = `${this.tableName.toLowerCase()}/${formatFileName(filename, ext ? ext : null)}`;
+    const imagePath =
+      currentImagePath ?? `${this.tableName.toLowerCase()}/${formatFileName(filename, ext ? ext : null)}`;
 
-    return this.s3
-      .upload({
-        Bucket: this.bucket,
-        Key: currentImagePath ?? newImagePath,
-        Body: createReadStream(),
-        ContentType: mimetype,
-        ACL: "public-read",
-      })
-      .promise();
+    await this.minio.putObject(this.bucket, imagePath, createReadStream());
+
+    return imagePath;
   }
 }
