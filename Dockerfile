@@ -2,12 +2,17 @@ FROM node:10.15.3
 
 WORKDIR /src
 
-COPY ./package.json .
-COPY ./yarn.lock .
+COPY . .
 
 RUN yarn
 
-COPY . .
+WORKDIR /src/dashboard
+
+RUN yarn
+
+RUN yarn build
+
+WORKDIR /src
 
 EXPOSE 4000
 
