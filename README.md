@@ -34,12 +34,16 @@ The backend for Hassah Book.
     - install the postgres plugin
     - create a postgres service
       ```bash
-      dokku postgres:create <SERVICE_NAME> -I 12.5
+      dokku postgres:create <SERVICE_NAME>
       ```
       NOTE: postgres version must be 12.5 or higher.
+    - create app
+      ```bash
+      dokku apps:create <APP_NAME>
+      ```
     - link postgres
       ```bash
-      dokku postgres:link <APP_NAME> <POSTGRES_SERVICE_NAME> -a TYPEORM_URL
+      dokku postgres:link <POSTGRES_SERVICE_NAME> <APP_NAME> -a TYPEORM_URL
       ```
     - using `dokku config` set your environment variables
       ```bash
