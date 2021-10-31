@@ -34,8 +34,8 @@ async function bootstrap() {
   app.use(cors());
   app.use(express.json());
   app.set("trust proxy", 1);
-  app.use(express.static("static"));
-  app.get("/dashboard/*", (_req, res) => res.sendFile(path.join(__dirname, "static/dashboard/index.html")));
+  app.use("/dashboard", express.static("dashboard/build"));
+  app.get("/dashboard/*", (_req, res) => res.sendFile(path.join(__dirname, "dashboard/build/index.html")));
   app.get("/", (_req, res) => res.send('<a href="/graphql">Graphql Playground</a>'));
   app.post("/refresh_token", refreshToken);
 
