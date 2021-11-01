@@ -1,5 +1,8 @@
 FROM node:14.18
 
+ENV DASHBOARD_PUBLIC_URL=/dashboard
+ENV DASHBOARD_GRAPHQL_URL=
+
 WORKDIR /src
 
 COPY ./package.json .
@@ -20,7 +23,7 @@ COPY . .
 
 WORKDIR /src/dashboard
 
-RUN yarn build
+RUN REACT_APP_GRAPHQL_URL=${REACT_APP_GRAPHQL_URL} PUBLIC_URL=${PUBLIC_URL} yarn build
 
 WORKDIR /src
 
