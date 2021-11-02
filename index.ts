@@ -16,7 +16,7 @@ import {
   InvalidCredentialsError,
   UserNotFoundError,
   PhoneInUseError,
-} from "./modules/user/user/User.service";
+} from "@api/modules/user/user/User.service";
 import { Admin } from "./entity/Admin";
 
 async function bootstrap() {
