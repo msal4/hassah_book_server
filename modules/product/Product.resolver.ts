@@ -44,6 +44,6 @@ export class ProductResolver {
   @Authorized(Roles.Admin)
   @Mutation(() => Boolean)
   deleteProduct(@Arg("id", () => ID) id: string): Promise<boolean> {
-    return this.productService.delete(id);
+    return this.productService.delete(id, ["purchases"]);
   }
 }
