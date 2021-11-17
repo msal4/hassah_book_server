@@ -37,6 +37,6 @@ export class PublisherResolver {
   @Authorized(Roles.Admin)
   @Mutation(() => Boolean)
   deletePublisher(@Arg("id", () => ID) id: string) {
-    return this.service.delete(id);
+    return this.service.delete(id, ["products"]);
   }
 }
