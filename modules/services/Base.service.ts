@@ -61,7 +61,7 @@ export class BaseService<T extends BaseEntity> {
     port: minioPort ? Number(minioPort) : undefined,
     accessKey: process.env.MINIO_ACCESS_KEY_ID!,
     secretKey: process.env.MINIO_SECRET_KEY!,
-    useSSL: false,
+    useSSL: process.env.MINIO_USE_SSL === "true",
   });
   // The name of the bucket in which uploaded files are stored.
   protected readonly bucket = process.env.MINIO_BUCKET!;
