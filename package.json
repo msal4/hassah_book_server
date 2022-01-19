@@ -20,7 +20,7 @@
     "graphql-query-complexity": "^0.6.0",
     "jsonwebtoken": "^8.5.1",
     "mime-types": "^2.1.33",
-    "minio": "^7.0.19",
+    "minio": "^7.0.26",
     "pg": "^8.5.1",
     "pg-tsquery": "^8.1.0",
     "reflect-metadata": "^0.1.13",

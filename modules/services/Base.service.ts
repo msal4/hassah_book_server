@@ -19,23 +19,27 @@ import { orderByToMap } from "@api/modules/utils/orderByToMap";
 import { formatFileName, lowerCamelCase, tsQuery } from "@api/modules/utils/string";
 import { FindAllOptions } from "@api/modules/types/FindAllOptions";
 
+const minioURL = process.env.MINIO_HOST!.split(":")[0];
+const minioHost = minioURL[0],
+  minioPort = minioURL[1];
+
 // The default service on which other services are based on.
 export class BaseService<T extends BaseEntity> {
   constructor() {
     const className = this.constructor.name;
-    if (className.endsWith("Service")) {
-      this.entityName = className.substr(0, className.indexOf("Service"));
-      this.tableName = lowerCamelCase(this.entityName);
-      this.repository = getRepository(this.entityName);
-      this.hasDocument = !!this.repository.metadata.columns.find(
-        (column) => column.propertyName === "document"
-      );
-      this.hasImage = !!this.repository.metadata.columns.find(
-        (column) => column.propertyName === this.imageColumnName
-      );
-    } else {
+    if (!className.endsWith("Service")) {
       throw new Error("Service name should be the entity name with the suffix 'Service'");
     }
+
+    this.entityName = className.substring(0, className.indexOf("Service"));
+    this.tableName = lowerCamelCase(this.entityName);
+    this.repository = getRepository(this.entityName);
+    this.hasDocument = !!this.repository.metadata.columns.find(
+      (column) => column.propertyName === "document"
+    );
+    this.hasImage = !!this.repository.metadata.columns.find(
+      (column) => column.propertyName === this.imageColumnName
+    );
   }
 
   public readonly repository: Repository<T>;
@@ -53,9 +57,11 @@ export class BaseService<T extends BaseEntity> {
   protected readonly imageColumnName: string = "image";
   // The s3 compatible client.
   protected readonly minio = new MinioClient({
-    endPoint: process.env.MINIO_HOST!,
+    endPoint: minioHost,
+    port: minioPort ? Number(minioPort) : undefined,
     accessKey: process.env.MINIO_ACCESS_KEY_ID!,
     secretKey: process.env.MINIO_SECRET_KEY!,
+    useSSL: false,
   });
   // The name of the bucket in which uploaded files are stored.
   protected readonly bucket = process.env.MINIO_BUCKET!;
