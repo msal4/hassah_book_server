@@ -19,7 +19,7 @@ import { orderByToMap } from "@api/modules/utils/orderByToMap";
 import { formatFileName, lowerCamelCase, tsQuery } from "@api/modules/utils/string";
 import { FindAllOptions } from "@api/modules/types/FindAllOptions";
 
-const minioURL = process.env.MINIO_HOST!.split(":")[0];
+const minioURL = process.env.MINIO_HOST!.split(":");
 const minioHost = minioURL[0],
   minioPort = minioURL[1];
 
