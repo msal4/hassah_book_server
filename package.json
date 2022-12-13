@@ -14,7 +14,7 @@
     "dataloader": "^2.0.0",
     "dayjs": "^1.9.7",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "googleapis": "^59.0.0",
     "graphql": "^15.3.0",
     "graphql-query-complexity": "^0.6.0",
