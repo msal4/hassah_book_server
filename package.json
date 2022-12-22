@@ -18,7 +18,7 @@
     "googleapis": "^59.0.0",
     "graphql": "^15.3.0",
     "graphql-query-complexity": "^0.6.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "mime-types": "^2.1.33",
     "minio": "^7.0.26",
     "pg": "^8.5.1",
